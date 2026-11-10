@@ -121,7 +121,7 @@
   }
 }
 
-@media (max-width: 860px) {
+@media (max-width: 860px) and (orientation: portrait) {
   .stage {
     height: auto;
     max-height: none;
@@ -145,5 +145,51 @@
     transform: none;
     width: auto;
     margin: 0 var(--gutter) 48px;
+  }
+}
+
+/* Phones held sideways and other short screens: the list compacts beside the devices. */
+@media (max-height: 520px) {
+  .stage {
+    min-height: 0;
+    height: 100svh;
+  }
+
+  .menu {
+    top: 86px;
+    transform: none;
+    width: min(26rem, 46vw);
+    gap: 0;
+
+    .name {
+      font-size: 0.9375rem;
+      padding: 0;
+    }
+
+    .metier {
+      font-size: 0.9375rem;
+    }
+
+    .actions .btn--ghost {
+      display: none;
+    }
+
+    .is-active .name {
+      font-size: clamp(1.6rem, 8svh, 2.4rem);
+    }
+
+    .tagline {
+      display: none;
+    }
+
+    .detail {
+      gap: 6px;
+      padding: 4px 0 8px;
+    }
+
+    .actions .btn {
+      min-height: 44px;
+      padding: 0.5em 1em;
+    }
   }
 }

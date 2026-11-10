@@ -37,6 +37,7 @@ function open(): DatabaseSyncType {
       accent TEXT NOT NULL DEFAULT '#43E0D0',
       layout TEXT NOT NULL DEFAULT 'dashboard',
       image_url TEXT,
+      mobile_image_url TEXT,
       demo_url TEXT,
       position INTEGER NOT NULL DEFAULT 0,
       published INTEGER NOT NULL DEFAULT 1,
@@ -53,12 +54,25 @@ function open(): DatabaseSyncType {
     );
     CREATE TABLE IF NOT EXISTS sessions (token TEXT PRIMARY KEY, expires_at INTEGER NOT NULL);
   `);
+  // Migration: databases created before the mobile screenshot field.
+  const cols = (db.prepare('PRAGMA table_info(products)').all() as { name: string }[]).map((c) => c.name);
+  if (!cols.includes('mobile_image_url')) db.exec('ALTER TABLE products ADD COLUMN mobile_image_url TEXT');
   db.prepare(
     `INSERT OR IGNORE INTO settings (key, value) VALUES ('default_design', 'etals')`,
   ).run();
   const count = db.prepare('SELECT COUNT(*) AS n FROM products').get() as { n: number };
   if (count.n === 0) {
     SEED_PRODUCTS.forEach((p, i) => insertProduct({ ...p, position: i + 1 }));
+  }
+  // Real screenshots shipped with the app: filled in once, only where no screenshot is set,
+  // so a screenshot the team removes in the admin does not come back on restart.
+  const done = db.prepare(`SELECT 1 FROM settings WHERE key = 'captures_v1'`).get();
+  if (!done && SEED_PRODUCTS.some((p) => p.imageUrl || p.mobileImageUrl)) {
+    const fill = db.prepare(
+      'UPDATE products SET image_url = COALESCE(image_url, ?), mobile_image_url = COALESCE(mobile_image_url, ?) WHERE slug = ?',
+    );
+    for (const p of SEED_PRODUCTS) if (p.imageUrl || p.mobileImageUrl) fill.run(p.imageUrl, p.mobileImageUrl, p.slug);
+    db.prepare(`INSERT INTO settings (key, value) VALUES ('captures_v1', datetime('now'))`).run();
   }
   return db;
 }
@@ -85,6 +99,7 @@ function toProduct(r: Row): Product {
     accent: String(r['accent']),
     layout: String(r['layout']) as ScreenLayout,
     imageUrl: (r['image_url'] as string | null) || null,
+    mobileImageUrl: (r['mobile_image_url'] as string | null) || null,
     demoUrl: (r['demo_url'] as string | null) || null,
     position: Number(r['position']),
     published: Number(r['published']) === 1,
@@ -141,6 +156,7 @@ function clean(input: ProductInput): ProductInput {
     accent: s(input.accent, 7),
     layout: (SCREEN_LAYOUTS.includes(input.layout) ? input.layout : 'dashboard') as ScreenLayout,
     imageUrl: s(input.imageUrl, 500) || null,
+    mobileImageUrl: s(input.mobileImageUrl, 500) || null,
     demoUrl: s(input.demoUrl, 500) || null,
     position: Number.isFinite(Number(input.position)) ? Math.trunc(Number(input.position)) : 0,
     published: Boolean(input.published),
@@ -153,7 +169,7 @@ function clean(input: ProductInput): ProductInput {
       'L’identifiant (slug) ne peut contenir que des minuscules, des chiffres et des tirets.',
     );
   if (!HEX.test(out.accent)) throw new ValidationError('La couleur doit être au format #RRGGBB.');
-  for (const url of [out.imageUrl, out.demoUrl]) {
+  for (const url of [out.imageUrl, out.mobileImageUrl, out.demoUrl]) {
     if (url && !/^(https?:\/\/|\/)/.test(url))
       throw new ValidationError('Les liens doivent commencer par https://, http:// ou /.');
   }
@@ -172,6 +188,7 @@ function params(p: ProductInput) {
     p.accent,
     p.layout,
     p.imageUrl,
+    p.mobileImageUrl,
     p.demoUrl,
     p.position,
     p.published ? 1 : 0,
@@ -183,8 +200,8 @@ export function insertProduct(input: ProductInput): Product {
   try {
     const res = open()
       .prepare(
-        `INSERT INTO products (slug, name, metier, tagline, description, features, price, accent, layout, image_url, demo_url, position, published)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        `INSERT INTO products (slug, name, metier, tagline, description, features, price, accent, layout, image_url, mobile_image_url, demo_url, position, published)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       )
       .run(...params(p));
     return getProduct(Number(res.lastInsertRowid))!;
@@ -201,7 +218,7 @@ export function updateProduct(id: number, input: ProductInput): Product {
     const res = open()
       .prepare(
         `UPDATE products SET slug = ?, name = ?, metier = ?, tagline = ?, description = ?, features = ?, price = ?, accent = ?,
-         layout = ?, image_url = ?, demo_url = ?, position = ?, published = ?, updated_at = datetime('now') WHERE id = ?`,
+         layout = ?, image_url = ?, mobile_image_url = ?, demo_url = ?, position = ?, published = ?, updated_at = datetime('now') WHERE id = ?`,
       )
       .run(...params(p), id);
     if (res.changes === 0) throw new ValidationError('Produit introuvable.');

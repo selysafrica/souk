@@ -270,6 +270,148 @@ tr.is-hidden .prod strong {
   white-space: nowrap;
 }
 
+/* Ordering: a grip to drag (or move with the arrow keys) and quick sorts. */
+.sorter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 16px;
+  margin-bottom: 12px;
+}
+
+.sorter-hint {
+  font-size: 0.875rem;
+  color: var(--fg-2);
+}
+
+.sorter-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--fg-2);
+}
+
+.chip {
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: #fff;
+  font-weight: 700;
+  font-size: 0.8125rem;
+  color: var(--fg);
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    border-color: var(--action);
+    color: var(--action);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.grip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 10px 0 6px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: none;
+  color: var(--fg-2);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  cursor: grab;
+  touch-action: none;
+
+  svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+  }
+
+  &:hover {
+    background: #eef4f4;
+    color: var(--fg);
+  }
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+.pos {
+  min-width: 2ch;
+}
+
+/* The row being dragged, and the gap it will drop into. */
+.cdk-drag-preview {
+  display: table;
+  /* The preview is rendered outside the admin, so it carries its own colours and type. */
+  color: #0f2830;
+  font-family: var(--font);
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 18px 36px -14px rgba(15, 40, 48, 0.45);
+
+  td {
+    padding: 12px 14px;
+  }
+
+  .row-actions,
+  .state {
+    display: none;
+  }
+
+  .muted {
+    color: #46636a;
+  }
+}
+
+.drop-slot {
+  height: 60px;
+  background: #e1f5f2;
+  border: 2px dashed #a6ddd6;
+}
+
+.cdk-drag-animating,
+.cdk-drop-list-dragging tr:not(.cdk-drag-placeholder) {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.shots {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 10px;
+  background: #f1f5f5;
+
+  img {
+    border-radius: 6px;
+    border: 1px solid var(--line);
+    background: #fff;
+  }
+
+  .shot-web {
+    width: 72%;
+    height: auto;
+  }
+
+  .shot-mobile {
+    width: 22%;
+    height: auto;
+  }
+}
+
 .icon-btn {
   width: 36px;
   height: 36px;
@@ -586,8 +728,37 @@ tr.is-hidden .prod strong {
     grid-template-columns: 1fr;
   }
 
+  .top {
+    position: static;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    padding: 10px 16px;
+  }
+
   .top .title {
     display: none;
+  }
+
+  /* Tabs on their own line, scrolling sideways instead of wrapping. */
+  .tabs {
+    order: 3;
+    flex: 1 0 100%;
+    margin-left: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+
+    button {
+      white-space: nowrap;
+    }
+  }
+
+  /* The logo already links to the storefront. */
+  .top .push {
+    display: none;
+  }
+
+  .top .link:last-of-type {
+    margin-left: auto;
   }
 
   table thead {

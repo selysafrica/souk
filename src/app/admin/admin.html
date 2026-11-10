@@ -48,16 +48,28 @@
                 <button type="button" class="btn btn--primary" (click)="newProduct()"><app-icon name="plus" /> Ajouter un produit</button>
               </div>
               @if (products().length) {
+                <div class="sorter">
+                  <p class="sorter-hint">Faites glisser une ligne par sa poignée pour changer l’ordre de la vitrine.</p>
+                  <div class="sorter-actions" role="group" aria-label="Trier la liste">
+                    <span>Trier :</span>
+                    <button type="button" class="chip" [disabled]="busy()" (click)="sortBy('name')">Nom A → Z</button>
+                    <button type="button" class="chip" [disabled]="busy()" (click)="sortBy('metier')">Métier</button>
+                    <button type="button" class="chip" [disabled]="busy()" (click)="sortBy('published')">Affichés d’abord</button>
+                  </div>
+                </div>
                 <table>
                   <thead>
                     <tr><th scope="col">Ordre</th><th scope="col">Produit</th><th scope="col">Vitrine</th><th scope="col"><span class="visually-hidden">Actions</span></th></tr>
                   </thead>
-                  <tbody>
-                    @for (p of products(); track p.id; let i = $index; let first = $first; let last = $last) {
-                      <tr [class.is-editing]="draft()?.id === p.id" [class.is-hidden]="!p.published">
+                  <tbody cdkDropList [cdkDropListData]="products()" [cdkDropListDisabled]="busy()" (cdkDropListDropped)="dropped($event)" cdkDropListLockAxis="y">
+                    @for (p of products(); track p.id; let i = $index) {
+                      <tr cdkDrag [cdkDragData]="p" [class.is-editing]="draft()?.id === p.id" [class.is-hidden]="!p.published">
                         <td class="order">
-                          <button type="button" class="icon-btn" [disabled]="first || busy()" (click)="move(i, -1)" [attr.aria-label]="'Monter ' + p.name"><app-icon name="up" /></button>
-                          <button type="button" class="icon-btn" [disabled]="last || busy()" (click)="move(i, 1)" [attr.aria-label]="'Descendre ' + p.name"><app-icon name="down" /></button>
+                          <button type="button" class="grip" cdkDragHandle (keydown)="gripKey($event, i)"
+                            [attr.aria-label]="'Position ' + (i + 1) + ' : ' + p.name + '. Glisser, ou flèches haut et bas pour déplacer.'">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>
+                            <span class="pos">{{ i + 1 }}</span>
+                          </button>
                         </td>
                         <td>
                           <div class="prod">
@@ -80,6 +92,7 @@
                             {{ confirmDelete() === p.id ? 'Confirmer la suppression' : 'Supprimer' }}
                           </button>
                         </td>
+                        <td *cdkDragPlaceholder class="drop-slot" colspan="4"></td>
                       </tr>
                     }
                   </tbody>
@@ -130,9 +143,18 @@
                       @for (l of layouts; track l) { <option [value]="l">{{ layoutLabels[l] }}</option> }
                     </select>
                     <p class="help" id="h-layout">Utilisé tant qu’aucune capture n’est fournie.</p></div>
-                  <div class="field"><label for="f-image">Capture d’écran (lien)</label>
-                    <input id="f-image" name="imageUrl" inputmode="url" placeholder="/captures/beaform.png" [ngModel]="d.imageUrl ?? ''" (ngModelChange)="patch({ imageUrl: $event || null })" aria-describedby="h-image" />
-                    <p class="help" id="h-image">Format paysage 16:10. Déposez le fichier dans <code>public/captures/</code>.</p></div>
+                  <div class="field"><label for="f-image">Capture web (lien)</label>
+                    <input id="f-image" name="imageUrl" inputmode="url" placeholder="/captures/beaform-desktop.png" [ngModel]="d.imageUrl ?? ''" (ngModelChange)="patch({ imageUrl: $event || null })" aria-describedby="h-image" />
+                    <p class="help" id="h-image">Paysage 16:10 (1440 × 900). Fichier dans <code>public/captures/</code>.</p></div>
+                  <div class="field"><label for="f-image-m">Capture mobile (lien)</label>
+                    <input id="f-image-m" name="mobileImageUrl" inputmode="url" placeholder="/captures/beaform-mobile.png" [ngModel]="d.mobileImageUrl ?? ''" (ngModelChange)="patch({ mobileImageUrl: $event || null })" aria-describedby="h-image-m" />
+                    <p class="help" id="h-image-m">Portrait (390 × 810). Affichée sur l’écran du téléphone.</p></div>
+                  @if (d.imageUrl || d.mobileImageUrl) {
+                    <div class="shots wide" aria-label="Aperçu des captures">
+                      @if (d.imageUrl) { <img class="shot-web" [src]="d.imageUrl" alt="Capture web de {{ d.name }}" /> }
+                      @if (d.mobileImageUrl) { <img class="shot-mobile" [src]="d.mobileImageUrl" alt="Capture mobile de {{ d.name }}" /> }
+                    </div>
+                  }
                   <label class="check wide">
                     <input type="checkbox" name="published" [ngModel]="d.published" (ngModelChange)="patch({ published: $event })" />
                     Afficher sur la vitrine

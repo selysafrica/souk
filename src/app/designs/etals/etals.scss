@@ -220,8 +220,9 @@
   .scene {
     position: relative;
     inset: auto;
-    height: 58svh;
-    min-height: 360px;
+    /* Leaves room for the title and the main action within the first screen. */
+    height: clamp(240px, calc(100svh - 360px), 58svh);
+    min-height: 0;
   }
 
   .copy {
@@ -247,5 +248,57 @@
 
   .walk {
     justify-content: space-between;
+  }
+}
+
+/* Phones held sideways and other short screens: everything stays within one screen. */
+@media (max-height: 520px) and (min-width: 761px) {
+  .stage {
+    min-height: 0;
+    height: 100svh;
+  }
+
+  .copy {
+    bottom: 76px;
+    gap: 6px;
+    width: min(30rem, 60vw);
+  }
+
+  .metier {
+    font-size: clamp(1.75rem, 9svh, 2.75rem);
+  }
+
+  .name {
+    font-size: 1.125rem;
+  }
+
+  .tagline {
+    display: none;
+  }
+
+  .actions {
+    margin-top: 4px;
+  }
+
+  .actions .btn {
+    min-height: 44px;
+    padding: 0.55em 1.1em;
+  }
+
+  .walk {
+    bottom: 14px;
+  }
+
+  .names {
+    display: none;
+  }
+
+  .count {
+    display: block;
+  }
+
+  .step {
+    width: 44px;
+    height: 44px;
   }
 }

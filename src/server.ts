@@ -17,7 +17,13 @@ const app = express();
  */
 const allowedHosts = [
   ...new Set(
-    ['localhost', '127.0.0.1', process.env['ALLOWED_HOSTS'], process.env['NG_ALLOWED_HOSTS'], process.env['APP_DOMAIN']]
+    [
+      'localhost',
+      '127.0.0.1',
+      process.env['ALLOWED_HOSTS'],
+      process.env['NG_ALLOWED_HOSTS'],
+      process.env['APP_DOMAIN'],
+    ]
       .flatMap((v) => (v ?? '').split(','))
       .map((h) => h.trim().toLowerCase())
       .filter(Boolean),

@@ -255,14 +255,41 @@ h2 {
   }
 }
 
+/* Phones: the box on top, the text and the shelf below, so nothing sits over the box. */
 @media (max-width: 760px) {
+  .stage {
+    height: auto;
+    max-height: none;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    padding-top: 64px;
+  }
+
   .backword {
     display: none;
   }
 
+  .scene {
+    position: relative;
+    inset: auto;
+    height: clamp(230px, calc(100svh - 430px), 46svh);
+  }
+
   .copy {
-    bottom: 150px;
+    position: relative;
+    left: auto;
+    bottom: auto;
+    width: auto;
+    margin: 8px var(--gutter) 0;
     gap: 8px;
+  }
+
+  .shelf {
+    position: relative;
+    left: auto;
+    right: auto;
+    margin: 18px var(--gutter) 0;
   }
 
   .actions .btn {
@@ -275,5 +302,46 @@ h2 {
 
   .shelf ol {
     justify-content: flex-start;
+  }
+}
+
+/* Phones held sideways and other short screens. */
+@media (max-height: 520px) and (min-width: 761px) {
+  .stage {
+    min-height: 0;
+    height: 100svh;
+  }
+
+  .backword,
+  .hint,
+  .tagline {
+    display: none;
+  }
+
+  .copy {
+    bottom: 104px;
+    gap: 6px;
+  }
+
+  h2 {
+    font-size: clamp(1.9rem, 10svh, 2.8rem);
+  }
+
+  .actions .btn {
+    min-height: 44px;
+    padding: 0.55em 1.1em;
+  }
+
+  .shelf ol {
+    padding-top: 14px;
+  }
+
+  .shelf .label {
+    display: none;
+  }
+
+  .shelf .mini {
+    width: 30px;
+    height: 40px;
   }
 }

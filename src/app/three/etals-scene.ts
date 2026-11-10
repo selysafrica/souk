@@ -376,7 +376,8 @@ export class EtalsScene extends Stage {
 
   private view(i: number) {
     const s = this.stalls[i]?.group.position ?? new THREE.Vector3(2.2, 0, -i * SPACING);
-    const portrait = this.aspect < 0.9;
+    // Phones: the stall sits alone in a band above the text, so it is framed centred.
+    const portrait = this.aspect < 0.9 || this.isSmall();
     if (portrait) {
       return {
         pos: new THREE.Vector3(s.x - 1.5, 2.3, s.z + 8.8),

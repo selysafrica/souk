@@ -63,13 +63,25 @@ function mark(c: CanvasRenderingContext2D, x: number, y: number, s: number, colo
   }
 }
 
-function coverArt(p: Product) {
+/** Loads the product's real screenshot for the cover window; null falls back to the generated screen. */
+function loadImage(url: string | null): Promise<HTMLImageElement | null> {
+  if (!url) return Promise.resolve(null);
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => resolve(img);
+    img.onerror = () => resolve(null);
+    img.src = url;
+  });
+}
+
+function coverArt(p: Product, real: HTMLImageElement | null) {
   const fg = onAccent(p.accent);
   return tex(850, 1150, (c) => {
     c.fillStyle = p.accent;
     c.fillRect(0, 0, 850, 1150);
     // Product window: the real (or provisional) screen, framed.
-    const shot = drawScreen(p, false);
+    const shot: CanvasImageSource = real ?? drawScreen(p, false);
     c.save();
     c.translate(425, 600);
     c.rotate(-0.05);
@@ -263,7 +275,7 @@ export class CoffretsScene extends Stage {
       plain(p.accent),
       plain(p.accent),
       plain(p.accent),
-      new THREE.MeshStandardMaterial({ map: coverArt(p), roughness: 0.45 }),
+      new THREE.MeshStandardMaterial({ map: coverArt(p, await loadImage(p.imageUrl)), roughness: 0.45 }),
       new THREE.MeshStandardMaterial({ map: insideCover(p), roughness: 0.6 }),
     ]);
     board.position.set(W / 2, H / 2, 0);
@@ -355,11 +367,20 @@ export class CoffretsScene extends Stage {
   }
 
   protected override onResize() {
+    // Phones show the box alone in a band above the text: centred, framed whole.
+    if (this.isSmall()) {
+      this.camera.position.set(0, 2.3, 8.4);
+      this.camera.lookAt(0, 1.15, 0);
+      this.scene.position.x = 0;
+      return;
+    }
     const portrait = this.aspect < 0.9;
     const dist = portrait ? 13 : 8.6;
     this.camera.position.set(0, portrait ? 2.2 : 2.6, dist);
     this.camera.lookAt(portrait ? 0 : -0.15, portrait ? -0.45 : 1.25, 0);
-    this.scene.position.x = portrait ? 0 : Math.min(1.6, this.aspect * 0.55);
+    // Short wide screens (phone held sideways): push the box further right, clear of the text.
+    const short = this.height < 520;
+    this.scene.position.x = portrait ? 0 : short ? Math.min(2.4, this.aspect * 0.95) : Math.min(1.6, this.aspect * 0.55);
   }
 
   protected update(dt: number, time: number) {

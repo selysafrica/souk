@@ -211,15 +211,16 @@ const cache = new Map<string, Promise<THREE.Texture>>();
 
 /** Product screen texture: the uploaded visual when there is one, otherwise a generated, labelled screen. */
 export function screenTexture(p: Product, mobile = false): Promise<THREE.Texture> {
-  const key = `${p.id}:${p.accent}:${p.layout}:${p.imageUrl}:${mobile}`;
+  const url = mobile ? p.mobileImageUrl : p.imageUrl;
+  const key = `${p.id}:${p.accent}:${p.layout}:${url}:${mobile}`;
   let hit = cache.get(key);
   if (!hit) {
     hit = (async () => {
-      if (p.imageUrl) {
+      if (url) {
         try {
           const loader = new THREE.TextureLoader();
           loader.setCrossOrigin('anonymous');
-          const t = await loader.loadAsync(p.imageUrl);
+          const t = await loader.loadAsync(url);
           t.colorSpace = THREE.SRGBColorSpace;
           t.anisotropy = 4;
           return t;

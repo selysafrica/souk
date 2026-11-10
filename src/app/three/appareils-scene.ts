@@ -184,9 +184,11 @@ export class AppareilsScene extends Stage {
       this.rig.scale.setScalar(0.92);
       this.phone?.position.set(1.15, 1.08, 1.35);
     } else {
-      this.camera.position.set(0, 3.4, 10);
+      // Short wide screens (phone held sideways): step back so laptop and phone both fit.
+      const short = this.height < 520;
+      this.camera.position.set(0, short ? 3.8 : 3.4, short ? 12.5 : 10);
       this.camera.lookAt(-0.9, 0.85, 0);
-      this.rig.position.set(0.9, 0, 0);
+      this.rig.position.set(short ? 1.6 : 0.9, 0, 0);
       this.rig.scale.setScalar(1);
       this.phone?.position.set(1.85, 1.08, 0.75);
     }

@@ -33,6 +33,8 @@ export interface Product {
   accent: string;
   layout: ScreenLayout;
   imageUrl: string | null;
+  /** Phone-format screenshot (portrait), used on phone screens. */
+  mobileImageUrl: string | null;
   demoUrl: string | null;
   position: number;
   published: boolean;

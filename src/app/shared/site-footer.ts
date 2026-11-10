@@ -7,7 +7,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     <footer>
       <img src="/brand/selys-logo-white.png" alt="Selys Africa" width="1835" height="414" />
       <p>Nos innovations vous distinguent.</p>
-      <p class="small">© {{ year }} Selys Africa · Visuels d’écran provisoires, en attendant les captures officielles.</p>
+      <p class="small">© {{ year }} Selys Africa · Captures d’écran réalisées avec des données de démonstration.</p>
     </footer>
   `,
   styles: `

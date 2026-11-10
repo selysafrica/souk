@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, OnInit, signal } from '@angular/core';
+import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDragPlaceholder, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import {
@@ -32,7 +33,7 @@ const slugify = (s: string) =>
 
 @Component({
   selector: 'app-admin',
-  imports: [FormsModule, RouterLink, Icon],
+  imports: [FormsModule, RouterLink, Icon, CdkDropList, CdkDrag, CdkDragHandle, CdkDragPlaceholder],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './admin.html',
   styleUrl: './admin.scss',
@@ -144,6 +145,7 @@ export class Admin implements OnInit {
       accent: '#43E0D0',
       layout: 'dashboard',
       imageUrl: null,
+      mobileImageUrl: null,
       demoUrl: null,
       position: this.products().length + 1,
       published: false,
@@ -185,16 +187,48 @@ export class Admin implements OnInit {
     }, p.published ? `« ${p.name} » est masqué de la vitrine.` : `« ${p.name} » est visible sur la vitrine.`);
   }
 
-  protected async move(index: number, delta: number) {
-    const list = [...this.products()];
-    const to = index + delta;
-    if (to < 0 || to >= list.length) return;
-    [list[index], list[to]] = [list[to], list[index]];
+  /** Saves a new order; the list is updated first so the row stays where it was dropped. */
+  private async saveOrder(list: Product[], message = 'Ordre de la vitrine enregistré.') {
+    const before = this.products();
     this.products.set(list);
-    await this.run(async () => {
+    const ok = await this.run(async () => {
       await adminApi.reorder(list.map((p) => p.id));
       await this.reload();
-    }, 'Ordre mis à jour.');
+    }, message);
+    if (!ok) this.products.set(before);
+  }
+
+  protected dropped(e: CdkDragDrop<Product[]>) {
+    if (e.previousIndex === e.currentIndex) return;
+    const list = [...this.products()];
+    moveItemInArray(list, e.previousIndex, e.currentIndex);
+    void this.saveOrder(list);
+  }
+
+  /** Keyboard alternative to dragging: arrow keys on the grip move the row. */
+  protected async gripKey(e: KeyboardEvent, index: number) {
+    const delta = e.key === 'ArrowUp' ? -1 : e.key === 'ArrowDown' ? 1 : 0;
+    if (!delta) return;
+    e.preventDefault();
+    const to = index + delta;
+    if (to < 0 || to >= this.products().length) return;
+    const list = [...this.products()];
+    moveItemInArray(list, index, to);
+    await this.saveOrder(list, `« ${list[to].name} » est maintenant en position ${to + 1}.`);
+    setTimeout(() => (document.querySelectorAll<HTMLElement>('.grip')[to])?.focus(), 0);
+  }
+
+  protected async sortBy(mode: 'name' | 'metier' | 'published') {
+    const fr = (a: string, b: string) => a.localeCompare(b, 'fr', { sensitivity: 'base' });
+    const list = [...this.products()].sort((a, b) =>
+      mode === 'name'
+        ? fr(a.name, b.name)
+        : mode === 'metier'
+          ? fr(a.metier, b.metier) || fr(a.name, b.name)
+          : Number(b.published) - Number(a.published),
+    );
+    const labels = { name: 'par nom (A → Z)', metier: 'par métier', published: 'affichés d’abord' };
+    await this.saveOrder(list, `Produits triés ${labels[mode]}.`);
   }
 
   protected async remove(p: Product) {
