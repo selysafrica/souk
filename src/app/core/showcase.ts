@@ -3,6 +3,7 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import type { Product } from './catalog.model';
 import { Seo } from './seo';
+import { Sound } from './sound';
 
 /** Per-page state shared by a presentation and its sections: the active product and the demo request. */
 @Injectable()
@@ -10,6 +11,7 @@ export class Showcase {
   private readonly location = inject(Location);
   private readonly route = inject(ActivatedRoute);
   private readonly seo = inject(Seo);
+  private readonly sound = inject(Sound);
   readonly products = signal<Product[]>([]);
   readonly index = signal(0);
   readonly active = computed(() => this.products()[this.index()] ?? null);
@@ -30,6 +32,7 @@ export class Showcase {
     const n = this.products().length;
     if (!n) return 0;
     const next = ((i % n) + n) % n;
+    if (next !== this.index()) this.sound.play('nav');
     this.index.set(next);
     this.demoSlug.set(this.products()[next].slug);
     this.seo.forCatalog(this.products(), this.products()[next]);
@@ -49,6 +52,7 @@ export class Showcase {
   }
 
   requestDemo(slug: string) {
+    this.sound.play('tap');
     this.demoSlug.set(slug);
     document.getElementById('demo')?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
     setTimeout(() => (document.getElementById('demo-name') as HTMLInputElement | null)?.focus({ preventScroll: true }), 500);

@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, ElementRef, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, inject, signal, viewChild } from '@angular/core';
 import type { Product } from '../core/catalog.model';
+import { Sound } from '../core/sound';
 import { Icon } from './icon';
 
 type View = 'desktop' | 'mobile';
@@ -10,14 +11,14 @@ type View = 'desktop' | 'mobile';
   imports: [Icon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <dialog #dialog class="viewer" [attr.aria-label]="product() ? 'Écrans de ' + product()!.name : null" (close)="product.set(null)" (click)="backdrop($event)">
+    <dialog #dialog class="viewer" [attr.aria-label]="product() ? 'Écrans de ' + product()!.name : null" (close)="onClose()" (click)="backdrop($event)">
       @if (product(); as p) {
         <div class="bar">
           <p class="title">{{ p.name }} <span>· {{ p.metier }}</span></p>
           @if (p.imageUrl && p.mobileImageUrl) {
             <div class="views" role="tablist" aria-label="Format de l’écran">
-              <button type="button" role="tab" [attr.aria-selected]="view() === 'desktop'" (click)="view.set('desktop')">Ordinateur</button>
-              <button type="button" role="tab" [attr.aria-selected]="view() === 'mobile'" (click)="view.set('mobile')">Téléphone</button>
+              <button type="button" role="tab" [attr.aria-selected]="view() === 'desktop'" (click)="view.set('desktop'); sound.play('tap')">Ordinateur</button>
+              <button type="button" role="tab" [attr.aria-selected]="view() === 'mobile'" (click)="view.set('mobile'); sound.play('tap')">Téléphone</button>
             </div>
           }
           <button type="button" class="close" (click)="close()" aria-label="Fermer"><app-icon name="close" /></button>
@@ -78,6 +79,7 @@ type View = 'desktop' | 'mobile';
   `,
 })
 export class ScreenViewer {
+  protected readonly sound = inject(Sound);
   protected readonly product = signal<Product | null>(null);
   protected readonly view = signal<View>('desktop');
   private readonly dialog = viewChild.required<ElementRef<HTMLDialogElement>>('dialog');
@@ -89,6 +91,12 @@ export class ScreenViewer {
     this.view.set((phone && p.mobileImageUrl) || !p.imageUrl ? 'mobile' : 'desktop');
     this.product.set(p);
     this.dialog().nativeElement.showModal();
+    this.sound.play('open');
+  }
+
+  protected onClose() {
+    this.product.set(null);
+    this.sound.play('close');
   }
 
   close() {
