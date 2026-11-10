@@ -141,6 +141,8 @@ export class EtalsScene extends Stage {
   private bulbs!: THREE.InstancedMesh;
   private active = 0;
   private lift = 0;
+  /** Sideways step into the alley during a move, so the camera goes round the stalls. */
+  private arc = 0;
   private downAt: { x: number; y: number; t: number } | null = null;
 
   constructor(
@@ -376,12 +378,12 @@ export class EtalsScene extends Stage {
 
   private view(i: number) {
     const s = this.stalls[i]?.group.position ?? new THREE.Vector3(2.2, 0, -i * SPACING);
-    // Phones: the stall sits alone in a band above the text, so it is framed centred.
-    const portrait = this.aspect < 0.9 || this.isSmall();
-    if (portrait) {
+    // Phones: stand in the alley, in front of and beside the stall. Stalls are SPACING apart,
+    // so the camera must stay closer than that in depth or the previous stall fills the lens.
+    if (this.portrait()) {
       return {
-        pos: new THREE.Vector3(s.x - 1.5, 2.3, s.z + 8.8),
-        target: new THREE.Vector3(s.x - 0.1, 1.75, s.z),
+        pos: new THREE.Vector3(s.x - 5.6, 2.55, s.z + 4.4),
+        target: new THREE.Vector3(s.x - 0.35, 1.55, s.z - 0.1),
       };
     }
     return {
@@ -414,12 +416,23 @@ export class EtalsScene extends Stage {
       this.camPos.lerpVectors(fromPos, to.pos, k);
       this.target.lerpVectors(fromTarget, to.target, k);
       this.lift = Math.sin(k * Math.PI) * Math.min(0.5, distance * 0.03);
+      this.arc = Math.sin(k * Math.PI) * Math.min(1.4, distance * 0.09);
     }, () => {
       stall.swingFrom = this.clock.getElapsed();
     });
   }
 
+  private portrait() {
+    return this.aspect < 0.9 || this.isSmall();
+  }
+
   protected override onResize() {
+    // A wider lens on phones, so the whole stall (sign, awning, table) fits the narrow band.
+    const fov = this.portrait() ? 50 : 38;
+    if (this.camera.fov !== fov) {
+      this.camera.fov = fov;
+      this.camera.updateProjectionMatrix();
+    }
     if (this.stalls.length) {
       const v = this.view(this.active);
       this.camPos.copy(v.pos);
@@ -469,12 +482,14 @@ export class EtalsScene extends Stage {
     this.pointerSmooth.lerp(this.reduced ? new THREE.Vector2() : this.pointer, ease);
     const breathe = this.reduced ? 0 : Math.sin(time * 0.6) * 0.04;
     this.camera.position.set(
-      this.camPos.x + this.pointerSmooth.x * 0.35,
+      this.camPos.x - this.arc + this.pointerSmooth.x * 0.35,
       this.camPos.y + this.lift + breathe + this.pointerSmooth.y * 0.15,
       this.camPos.z,
     );
     this.camera.lookAt(this.target);
     for (const s of this.stalls) {
+      // A stall that has passed behind the camera is hidden, so nothing ever sits against the lens.
+      s.group.visible = s.group.position.z < this.camera.position.z + 1.2;
       const t = time - s.swingFrom;
       s.sign.rotation.x = t >= 0 && t < 6 && !this.reduced ? Math.sin(t * 4.2) * 0.16 * Math.exp(-t * 0.9) : 0;
     }

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
-export type IconName = 'arrow-left' | 'arrow-right' | 'check' | 'chat' | 'rotate' | 'open' | 'send' | 'logout' | 'plus' | 'trash' | 'up' | 'down' | 'eye' | 'eye-off';
+export type IconName = 'arrow-left' | 'arrow-right' | 'check' | 'chat' | 'rotate' | 'open' | 'send' | 'logout' | 'plus' | 'trash' | 'up' | 'down' | 'eye' | 'eye-off' | 'zoom' | 'close';
 
 /** One authored icon set: 24px grid, 2px round strokes. */
 @Component({
@@ -23,6 +23,8 @@ export type IconName = 'arrow-left' | 'arrow-right' | 'check' | 'chat' | 'rotate
         @case ('trash') { <path d="M4 7h16M10 11v6M14 11v6" /><path d="M6 7l1 13h10l1-13M9 7V4h6v3" /> }
         @case ('up') { <path d="M12 19V5M6 11l6-6 6 6" /> }
         @case ('down') { <path d="M12 5v14M6 13l6 6 6-6" /> }
+        @case ('zoom') { <circle cx="11" cy="11" r="6.5" /><path d="M16 16l4.5 4.5M11 8.5v5M8.5 11h5" /> }
+        @case ('close') { <path d="M6 6l12 12M18 6L6 18" /> }
         @case ('eye') { <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z" /><circle cx="12" cy="12" r="3" /> }
         @case ('eye-off') { <path d="M3 3l18 18" /><path d="M10.6 5.1A10 10 0 0 1 12 5c6.4 0 10 7 10 7a17 17 0 0 1-3.2 4.1M6.2 6.2C3.6 8 2 12 2 12s3.6 7 10 7a9.6 9.6 0 0 0 4.4-1" /> }
       }

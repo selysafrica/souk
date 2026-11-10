@@ -1,4 +1,4 @@
-import { afterNextRender, ChangeDetectionStrategy, Component, computed, DestroyRef, inject, input, signal } from '@angular/core';
+import { afterNextRender, ChangeDetectionStrategy, Component, computed, DestroyRef, ElementRef, inject, input, signal, viewChild } from '@angular/core';
 import { Showcase } from '../core/showcase';
 import { Icon } from './icon';
 
@@ -36,12 +36,31 @@ const HINT_KEY = 'souk-swipe-hint-seen';
           }
         </div>
       </div>
+      @if (showcase.active(); as p) {
+        @if (p.mobileImageUrl || p.imageUrl) {
+          <button type="button" class="zoom" (click)="openViewer()" aria-haspopup="dialog" [attr.aria-label]="'Agrandir l’écran de ' + p.name">
+            <app-icon name="zoom" />
+          </button>
+        }
+      }
       @if (hint()) {
         <p class="hint" aria-hidden="true">
           <app-icon name="arrow-left" /> Glissez pour changer de produit <app-icon name="arrow-right" />
         </p>
       }
     }
+    <!-- Native modal dialog: opens in the top layer, above the header and the scene. -->
+    <dialog #viewer class="viewer" [attr.aria-label]="'Écran de ' + (showcase.active()?.name ?? '')" (close)="zoomOpen.set(false)">
+      @if (zoomOpen() && showcase.active(); as p) {
+        <div class="viewer-bar">
+          <p>{{ p.name }} <span>· pincez pour zoomer</span></p>
+          <button type="button" class="viewer-close" (click)="closeViewer()" aria-label="Fermer"><app-icon name="close" /></button>
+        </div>
+        <div class="viewer-body">
+          <img [src]="p.mobileImageUrl || p.imageUrl" [alt]="'Écran de ' + p.name + ' sur téléphone'" />
+        </div>
+      }
+    </dialog>
   `,
   styles: `
     :host {
@@ -50,7 +69,7 @@ const HINT_KEY = 'souk-swipe-hint-seen';
       --nav-bg: rgba(3, 41, 43, 0.62); --nav-fg: #fff; --nav-line: rgba(255, 255, 255, 0.35);
     }
     :host(.is-light) { --nav-bg: rgba(255, 255, 255, 0.88); --nav-fg: #0f2830; --nav-line: rgba(15, 40, 48, 0.18); }
-    @media (max-width: 760px), (pointer: coarse) and (max-height: 520px) { :host { display: block; } }
+    @media (max-width: 760px) { :host { display: block; } }
     button { pointer-events: auto; font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
     .side {
       position: absolute; top: 50%; width: 48px; height: 48px; margin-top: -24px;
@@ -77,6 +96,27 @@ const HINT_KEY = 'souk-swipe-hint-seen';
     .dot { width: 24px; height: 20px; padding: 0; border: 0; background: none; display: grid; place-items: center; }
     .dot span { width: 7px; height: 7px; border-radius: 50%; background: var(--nav-fg); opacity: .4; transition: width .3s var(--ease-out), opacity .3s; }
     .dot[aria-selected='true'] span { width: 18px; border-radius: 4px; opacity: 1; background: var(--p); box-shadow: 0 0 0 1.5px var(--nav-fg); }
+    .zoom {
+      position: absolute; right: 10px; bottom: 16px; width: 48px; height: 48px;
+      display: grid; place-items: center; border-radius: 50%;
+      border: 1px solid var(--nav-line); background: var(--nav-bg); color: var(--nav-fg); backdrop-filter: blur(8px);
+    }
+    .zoom app-icon { --icon: 22px; }
+    .viewer {
+      width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0;
+      flex-direction: column; background: rgba(2, 30, 32, 0.97); color: #fff;
+    }
+    .viewer[open] { display: flex; animation: appear .25s var(--ease-out); }
+    .viewer::backdrop { background: rgba(2, 30, 32, 0.6); }
+    .viewer-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 10px 10px 18px; }
+    .viewer-bar p { margin: 0; font-weight: 800; }
+    .viewer-bar span { font-weight: 500; opacity: .75; font-size: .875rem; }
+    .viewer-close { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 50%; border: 1px solid rgba(255,255,255,.3); background: transparent; color: #fff; }
+    .viewer-close app-icon { --icon: 22px; }
+    /* Native pinch-zoom and panning inside the viewer. */
+    .viewer-body { flex: 1; overflow: auto; touch-action: pan-x pan-y pinch-zoom; padding: 0 16px 24px; display: flex; justify-content: center; align-items: flex-start; }
+    .viewer-body img { width: min(100%, 520px); height: auto; border-radius: 14px; box-shadow: 0 20px 40px -20px rgba(0,0,0,.8); }
+    @keyframes appear { from { opacity: 0; transform: scale(.98); } }
     .hint {
       position: absolute; left: 50%; top: var(--nav-top, 14px); transform: translateX(-50%); margin: 0;
       display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;
@@ -94,6 +134,17 @@ export class SceneNav {
   readonly tone = input<'dark' | 'light'>('dark');
   protected readonly count = computed(() => this.showcase.products().length);
   protected readonly hint = signal(false);
+  protected readonly zoomOpen = signal(false);
+  private readonly viewer = viewChild<ElementRef<HTMLDialogElement>>('viewer');
+
+  protected openViewer() {
+    this.zoomOpen.set(true);
+    this.viewer()?.nativeElement.showModal();
+  }
+
+  protected closeViewer() {
+    this.viewer()?.nativeElement.close();
+  }
   private timer = 0;
 
   constructor() {

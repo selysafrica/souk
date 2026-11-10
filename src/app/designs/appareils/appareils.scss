@@ -33,7 +33,7 @@
   height: 100%;
   opacity: 0;
   transition: opacity 1.2s var(--ease-out);
-  touch-action: pan-y;
+  touch-action: pan-y pinch-zoom;
 }
 
 .is-ready .scene-canvas {
