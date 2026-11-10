@@ -11,17 +11,19 @@ import { createApi } from './server/api';
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
 const app = express();
-// Hosts allowed to render pages (SSRF protection). Add your domain through ALLOWED_HOSTS=souk.example.com,www.example.com
-const angularApp = new AngularNodeAppEngine({
-  allowedHosts: [
-    'localhost',
-    '127.0.0.1',
-    ...(process.env['ALLOWED_HOSTS']
-      ?.split(',')
-      .map((h) => h.trim())
-      .filter(Boolean) ?? []),
-  ],
-});
+/**
+ * Hosts allowed to render pages (SSRF protection). Any of these variables may carry the domain:
+ * ALLOWED_HOSTS / NG_ALLOWED_HOSTS (comma-separated lists) or APP_DOMAIN (the deploy .env value).
+ */
+const allowedHosts = [
+  ...new Set(
+    ['localhost', '127.0.0.1', process.env['ALLOWED_HOSTS'], process.env['NG_ALLOWED_HOSTS'], process.env['APP_DOMAIN']]
+      .flatMap((v) => (v ?? '').split(','))
+      .map((h) => h.trim().toLowerCase())
+      .filter(Boolean),
+  ),
+];
+const angularApp = new AngularNodeAppEngine({ allowedHosts });
 
 app.disable('x-powered-by');
 // Behind Nginx / Caddy: read the visitor's address from X-Forwarded-For (admin login throttling).
@@ -68,6 +70,7 @@ if (isMainModule(import.meta.url) || process.env['pm_id']) {
     }
 
     console.log(`Node Express server listening on http://localhost:${port}`);
+    console.log(`Allowed hosts: ${allowedHosts.join(', ')}`);
   });
 }
 

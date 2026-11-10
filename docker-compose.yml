@@ -20,6 +20,7 @@ services:
       # Le rendu serveur n'accepte que ces noms d'hôte (protection contre l'usurpation d'en-tête Host).
       # localhost et 127.0.0.1 sont toujours acceptés (HEALTHCHECK, deploy/update.sh).
       ALLOWED_HOSTS: ${APP_DOMAIN:?APP_DOMAIN requis dans .env}
+      APP_DOMAIN: ${APP_DOMAIN}
       # Le proxy fixe X-Forwarded-Proto : les URL absolues sont générées en https.
       NG_TRUST_PROXY_HEADERS: x-forwarded-proto
       # Mot de passe de /admin : sans lui, l'administration refuse toute connexion en production.
