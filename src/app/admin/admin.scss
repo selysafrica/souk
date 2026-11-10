@@ -855,3 +855,18 @@ tr.is-hidden .prod strong {
     max-width: 100%;
   }
 }
+
+/* Universe editor: bubble preview and palette picker (tints of design/souk.dc.html). */
+.bubble-preview {
+  width: 160px; aspect-ratio: 1; margin: 0 auto 20px; border-radius: 50%;
+  display: grid; place-items: center; padding: 18px; text-align: center;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.95), inset 0 -26px 60px rgba(255,255,255,.55), 0 30px 60px -30px rgba(70,50,150,.5);
+  span { font-family: 'Geist Variable', Geist, system-ui, sans-serif; font-size: 17px; letter-spacing: -.03em; color: #17151F; }
+}
+.label { font-weight: 700; font-size: 0.9375rem; }
+.palettes { display: flex; flex-wrap: wrap; gap: 10px; }
+.pal {
+  width: 40px; height: 40px; border-radius: 50%; border: 2px solid #fff; cursor: pointer;
+  box-shadow: 0 0 0 1px var(--line);
+  &[aria-checked='true'] { box-shadow: 0 0 0 3px #17151F; }
+}

@@ -53,3 +53,6 @@ Thumbs.db
 
 # Captures de relecture Impeccable (régénérables)
 .impeccable/review/
+
+# Export Claude Design d’origine (doublon de design/souk.dc.html + design/assets)
+design/Souk*.html

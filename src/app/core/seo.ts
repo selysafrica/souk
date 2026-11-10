@@ -1,7 +1,8 @@
 import { DOCUMENT } from '@angular/common';
 import { inject, Injectable, InjectionToken } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
-import type { Product } from './catalog.model';
+import type { Univers } from './catalog.model';
+import { SOUK_ALLEES } from '../souk/data/souk';
 
 /** Public origin of the site (https://souk.selys-africa.com), used for absolute URLs in shares. */
 export const SITE_ORIGIN = new InjectionToken<string>('SITE_ORIGIN', {
@@ -12,13 +13,11 @@ export const SITE_ORIGIN = new InjectionToken<string>('SITE_ORIGIN', {
   },
 });
 
-const SITE_NAME = 'Selys Africa · Le catalogue';
-const DEFAULT_TITLE = 'Logiciels Selys Africa · Le catalogue';
+const SITE_NAME = 'Selys Souk';
+const DEFAULT_TITLE = 'Souk — Selys Africa';
 const DEFAULT_DESCRIPTION =
-  'Les logiciels de Selys Africa, un par métier : formulaires, couture, restaurants, évènements, courrier, archivage. Découvrez-les en 3D et demandez une démo.';
+  'Le Souk de Selys Africa : la vitrine de toutes nos solutions. Flânez, touchez une bulle et entrez dans son univers.';
 const DEFAULT_IMAGE = '/og/souk.jpg';
-/** Share cards (1200×630 JPG) shipped in public/og/. WebP screenshots are not shown by every network. */
-const OG_CARDS = new Set(['beaform', 'beams-couture', 'beaevent', 'beagec', 'sae-ged']);
 
 interface PageMeta {
   title: string;
@@ -72,24 +71,20 @@ export class Seo {
     this.link('canonical', url);
   }
 
-  /** Catalogue page; with a product, the page is about that product. */
-  forCatalog(products: Product[], active: Product | null) {
+  /** The Souk; with a universe open (?univers=<slug>), the page speaks for that universe. */
+  forSouk(univers: Univers[], active: Univers | null) {
     if (!active) {
       this.set({ title: DEFAULT_TITLE, description: DEFAULT_DESCRIPTION, path: '/' });
     } else {
       this.set({
-        title: `${active.name} · ${active.metier} | Selys Africa`,
-        description: this.clip(`${active.tagline} ${active.description}`),
-        path: `/?produit=${encodeURIComponent(active.slug)}`,
-        image: OG_CARDS.has(active.slug)
-          ? `/og/${active.slug}.jpg`
-          : active.imageUrl && !/\.webp$/i.test(active.imageUrl)
-            ? active.imageUrl
-            : null,
-        imageAlt: `Écran de ${active.name}, ${active.metier.toLowerCase()}`,
+        title: `${active.name} · ${SOUK_ALLEES[active.allee]} | Selys Souk`,
+        description: this.clip(`${active.line1} Pour qui : ${active.who}`),
+        path: `/?univers=${encodeURIComponent(active.slug)}`,
+        image: active.imageUrl && !/\.webp$/i.test(active.imageUrl) ? active.imageUrl : null,
+        imageAlt: `Écran de ${active.name}`,
       });
     }
-    this.jsonLd(products);
+    this.jsonLd(univers);
   }
 
   noindex(title: string) {
@@ -112,7 +107,7 @@ export class Seo {
   }
 
   /** Organization + the list of software, so search engines understand the catalogue. */
-  private jsonLd(products: Product[]) {
+  private jsonLd(univers: Univers[]) {
     const data = {
       '@context': 'https://schema.org',
       '@graph': [
@@ -126,17 +121,17 @@ export class Seo {
         },
         {
           '@type': 'ItemList',
-          name: 'Logiciels Selys Africa',
-          itemListElement: products.map((p, i) => ({
+          name: 'Les univers du Souk',
+          itemListElement: univers.map((p, i) => ({
             '@type': 'ListItem',
             position: i + 1,
-            url: this.abs(`/?produit=${encodeURIComponent(p.slug)}`),
+            url: this.abs(`/?univers=${encodeURIComponent(p.slug)}`),
             item: {
               '@type': 'SoftwareApplication',
               name: p.name,
               applicationCategory: 'BusinessApplication',
-              operatingSystem: p.slug === 'beams-couture' ? 'Android' : 'Web',
-              description: this.clip(`${p.tagline} ${p.description}`, 300),
+              operatingSystem: 'Web',
+              description: this.clip(`${p.line1} ${p.who}`, 300),
               ...(p.imageUrl ? { screenshot: this.abs(p.imageUrl) } : {}),
               publisher: { '@id': `${this.origin}/#org` },
             },

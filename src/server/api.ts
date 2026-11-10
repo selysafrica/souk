@@ -1,22 +1,20 @@
 import express, { type NextFunction, type Request, type Response, Router } from 'express';
 import { randomBytes, timingSafeEqual } from 'node:crypto';
-import type { DesignId } from '../app/core/catalog.model';
 import {
   createSession,
   insertTrack,
   listTracks,
   removeTrack,
   updateTrack,
-  deleteProduct,
   deleteSession,
   getCatalog,
   insertLead,
-  insertProduct,
+  insertUnivers,
   isValidSession,
   listLeads,
-  reorderProducts,
-  setDefaultDesign,
-  updateProduct,
+  removeUnivers,
+  reorderUnivers,
+  updateUnivers,
   ValidationError,
 } from './db';
 
@@ -124,29 +122,25 @@ export function createApi(): Router {
     res.set('Cache-Control', 'no-store').json(getCatalog(true));
   }));
 
-  api.post('/admin/products', requireAdmin, handle((req, res) => {
-    res.status(201).json(insertProduct(req.body));
+  api.post('/admin/univers', requireAdmin, handle((req, res) => {
+    res.status(201).json(insertUnivers(req.body));
   }));
 
-  api.put('/admin/products/:id', requireAdmin, handle((req, res) => {
-    res.json(updateProduct(Number(req.params['id']), req.body));
+  api.put('/admin/univers/:id', requireAdmin, handle((req, res) => {
+    res.json(updateUnivers(Number(req.params['id']), req.body));
   }));
 
-  api.delete('/admin/products/:id', requireAdmin, handle((req, res) => {
-    deleteProduct(Number(req.params['id']));
+  api.post('/admin/univers/:id/remove', requireAdmin, handle((req, res) => {
+    removeUnivers(Number(req.params['id']));
     res.json({ ok: true });
   }));
 
   api.put('/admin/order', requireAdmin, handle((req, res) => {
     const ids = Array.isArray(req.body?.ids) ? req.body.ids.map(Number).filter(Number.isFinite) : [];
-    reorderProducts(ids);
+    reorderUnivers(ids);
     res.json({ ok: true });
   }));
 
-  api.put('/admin/settings', requireAdmin, handle((req, res) => {
-    setDefaultDesign(String(req.body?.defaultDesign) as DesignId);
-    res.json({ ok: true });
-  }));
 
   api.get(
     '/admin/tracks',

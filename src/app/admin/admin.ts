@@ -2,26 +2,15 @@ import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } 
 import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDragPlaceholder, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import {
-  DESIGN_IDS,
-  DESIGN_LABELS,
-  type DesignId,
-  type Lead,
-  type Product,
-  type Track,
-  type TrackInput,
-  BUILTIN_TRACKS,
-  type ProductInput,
-  SCREEN_LAYOUT_LABELS,
-  SCREEN_LAYOUTS,
-} from '../core/catalog.model';
+import { BUILTIN_TRACKS, type Lead, type Track, type TrackInput, type Univers, type UniversInput } from '../core/catalog.model';
+import { ALLEE_IDS, P, PALETTE_IDS, SCREEN_IDS, SOUK_ALLEES } from '../souk/data/souk';
 import { Icon } from '../shared/icon';
 import { adminApi, ApiError } from './admin-api';
 import { Seo } from '../core/seo';
 
-type Tab = 'produits' | 'presentation' | 'musique' | 'demandes';
+type Tab = 'produits' | 'musique' | 'demandes';
 
-interface Draft extends ProductInput {
+interface Draft extends UniversInput {
   id: number | null;
   featuresText: string;
 }
@@ -43,16 +32,19 @@ const slugify = (s: string) =>
   styleUrl: './admin.scss',
 })
 export class Admin implements OnInit {
-  protected readonly designs = DESIGN_IDS;
-  protected readonly designLabels = DESIGN_LABELS;
-  protected readonly layouts = SCREEN_LAYOUTS;
-  protected readonly layoutLabels = SCREEN_LAYOUT_LABELS;
+  protected readonly allees = ALLEE_IDS;
+  protected readonly alleeLabels = SOUK_ALLEES;
+  protected readonly palettes = PALETTE_IDS;
+  protected readonly paletteColors = P;
+  protected readonly screens = SCREEN_IDS;
+  protected readonly screenLabels: Record<string, string> = {
+    agenda: 'Agenda', chat: 'Conversation', files: 'Documents', dash: 'Tableau de bord', people: 'Personnes',
+    form: 'Formulaire', card: 'Carte NFC', rating: 'Notation', queue: 'File d’attente',
+  };
 
   protected readonly state = signal<'checking' | 'login' | 'ready'>('checking');
   protected readonly tab = signal<Tab>('produits');
-  protected readonly products = signal<Product[]>([]);
-  protected readonly design = signal<DesignId>('etals');
-  protected readonly savedDesign = signal<DesignId>('etals');
+  protected readonly products = signal<Univers[]>([]);
   protected readonly leads = signal<Lead[] | null>(null);
   protected readonly draft = signal<Draft | null>(null);
   protected readonly busy = signal(false);
@@ -111,9 +103,7 @@ export class Admin implements OnInit {
 
   private async reload() {
     const data = await adminApi.catalog();
-    this.products.set(data.products);
-    this.design.set(data.defaultDesign);
-    this.savedDesign.set(data.defaultDesign);
+    this.products.set(data.univers);
   }
 
   private async run(action: () => Promise<unknown>, success: string) {
@@ -149,23 +139,25 @@ export class Admin implements OnInit {
       id: null,
       slug: '',
       name: '',
-      metier: '',
-      tagline: '',
-      description: '',
+      allee: 'metiers',
+      palette: 'lilac',
+      screen: 'dash',
+      badge: '',
+      film: false,
+      line1: '',
+      who: '',
       features: [],
       featuresText: '',
-      price: null,
-      accent: '#43E0D0',
-      layout: 'dashboard',
+      screenTitle: '',
+      screenCta: '',
       imageUrl: null,
       mobileImageUrl: null,
-      demoUrl: null,
       position: this.products().length + 1,
       published: false,
     });
   }
 
-  protected edit(p: Product) {
+  protected edit(p: Univers) {
     this.slugTouched = true;
     this.draft.set({ ...p, featuresText: p.features.join('\n') });
   }
@@ -183,7 +175,7 @@ export class Admin implements OnInit {
     const d = this.draft();
     if (!d) return;
     const { id, featuresText, ...rest } = d;
-    const input: ProductInput = { ...rest, features: featuresText.split('\n').map((f) => f.trim()).filter(Boolean) };
+    const input: UniversInput = { ...rest, features: featuresText.split('\n').map((f) => f.trim()).filter(Boolean) };
     const ok = await this.run(async () => {
       if (id === null) await adminApi.create(input);
       else await adminApi.update(id, input);
@@ -192,7 +184,7 @@ export class Admin implements OnInit {
     if (ok) this.draft.set(null);
   }
 
-  protected async togglePublished(p: Product) {
+  protected async togglePublished(p: Univers) {
     const { id, ...rest } = p;
     await this.run(async () => {
       await adminApi.update(id, { ...rest, published: !p.published });
@@ -201,7 +193,7 @@ export class Admin implements OnInit {
   }
 
   /** Saves a new order; the list is updated first so the row stays where it was dropped. */
-  private async saveOrder(list: Product[], message = 'Ordre de la vitrine enregistré.') {
+  private async saveOrder(list: Univers[], message = 'Ordre de la vitrine enregistré.') {
     const before = this.products();
     this.products.set(list);
     const ok = await this.run(async () => {
@@ -211,7 +203,7 @@ export class Admin implements OnInit {
     if (!ok) this.products.set(before);
   }
 
-  protected dropped(e: CdkDragDrop<Product[]>) {
+  protected dropped(e: CdkDragDrop<Univers[]>) {
     if (e.previousIndex === e.currentIndex) return;
     const list = [...this.products()];
     moveItemInArray(list, e.previousIndex, e.currentIndex);
@@ -231,20 +223,20 @@ export class Admin implements OnInit {
     setTimeout(() => (document.querySelectorAll<HTMLElement>('.grip')[to])?.focus(), 0);
   }
 
-  protected async sortBy(mode: 'name' | 'metier' | 'published') {
+  protected async sortBy(mode: 'name' | 'allee' | 'published') {
     const fr = (a: string, b: string) => a.localeCompare(b, 'fr', { sensitivity: 'base' });
     const list = [...this.products()].sort((a, b) =>
       mode === 'name'
         ? fr(a.name, b.name)
-        : mode === 'metier'
-          ? fr(a.metier, b.metier) || fr(a.name, b.name)
+        : mode === 'allee'
+          ? fr(SOUK_ALLEES[a.allee], SOUK_ALLEES[b.allee]) || fr(a.name, b.name)
           : Number(b.published) - Number(a.published),
     );
-    const labels = { name: 'par nom (A → Z)', metier: 'par métier', published: 'affichés d’abord' };
+    const labels = { name: 'par nom (A → Z)', allee: 'par allée', published: 'affichés d’abord' };
     await this.saveOrder(list, `Produits triés ${labels[mode]}.`);
   }
 
-  protected async remove(p: Product) {
+  protected async remove(p: Univers) {
     if (this.confirmDelete() !== p.id) {
       this.confirmDelete.set(p.id);
       return;
@@ -257,13 +249,6 @@ export class Admin implements OnInit {
     }, `« ${p.name} » est supprimé.`);
   }
 
-  protected async saveDesign() {
-    const d = this.design();
-    await this.run(async () => {
-      await adminApi.setDesign(d);
-      this.savedDesign.set(d);
-    }, `La page d’accueil affiche maintenant « ${DESIGN_LABELS[d]} ».`);
-  }
 
   protected newTrack() {
     this.trackDraft.set({ id: null, title: '', artist: '', url: '/musique/', rights: '', position: 0, published: true });

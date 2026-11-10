@@ -1,4 +1,8 @@
 @use '@fontsource-variable/montserrat';
+// Polices du Souk (design/souk.dc.html) : Geist 200–600 et Instrument Serif, servies par le site.
+@use '@fontsource-variable/geist';
+@use '@fontsource/instrument-serif/index.css' as instrument-serif;
+@use '@fontsource/instrument-serif/400-italic.css' as instrument-serif-italic;
 
 :root {
   --teal: #047a7f;

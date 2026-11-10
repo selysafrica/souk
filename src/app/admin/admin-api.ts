@@ -1,4 +1,4 @@
-import type { CatalogData, DesignId, Lead, Product, ProductInput, Track, TrackInput } from '../core/catalog.model';
+import type { CatalogData, Lead, Track, TrackInput, Univers, UniversInput } from '../core/catalog.model';
 
 export class ApiError extends Error {
   constructor(message: string, readonly status: number) {
@@ -28,11 +28,10 @@ export const adminApi = {
   login: (password: string) => call<{ ok: true }>('POST', '/api/admin/login', { password }),
   logout: () => call<{ ok: true }>('POST', '/api/admin/logout'),
   catalog: () => call<CatalogData>('GET', '/api/admin/catalog'),
-  create: (p: ProductInput) => call<Product>('POST', '/api/admin/products', p),
-  update: (id: number, p: ProductInput) => call<Product>('PUT', `/api/admin/products/${id}`, p),
-  remove: (id: number) => call<{ ok: true }>('DELETE', `/api/admin/products/${id}`),
+  create: (p: UniversInput) => call<Univers>('POST', '/api/admin/univers', p),
+  update: (id: number, p: UniversInput) => call<Univers>('PUT', `/api/admin/univers/${id}`, p),
+  remove: (id: number) => call<{ ok: true }>('POST', `/api/admin/univers/${id}/remove`),
   reorder: (ids: number[]) => call<{ ok: true }>('PUT', '/api/admin/order', { ids }),
-  setDesign: (defaultDesign: DesignId) => call<{ ok: true }>('PUT', '/api/admin/settings', { defaultDesign }),
   leads: () => call<Lead[]>('GET', '/api/admin/leads'),
   tracks: () => call<Track[]>('GET', '/api/admin/tracks'),
   createTrack: (t: TrackInput) => call<Track>('POST', '/api/admin/tracks', t),

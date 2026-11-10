@@ -23,8 +23,7 @@
         <a routerLink="/" class="brand"><img src="/brand/selys-logo.png" alt="Selys Africa" width="1835" height="414" /></a>
         <span class="title">Catalogue Souk</span>
         <nav class="tabs" aria-label="Sections de l’administration">
-          <button type="button" [attr.aria-current]="tab() === 'produits' ? 'page' : null" (click)="showTab('produits')">Produits</button>
-          <button type="button" [attr.aria-current]="tab() === 'presentation' ? 'page' : null" (click)="showTab('presentation')">Présentation</button>
+          <button type="button" [attr.aria-current]="tab() === 'produits' ? 'page' : null" (click)="showTab('produits')">Univers</button>
           <button type="button" [attr.aria-current]="tab() === 'musique' ? 'page' : null" (click)="showTab('musique')">Musique</button>
           <button type="button" [attr.aria-current]="tab() === 'demandes' ? 'page' : null" (click)="showTab('demandes')">Demandes de démo</button>
         </nav>
@@ -43,10 +42,10 @@
             <section class="list" aria-labelledby="list-title">
               <div class="list-head">
                 <div>
-                  <h1 id="list-title">Produits</h1>
+                  <h1 id="list-title">Univers</h1>
                   <p class="sub">{{ published() }} affiché{{ published() > 1 ? 's' : '' }} sur la vitrine, {{ products().length }} au total. L’ordre ci-dessous est l’ordre de la vitrine.</p>
                 </div>
-                <button type="button" class="btn btn--primary" (click)="newProduct()"><app-icon name="plus" /> Ajouter un produit</button>
+                <button type="button" class="btn btn--primary" (click)="newProduct()"><app-icon name="plus" /> Ajouter un univers</button>
               </div>
               @if (products().length) {
                 <div class="sorter">
@@ -54,7 +53,7 @@
                   <div class="sorter-actions" role="group" aria-label="Trier la liste">
                     <span>Trier :</span>
                     <button type="button" class="chip" [disabled]="busy()" (click)="sortBy('name')">Nom A → Z</button>
-                    <button type="button" class="chip" [disabled]="busy()" (click)="sortBy('metier')">Métier</button>
+                    <button type="button" class="chip" [disabled]="busy()" (click)="sortBy('allee')">Allée</button>
                     <button type="button" class="chip" [disabled]="busy()" (click)="sortBy('published')">Affichés d’abord</button>
                   </div>
                 </div>
@@ -74,10 +73,10 @@
                         </td>
                         <td>
                           <div class="prod">
-                            <span class="swatch" [style.background]="p.accent" aria-hidden="true"></span>
+                            <span class="swatch" [style.background]="'radial-gradient(circle at 50% 50%, ' + paletteColors[p.palette][2] + ' 0%, ' + paletteColors[p.palette][0] + ' 100%)'" aria-hidden="true"></span>
                             <div>
                               <strong>{{ p.name }}</strong>
-                              <span class="muted">{{ p.metier }} · {{ p.price ?? 'Tarif sur demande' }}</span>
+                              <span class="muted">{{ alleeLabels[p.allee] }}{{ p.badge ? ' · ' + p.badge : '' }}</span>
                             </div>
                           </div>
                         </td>
@@ -100,7 +99,7 @@
                 </table>
               } @else {
                 <div class="empty">
-                  <p><strong>Aucun produit pour l’instant.</strong></p>
+                  <p><strong>Aucun univers pour l’instant.</strong></p>
                   <p>Ajoutez le premier : il apparaîtra sur la vitrine dès qu’il sera marqué « Affiché ».</p>
                 </div>
               }
@@ -109,41 +108,48 @@
             @if (draft(); as d) {
               <section class="editor" aria-labelledby="editor-title">
                 <div class="editor-head">
-                  <h2 id="editor-title">{{ d.id === null ? 'Nouveau produit' : 'Modifier ' + d.name }}</h2>
+                  <h2 id="editor-title">{{ d.id === null ? 'Nouvel univers' : 'Modifier ' + d.name }}</h2>
                   <button type="button" class="link" (click)="draft.set(null)">Fermer</button>
                 </div>
-                <div class="sign-preview" [style.--p]="d.accent" aria-hidden="true">
-                  <span class="pm">{{ d.metier || 'Métier' }}</span>
-                  <span class="pn">{{ d.name || 'Nom du produit' }}</span>
+                <div class="bubble-preview" aria-hidden="true"
+                  [style.background]="'radial-gradient(circle at 32% 26%, rgba(255,255,255,.96) 0%, rgba(255,255,255,0) 34%), radial-gradient(circle at 74% 80%, ' + paletteColors[d.palette][1] + ' 0%, rgba(255,255,255,0) 58%), radial-gradient(circle at 50% 50%, ' + paletteColors[d.palette][2] + ' 0%, ' + paletteColors[d.palette][0] + ' 100%)'">
+                  <span>{{ d.name || 'Nom de l’univers' }}</span>
                 </div>
                 <form (ngSubmit)="save()" novalidate class="fields">
-                  <div class="field"><label for="f-name">Nom du produit</label>
+                  <div class="field"><label for="f-name">Nom</label>
                     <input id="f-name" name="name" required [ngModel]="d.name" (ngModelChange)="patch({ name: $event })" /></div>
-                  <div class="field"><label for="f-metier">Métier</label>
-                    <input id="f-metier" name="metier" required [ngModel]="d.metier" (ngModelChange)="patch({ metier: $event })" aria-describedby="h-metier" />
-                    <p class="help" id="h-metier">Affiché en très grand : quelques mots simples, ex. « Gestion du courrier ».</p></div>
                   <div class="field"><label for="f-slug">Identifiant dans l’adresse</label>
                     <input id="f-slug" name="slug" [ngModel]="d.slug" (ngModelChange)="patch({ slug: $event })" aria-describedby="h-slug" spellcheck="false" />
-                    <p class="help" id="h-slug">Minuscules, chiffres et tirets : /etals?produit={{ d.slug || '…' }}</p></div>
-                  <div class="field wide"><label for="f-tagline">Accroche</label>
-                    <input id="f-tagline" name="tagline" maxlength="160" [ngModel]="d.tagline" (ngModelChange)="patch({ tagline: $event })" /></div>
-                  <div class="field wide"><label for="f-desc">Description</label>
-                    <textarea id="f-desc" name="description" rows="4" maxlength="1200" [ngModel]="d.description" (ngModelChange)="patch({ description: $event })"></textarea></div>
-                  <div class="field wide"><label for="f-features">Points forts <span class="opt">(un par ligne, 8 au plus)</span></label>
-                    <textarea id="f-features" name="features" rows="4" [ngModel]="d.featuresText" (ngModelChange)="patch({ featuresText: $event })"></textarea></div>
-                  <div class="field"><label for="f-price">Prix</label>
-                    <input id="f-price" name="price" [ngModel]="d.price ?? ''" (ngModelChange)="patch({ price: $event || null })" aria-describedby="h-price" />
-                    <p class="help" id="h-price">Vide = « Tarif sur demande ». Ex. « Dès 15 000 FCFA / mois ».</p></div>
-                  <div class="field"><label for="f-accent">Couleur du produit</label>
-                    <div class="color">
-                      <input type="color" id="f-accent" name="accent" [ngModel]="d.accent" (ngModelChange)="patch({ accent: $event.toUpperCase() })" />
-                      <input name="accentHex" aria-label="Code couleur" spellcheck="false" [ngModel]="d.accent" (ngModelChange)="patch({ accent: $event })" />
+                    <p class="help" id="h-slug">Minuscules, chiffres et tirets : /?univers={{ d.slug || '…' }}</p></div>
+                  <div class="field"><label for="f-allee">Allée</label>
+                    <select id="f-allee" name="allee" [ngModel]="d.allee" (ngModelChange)="patch({ allee: $event })">
+                      @for (a of allees; track a) { <option [value]="a">{{ alleeLabels[a] }}</option> }
+                    </select></div>
+                  <div class="field"><label for="f-badge">Badge <span class="opt">(facultatif)</span></label>
+                    <input id="f-badge" name="badge" maxlength="40" placeholder="En ligne, Démo en ligne…" [ngModel]="d.badge" (ngModelChange)="patch({ badge: $event })" /></div>
+                  <div class="field wide"><span class="label">Teinte de la bulle</span>
+                    <div class="palettes" role="radiogroup" aria-label="Teinte de la bulle">
+                      @for (pal of palettes; track pal) {
+                        <button type="button" role="radio" class="pal" [attr.aria-checked]="d.palette === pal" [attr.aria-label]="pal" (click)="patch({ palette: pal })"
+                          [style.background]="'radial-gradient(circle at 50% 50%, ' + paletteColors[pal][2] + ' 0%, ' + paletteColors[pal][0] + ' 100%)'"></button>
+                      }
                     </div></div>
-                  <div class="field"><label for="f-layout">Écran provisoire</label>
-                    <select id="f-layout" name="layout" [ngModel]="d.layout" (ngModelChange)="patch({ layout: $event })" aria-describedby="h-layout">
-                      @for (l of layouts; track l) { <option [value]="l">{{ layoutLabels[l] }}</option> }
+                  <div class="field wide"><label for="f-line1">Phrase d’accroche</label>
+                    <input id="f-line1" name="line1" maxlength="220" [ngModel]="d.line1" (ngModelChange)="patch({ line1: $event })" /></div>
+                  <div class="field wide"><label for="f-who">Pour qui</label>
+                    <input id="f-who" name="who" maxlength="220" [ngModel]="d.who" (ngModelChange)="patch({ who: $event })" /></div>
+                  <div class="field wide"><label for="f-features">Dans cette bulle <span class="opt">(une fonctionnalité par ligne, 8 au plus)</span></label>
+                    <textarea id="f-features" name="features" rows="4" [ngModel]="d.featuresText" (ngModelChange)="patch({ featuresText: $event })"></textarea></div>
+                  <div class="field"><label for="f-screen">Écran illustratif</label>
+                    <select id="f-screen" name="screen" [ngModel]="d.screen" (ngModelChange)="patch({ screen: $event })" aria-describedby="h-screen">
+                      @for (sc of screens; track sc) { <option [value]="sc">{{ screenLabels[sc] }}</option> }
                     </select>
-                    <p class="help" id="h-layout">Utilisé tant qu’aucune capture n’est fournie.</p></div>
+                    <p class="help" id="h-screen">Affiché tant qu’aucune capture réelle n’est fournie.</p></div>
+                  <div class="field"><label for="f-stitle">Titre de l’écran</label>
+                    <input id="f-stitle" name="screenTitle" maxlength="60" [ngModel]="d.screenTitle" (ngModelChange)="patch({ screenTitle: $event })" /></div>
+                  <div class="field"><label for="f-scta">Bouton de l’écran</label>
+                    <input id="f-scta" name="screenCta" maxlength="40" [ngModel]="d.screenCta" (ngModelChange)="patch({ screenCta: $event })" /></div>
+                  <label class="check"><input type="checkbox" name="film" [ngModel]="d.film" (ngModelChange)="patch({ film: $event })" /> Dans les solutions du film</label>
                   <div class="field"><label for="f-image">Capture web (lien)</label>
                     <input id="f-image" name="imageUrl" inputmode="url" placeholder="/captures/beaform-desktop.png" [ngModel]="d.imageUrl ?? ''" (ngModelChange)="patch({ imageUrl: $event || null })" aria-describedby="h-image" />
                     <p class="help" id="h-image">Paysage 16:10 (1440 × 900). Fichier dans <code>public/captures/</code>.</p></div>
@@ -158,7 +164,7 @@
                   }
                   <label class="check wide">
                     <input type="checkbox" name="published" [ngModel]="d.published" (ngModelChange)="patch({ published: $event })" />
-                    Afficher sur la vitrine
+                    Afficher dans le Souk
                   </label>
                   <div class="form-actions wide">
                     <button class="btn btn--primary" type="submit" [disabled]="busy()">{{ busy() ? 'Enregistrement…' : 'Enregistrer' }}</button>
@@ -167,24 +173,6 @@
                 </form>
               </section>
             }
-          </main>
-        }
-        @case ('presentation') {
-          <main class="workspace single">
-            <h1>Présentation de la page d’accueil</h1>
-            <p class="sub">Les trois présentations restent consultables à leur adresse. Celle choisie ici s’affiche à l’accueil.</p>
-            <fieldset class="designs">
-              <legend class="visually-hidden">Présentation par défaut</legend>
-              @for (id of designs; track id) {
-                <label class="design" [class.is-on]="design() === id">
-                  <input type="radio" name="design" [value]="id" [checked]="design() === id" (change)="design.set(id)" />
-                  <span class="design-name">{{ designLabels[id] }}</span>
-                  <a [routerLink]="'/' + id" target="_blank" rel="noopener">Ouvrir /{{ id }}</a>
-                  @if (savedDesign() === id) { <span class="badge">Actuellement à l’accueil</span> }
-                </label>
-              }
-            </fieldset>
-            <button type="button" class="btn btn--primary" [disabled]="busy() || design() === savedDesign()" (click)="saveDesign()">Enregistrer</button>
           </main>
         }
         @case ('musique') {

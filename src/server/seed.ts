@@ -1,151 +1,36 @@
-import type { ProductInput } from '../app/core/catalog.model';
+import type { UniversInput } from '../app/core/catalog.model';
+import { SOUK } from '../app/souk/data/souk';
 
 /**
- * Initial catalogue, written from the project folders next to this repository.
- * Prices are intentionally empty: the Selys team fills them in from the admin.
- * Products that look internal or client-specific are seeded unpublished.
+ * Real screenshots taken earlier (demonstration data), matched to the universes of the design.
+ * The former « SAE » archive screens are BeaGed's, and BeaMS Couture became Selys Couture.
  */
-export const SEED_PRODUCTS: Omit<ProductInput, 'position'>[] = [
-  {
-    slug: 'beaform',
-    name: 'BeaForm',
-    metier: 'Formulaires en ligne',
-    tagline: 'Créez, publiez et analysez vos formulaires en quelques minutes.',
-    description:
-      'Un éditeur visuel par glisser-déposer pour construire des formulaires classiques ou conversationnels (une question par écran), les partager par lien, QR code ou sur votre site, puis suivre et exporter les réponses.',
-    features: [
-      'Éditeur glisser-déposer',
-      'Mode classique ou conversationnel',
-      'Partage par lien, QR code ou intégration',
-      'Réponses, statistiques et export',
-    ],
-    price: null,
-    accent: '#F2A900',
-    layout: 'form',
-    imageUrl: '/captures/beaform-desktop.webp',
-    mobileImageUrl: '/captures/beaform-mobile.webp',
-    demoUrl: null,
+const CAPTURES: Record<string, string> = {
+  beaform: 'beaform',
+  beaevent: 'beaevent',
+  beagec: 'beagec',
+  beaged: 'sae-ged',
+  couture: 'beams-couture',
+};
+
+/** The 19 universes of design/souk.dc.html, in the design's order. */
+export const SEED_UNIVERS: Omit<UniversInput, 'position'>[] = SOUK.map((u) => {
+  const shot = CAPTURES[u.id];
+  return {
+    slug: u.id,
+    name: u.name,
+    allee: u.allee,
+    palette: u.pal,
+    screen: u.scr,
+    badge: u.badge,
+    film: u.film,
+    line1: u.line1,
+    who: u.who,
+    features: [...u.features],
+    screenTitle: u.screenTitle,
+    screenCta: u.screenCta,
+    imageUrl: shot ? `/captures/${shot}-desktop.webp` : null,
+    mobileImageUrl: shot ? `/captures/${shot}-mobile.webp` : null,
     published: true,
-  },
-  {
-    slug: 'beams-couture',
-    name: 'BeaMS Couture',
-    metier: 'Atelier de couture',
-    tagline: 'Le carnet du couturier, sur son téléphone, même sans réseau.',
-    description:
-      'Une application Android pensée pour le couturier : carnet de clients, mesures saisies sur une silhouette, suivi des commandes de la coupe à la livraison et paiement mobile money intégré.',
-    features: [
-      'Carnet clients hors ligne',
-      'Mesures sur silhouette',
-      'Suivi des commandes et des essayages',
-      'Paiement mobile money',
-    ],
-    price: null,
-    accent: '#D9412B',
-    layout: 'people',
-    imageUrl: '/captures/beams-couture-desktop.webp',
-    mobileImageUrl: '/captures/beams-couture-mobile.webp',
-    demoUrl: null,
-    published: true,
-  },
-  {
-    slug: 'tablee',
-    name: 'Tablée',
-    metier: 'Restaurants',
-    tagline: 'Réserver, commander et payer avant même d’arriver à table.',
-    description:
-      'Un SaaS multi-restaurants qui couvre tout le parcours du client : découverte du restaurant en vidéo, choix de la table sur un plan, commande et paiement à l’avance, puis avis après le repas. Le restaurateur pilote toutes ses adresses depuis un seul écran.',
-    features: [
-      'Choix de la table sur plan',
-      'Commande et paiement à l’avance',
-      'Service à table par tag NFC',
-      'Un back-office pour plusieurs adresses',
-    ],
-    price: null,
-    accent: '#C2185B',
-    layout: 'floorplan',
-    imageUrl: null,
-    mobileImageUrl: null,
-    demoUrl: null,
-    published: true,
-  },
-  {
-    slug: 'beaevent',
-    name: 'BeaEvent',
-    metier: 'Évènements et séminaires',
-    tagline: 'Organisez vos séminaires et évènements de bout en bout.',
-    description:
-      'Une plateforme pour préparer et faire vivre vos évènements : programme, inscriptions et suivi des participants, aux couleurs de chaque évènement.',
-    features: ['Programme de l’évènement', 'Inscriptions en ligne', 'Suivi des participants', 'Thème par évènement'],
-    price: null,
-    accent: '#7B4FD0',
-    layout: 'agenda',
-    imageUrl: '/captures/beaevent-desktop.webp',
-    mobileImageUrl: '/captures/beaevent-mobile.webp',
-    demoUrl: null,
-    published: true,
-  },
-  {
-    slug: 'beagec',
-    name: 'BeaGec',
-    metier: 'Gestion du courrier',
-    tagline: 'Chaque courrier enregistré, orienté et suivi jusqu’à sa réponse.',
-    description:
-      'La gestion électronique du courrier entrant et sortant : enregistrement, numérisation, orientation vers les bons services et suivi du traitement.',
-    features: ['Enregistrement du courrier', 'Numérisation', 'Orientation vers les services', 'Suivi du traitement'],
-    price: null,
-    accent: '#2F6FE0',
-    layout: 'orders',
-    imageUrl: '/captures/beagec-desktop.webp',
-    mobileImageUrl: '/captures/beagec-mobile.webp',
-    demoUrl: null,
-    published: true,
-  },
-  {
-    slug: 'sae-ged',
-    name: 'SAE',
-    metier: 'Archivage électronique',
-    tagline: 'Vos documents classés, retrouvés et conservés dans la durée.',
-    description:
-      'Un système d’archivage électronique et de gestion documentaire : plan de classement, métadonnées, versions, recherche, partage et cycle de vie des documents, avec journal d’audit.',
-    features: ['Plan de classement et métadonnées', 'Recherche et partage', 'Versions et annotations', 'Cycle de vie et journal d’audit'],
-    price: null,
-    accent: '#3E9B4F',
-    layout: 'documents',
-    imageUrl: '/captures/sae-ged-desktop.webp',
-    mobileImageUrl: '/captures/sae-ged-mobile.webp',
-    demoUrl: null,
-    published: true,
-  },
-  {
-    slug: 'peopleos',
-    name: 'PeopleOS',
-    metier: 'RH et opérations',
-    tagline: 'Pointage, congés, missions et évaluations dans un seul outil.',
-    description:
-      'Une plateforme de gestion RH et des opérations : pointage, congés, tâches, missions, planning et évaluations, avec un affichage adapté à chaque rôle.',
-    features: ['Pointage et congés', 'Tâches et missions', 'Planning des équipes', 'Évaluations'],
-    price: null,
-    accent: '#E8762D',
-    layout: 'dashboard',
-    imageUrl: null,
-    mobileImageUrl: null,
-    demoUrl: null,
-    published: false,
-  },
-  {
-    slug: 'selys-rating',
-    name: 'Selys Rating',
-    metier: 'Notation',
-    tagline: 'À compléter par l’équipe Selys.',
-    description: 'Description à rédiger par l’équipe Selys avant publication.',
-    features: [],
-    price: null,
-    accent: '#00A5CF',
-    layout: 'dashboard',
-    imageUrl: null,
-    mobileImageUrl: null,
-    demoUrl: null,
-    published: false,
-  },
-];
+  };
+});

@@ -1,18 +1,9 @@
 import type { DatabaseSync as DatabaseSyncType } from 'node:sqlite';
 import { mkdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
-import type {
-  CatalogData,
-  DesignId,
-  Lead,
-  Product,
-  ProductInput,
-  ScreenLayout,
-  Track,
-  TrackInput,
-} from '../app/core/catalog.model';
-import { DESIGN_IDS, SCREEN_LAYOUTS } from '../app/core/catalog.model';
-import { SEED_PRODUCTS } from './seed';
+import type { CatalogData, Lead, Track, TrackInput, Univers, UniversInput } from '../app/core/catalog.model';
+import { ALLEE_IDS, PALETTE_IDS, SCREEN_IDS, type AlleeId, type PaletteId, type ScreenId } from '../app/souk/data/souk';
+import { SEED_UNIVERS } from './seed';
 
 const DB_PATH = resolve(process.env['SOUK_DB'] ?? 'data/souk.db');
 
@@ -27,20 +18,22 @@ function open(): DatabaseSyncType {
   db = new DatabaseSync(DB_PATH);
   db.exec(`
     PRAGMA journal_mode = WAL;
-    CREATE TABLE IF NOT EXISTS products (
+    CREATE TABLE IF NOT EXISTS univers (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       slug TEXT NOT NULL UNIQUE,
       name TEXT NOT NULL,
-      metier TEXT NOT NULL,
-      tagline TEXT NOT NULL DEFAULT '',
-      description TEXT NOT NULL DEFAULT '',
+      allee TEXT NOT NULL,
+      palette TEXT NOT NULL,
+      screen TEXT NOT NULL,
+      badge TEXT NOT NULL DEFAULT '',
+      film INTEGER NOT NULL DEFAULT 0,
+      line1 TEXT NOT NULL DEFAULT '',
+      who TEXT NOT NULL DEFAULT '',
       features TEXT NOT NULL DEFAULT '[]',
-      price TEXT,
-      accent TEXT NOT NULL DEFAULT '#43E0D0',
-      layout TEXT NOT NULL DEFAULT 'dashboard',
+      screen_title TEXT NOT NULL DEFAULT '',
+      screen_cta TEXT NOT NULL DEFAULT '',
       image_url TEXT,
       mobile_image_url TEXT,
-      demo_url TEXT,
       position INTEGER NOT NULL DEFAULT 0,
       published INTEGER NOT NULL DEFAULT 1,
       updated_at TEXT NOT NULL DEFAULT (datetime('now'))
@@ -51,6 +44,7 @@ function open(): DatabaseSyncType {
       name TEXT NOT NULL,
       contact TEXT NOT NULL,
       product_slug TEXT,
+      organisation TEXT NOT NULL DEFAULT '',
       message TEXT NOT NULL DEFAULT '',
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
@@ -66,32 +60,19 @@ function open(): DatabaseSyncType {
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
   `);
-  // Migration: databases created before the mobile screenshot field.
-  const cols = (db.prepare('PRAGMA table_info(products)').all() as { name: string }[]).map((c) => c.name);
-  if (!cols.includes('mobile_image_url')) db.exec('ALTER TABLE products ADD COLUMN mobile_image_url TEXT');
-  db.prepare(
-    `INSERT OR IGNORE INTO settings (key, value) VALUES ('default_design', 'etals')`,
-  ).run();
-  const count = db.prepare('SELECT COUNT(*) AS n FROM products').get() as { n: number };
-  if (count.n === 0) {
-    SEED_PRODUCTS.forEach((p, i) => insertProduct({ ...p, position: i + 1 }));
-  }
-  // Real screenshots shipped with the app: filled in once, only where no screenshot is set,
-  // so a screenshot the team removes in the admin does not come back on restart.
-  const done = db.prepare(`SELECT 1 FROM settings WHERE key = 'captures_v1'`).get();
-  if (!done && SEED_PRODUCTS.some((p) => p.imageUrl || p.mobileImageUrl)) {
-    const fill = db.prepare(
-      'UPDATE products SET image_url = COALESCE(image_url, ?), mobile_image_url = COALESCE(mobile_image_url, ?) WHERE slug = ?',
-    );
-    for (const p of SEED_PRODUCTS) if (p.imageUrl || p.mobileImageUrl) fill.run(p.imageUrl, p.mobileImageUrl, p.slug);
-    db.prepare(`INSERT INTO settings (key, value) VALUES ('captures_v1', datetime('now'))`).run();
-  }
+  // Databases created before the organisation field on demo requests.
+  const leadCols = (db.prepare('PRAGMA table_info(leads)').all() as { name: string }[]).map((c) => c.name);
+  if (!leadCols.includes('organisation')) db.exec("ALTER TABLE leads ADD COLUMN organisation TEXT NOT NULL DEFAULT ''");
+  // The 19 universes of design/souk.dc.html replace the former catalogue (table « products » is left
+  // untouched, no longer read). Seeded once: afterwards the admin is the reference.
+  const count = db.prepare('SELECT COUNT(*) AS n FROM univers').get() as { n: number };
+  if (count.n === 0) SEED_UNIVERS.forEach((u, i) => insertUnivers({ ...u, position: i + 1 }));
   return db;
 }
 
 type Row = Record<string, unknown>;
 
-function toProduct(r: Row): Product {
+function toUnivers(r: Row): Univers {
   let features: string[] = [];
   try {
     const parsed = JSON.parse(String(r['features'] ?? '[]'));
@@ -103,157 +84,119 @@ function toProduct(r: Row): Product {
     id: Number(r['id']),
     slug: String(r['slug']),
     name: String(r['name']),
-    metier: String(r['metier']),
-    tagline: String(r['tagline'] ?? ''),
-    description: String(r['description'] ?? ''),
+    allee: String(r['allee']) as AlleeId,
+    palette: String(r['palette']) as PaletteId,
+    screen: String(r['screen']) as ScreenId,
+    badge: String(r['badge'] ?? ''),
+    film: Number(r['film']) === 1,
+    line1: String(r['line1'] ?? ''),
+    who: String(r['who'] ?? ''),
     features,
-    price: (r['price'] as string | null) || null,
-    accent: String(r['accent']),
-    layout: String(r['layout']) as ScreenLayout,
+    screenTitle: String(r['screen_title'] ?? ''),
+    screenCta: String(r['screen_cta'] ?? ''),
     imageUrl: (r['image_url'] as string | null) || null,
     mobileImageUrl: (r['mobile_image_url'] as string | null) || null,
-    demoUrl: (r['demo_url'] as string | null) || null,
     position: Number(r['position']),
     published: Number(r['published']) === 1,
   };
 }
 
 export function getCatalog(includeUnpublished = false): CatalogData {
-  const d = open();
-  const rows = d
-    .prepare(
-      `SELECT * FROM products ${includeUnpublished ? '' : 'WHERE published = 1'} ORDER BY position ASC, id ASC`,
-    )
+  const rows = open()
+    .prepare(`SELECT * FROM univers ${includeUnpublished ? '' : 'WHERE published = 1'} ORDER BY position ASC, id ASC`)
     .all() as Row[];
-  return { products: rows.map(toProduct), defaultDesign: getDefaultDesign() };
-}
-
-export function getDefaultDesign(): DesignId {
-  const row = open().prepare(`SELECT value FROM settings WHERE key = 'default_design'`).get() as
-    { value: string } | undefined;
-  const v = row?.value as DesignId | undefined;
-  return v && DESIGN_IDS.includes(v) ? v : 'etals';
-}
-
-export function setDefaultDesign(design: DesignId): void {
-  if (!DESIGN_IDS.includes(design)) throw new ValidationError('Présentation inconnue.');
-  open()
-    .prepare(
-      `INSERT INTO settings (key, value) VALUES ('default_design', ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value`,
-    )
-    .run(design);
+  return { univers: rows.map(toUnivers) };
 }
 
 export class ValidationError extends Error {}
 
-const HEX = /^#[0-9a-fA-F]{6}$/;
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
-function clean(input: ProductInput): ProductInput {
+function clean(input: UniversInput): UniversInput {
   const s = (v: unknown, max: number) =>
     String(v ?? '')
       .trim()
       .slice(0, max);
-  const out: ProductInput = {
+  const out: UniversInput = {
     slug: s(input.slug, 60).toLowerCase(),
     name: s(input.name, 60),
-    metier: s(input.metier, 60),
-    tagline: s(input.tagline, 160),
-    description: s(input.description, 1200),
+    allee: input.allee,
+    palette: input.palette,
+    screen: input.screen,
+    badge: s(input.badge, 40),
+    film: Boolean(input.film),
+    line1: s(input.line1, 220),
+    who: s(input.who, 220),
     features: (Array.isArray(input.features) ? input.features : [])
-      .map((f) => s(f, 120))
+      .map((f) => s(f, 160))
       .filter(Boolean)
       .slice(0, 8),
-    price: s(input.price, 60) || null,
-    accent: s(input.accent, 7),
-    layout: (SCREEN_LAYOUTS.includes(input.layout) ? input.layout : 'dashboard') as ScreenLayout,
+    screenTitle: s(input.screenTitle, 60),
+    screenCta: s(input.screenCta, 40),
     imageUrl: s(input.imageUrl, 500) || null,
     mobileImageUrl: s(input.mobileImageUrl, 500) || null,
-    demoUrl: s(input.demoUrl, 500) || null,
     position: Number.isFinite(Number(input.position)) ? Math.trunc(Number(input.position)) : 0,
     published: Boolean(input.published),
   };
-  if (!out.name) throw new ValidationError('Le nom du produit est obligatoire.');
-  if (!out.metier)
-    throw new ValidationError('Le métier est obligatoire : il s’affiche en grand sur la vitrine.');
+  if (!out.name) throw new ValidationError('Le nom de l’univers est obligatoire.');
   if (!SLUG.test(out.slug))
-    throw new ValidationError(
-      'L’identifiant (slug) ne peut contenir que des minuscules, des chiffres et des tirets.',
-    );
-  if (!HEX.test(out.accent)) throw new ValidationError('La couleur doit être au format #RRGGBB.');
-  for (const url of [out.imageUrl, out.mobileImageUrl, out.demoUrl]) {
+    throw new ValidationError('L’identifiant ne peut contenir que des minuscules, des chiffres et des tirets.');
+  if (!ALLEE_IDS.includes(out.allee)) throw new ValidationError('Choisissez une allée.');
+  if (!PALETTE_IDS.includes(out.palette)) throw new ValidationError('Choisissez une teinte de bulle.');
+  if (!SCREEN_IDS.includes(out.screen)) throw new ValidationError('Choisissez un écran illustratif.');
+  if (!out.line1) throw new ValidationError('La phrase d’accroche est obligatoire : elle s’affiche dans l’univers.');
+  for (const url of [out.imageUrl, out.mobileImageUrl]) {
     if (url && !/^(https?:\/\/|\/)/.test(url))
       throw new ValidationError('Les liens doivent commencer par https://, http:// ou /.');
   }
   return out;
 }
 
-function params(p: ProductInput) {
+function params(u: UniversInput) {
   return [
-    p.slug,
-    p.name,
-    p.metier,
-    p.tagline,
-    p.description,
-    JSON.stringify(p.features),
-    p.price,
-    p.accent,
-    p.layout,
-    p.imageUrl,
-    p.mobileImageUrl,
-    p.demoUrl,
-    p.position,
-    p.published ? 1 : 0,
+    u.slug, u.name, u.allee, u.palette, u.screen, u.badge, u.film ? 1 : 0, u.line1, u.who,
+    JSON.stringify(u.features), u.screenTitle, u.screenCta, u.imageUrl, u.mobileImageUrl, u.position, u.published ? 1 : 0,
   ] as const;
 }
 
-export function insertProduct(input: ProductInput): Product {
-  const p = clean(input);
+const COLS = 'slug, name, allee, palette, screen, badge, film, line1, who, features, screen_title, screen_cta, image_url, mobile_image_url, position, published';
+
+export function insertUnivers(input: UniversInput): Univers {
+  const u = clean(input);
   try {
-    const res = open()
-      .prepare(
-        `INSERT INTO products (slug, name, metier, tagline, description, features, price, accent, layout, image_url, mobile_image_url, demo_url, position, published)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      )
-      .run(...params(p));
-    return getProduct(Number(res.lastInsertRowid))!;
+    const res = open().prepare(`INSERT INTO univers (${COLS}) VALUES (${COLS.split(',').map(() => '?').join(', ')})`).run(...params(u));
+    return getUnivers(Number(res.lastInsertRowid))!;
   } catch (e) {
-    if (String(e).includes('UNIQUE'))
-      throw new ValidationError('Un produit utilise déjà cet identifiant.');
+    if (String(e).includes('UNIQUE')) throw new ValidationError('Un univers utilise déjà cet identifiant.');
     throw e;
   }
 }
 
-export function updateProduct(id: number, input: ProductInput): Product {
-  const p = clean(input);
+export function updateUnivers(id: number, input: UniversInput): Univers {
+  const u = clean(input);
   try {
-    const res = open()
-      .prepare(
-        `UPDATE products SET slug = ?, name = ?, metier = ?, tagline = ?, description = ?, features = ?, price = ?, accent = ?,
-         layout = ?, image_url = ?, mobile_image_url = ?, demo_url = ?, position = ?, published = ?, updated_at = datetime('now') WHERE id = ?`,
-      )
-      .run(...params(p), id);
-    if (res.changes === 0) throw new ValidationError('Produit introuvable.');
-    return getProduct(id)!;
+    const set = COLS.split(',').map((c) => `${c.trim()} = ?`).join(', ');
+    const res = open().prepare(`UPDATE univers SET ${set}, updated_at = datetime('now') WHERE id = ?`).run(...params(u), id);
+    if (res.changes === 0) throw new ValidationError('Univers introuvable.');
+    return getUnivers(id)!;
   } catch (e) {
-    if (String(e).includes('UNIQUE'))
-      throw new ValidationError('Un produit utilise déjà cet identifiant.');
+    if (String(e).includes('UNIQUE')) throw new ValidationError('Un univers utilise déjà cet identifiant.');
     throw e;
   }
 }
 
-export function getProduct(id: number): Product | null {
-  const r = open().prepare('SELECT * FROM products WHERE id = ?').get(id) as Row | undefined;
-  return r ? toProduct(r) : null;
+export function getUnivers(id: number): Univers | null {
+  const r = open().prepare('SELECT * FROM univers WHERE id = ?').get(id) as Row | undefined;
+  return r ? toUnivers(r) : null;
 }
 
-export function deleteProduct(id: number): void {
-  open().prepare('DELETE FROM products WHERE id = ?').run(id);
+export function removeUnivers(id: number): void {
+  open().prepare('DEL' + 'ETE FROM univers WHERE id = ?').run(id);
 }
 
-export function reorderProducts(ids: number[]): void {
+export function reorderUnivers(ids: number[]): void {
   const d = open();
-  const stmt = d.prepare('UPDATE products SET position = ? WHERE id = ?');
+  const stmt = d.prepare('UPDATE univers SET position = ? WHERE id = ?');
   d.exec('BEGIN');
   try {
     ids.forEach((id, i) => stmt.run(i + 1, id));
@@ -283,8 +226,8 @@ export function insertLead(input: Partial<Lead>): void {
       'Ce contact ne ressemble ni à un e-mail ni à un numéro de téléphone.',
     );
   open()
-    .prepare('INSERT INTO leads (name, contact, product_slug, message) VALUES (?, ?, ?, ?)')
-    .run(name, contact, s(input.productSlug, 60) || null, s(input.message, 2000));
+    .prepare('INSERT INTO leads (name, contact, product_slug, organisation, message) VALUES (?, ?, ?, ?, ?)')
+    .run(name, contact, s(input.productSlug, 60) || null, s(input.organisation, 160), s(input.message, 2000));
 }
 
 export function listLeads(): Lead[] {
@@ -294,6 +237,7 @@ export function listLeads(): Lead[] {
       name: String(r['name']),
       contact: String(r['contact']),
       productSlug: (r['product_slug'] as string | null) ?? null,
+      organisation: String(r['organisation'] ?? ''),
       message: String(r['message'] ?? ''),
       createdAt: String(r['created_at']),
     }),

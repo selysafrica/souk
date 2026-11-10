@@ -1,16 +1,12 @@
-# Souk · catalogue 3D des logiciels Selys Africa
+# Selys Souk · la vitrine des solutions Selys Africa
 
-Vitrine Angular SSR, base SQLite et scènes Three.js. Trois présentations au choix :
+Page unique, Angular SSR + SQLite, traduite de **`design/souk.dc.html`** (source de vérité du design) :
+film d’accueil en 6 scènes, hero irisé, film de présentation et ses chapitres, champ de bulles filtrable par allée,
+panneau « univers » (ouvert depuis le point cliqué), ateliers, formulaire « marchand ».
 
-| Route | Présentation |
-|---|---|
-| `/` | celle choisie dans l’admin (par défaut : Les étals du souk) |
-| `/etals` | **Les étals du souk** : une allée de marché, un étal par logiciel |
-| `/coffrets` | **Coffrets logiciels** : un coffret 3D sur présentoir tournant, qui s’ouvre |
-| `/appareils` | **Vitrine d’appareils** : ordinateur et téléphone 3D qui montrent le logiciel |
-| `/admin` | administration du catalogue |
-
-Lien direct vers un produit : `/etals?produit=tablee`.
+- Un univers partagé s’ouvre directement : `/?univers=beagec` (rendu côté serveur, titre et aperçu dédiés).
+- Les 19 univers vivent dans la table SQLite `univers`, initialisée depuis le tableau `SOUK` de `src/app/souk/data/souk.ts` (copie du design) ; l’administration fait foi ensuite.
+- Quand un univers a une capture réelle, elle remplace l’écran illustratif du panneau.
 
 ## Démarrer
 

@@ -21,14 +21,14 @@ export function createSeoRoutes(): Router {
 
   r.get('/sitemap.xml', (_req, res) => {
     const base = siteUrl();
-    const { products } = getCatalog();
+    const { univers } = getCatalog();
     const urls = [
       `  <url><loc>${base}/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>`,
-      ...products.map((p) => {
+      ...univers.map((p) => {
         const img = p.imageUrl
           ? `\n    <image:image><image:loc>${esc(base + p.imageUrl)}</image:loc><image:title>${esc(p.name)}</image:title></image:image>`
           : '';
-        return `  <url><loc>${esc(`${base}/?produit=${encodeURIComponent(p.slug)}`)}</loc><changefreq>monthly</changefreq><priority>0.8</priority>${img}\n  </url>`;
+        return `  <url><loc>${esc(`${base}/?univers=${encodeURIComponent(p.slug)}`)}</loc><changefreq>monthly</changefreq><priority>0.8</priority>${img}\n  </url>`;
       }),
     ];
     res

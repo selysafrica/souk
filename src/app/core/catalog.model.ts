@@ -1,50 +1,36 @@
-export const DESIGN_IDS = ['etals', 'coffrets', 'appareils'] as const;
-export type DesignId = (typeof DESIGN_IDS)[number];
+import type { AlleeId, PaletteId, ScreenId } from '../souk/data/souk';
 
-export const DESIGN_LABELS: Record<DesignId, string> = {
-  etals: 'Les étals du souk',
-  coffrets: 'Coffrets logiciels',
-  appareils: 'Vitrine d’appareils',
-};
-
-/** Kind of generated product screen used until real screenshots are provided. */
-export const SCREEN_LAYOUTS = ['dashboard', 'form', 'agenda', 'documents', 'orders', 'floorplan', 'people'] as const;
-export type ScreenLayout = (typeof SCREEN_LAYOUTS)[number];
-
-export const SCREEN_LAYOUT_LABELS: Record<ScreenLayout, string> = {
-  dashboard: 'Tableau de bord',
-  form: 'Formulaire',
-  agenda: 'Agenda',
-  documents: 'Documents',
-  orders: 'Commandes',
-  floorplan: 'Plan de salle',
-  people: 'Personnes',
-};
-
-export interface Product {
+/**
+ * A universe of the Souk: one Selys Africa solution, shown as a bubble.
+ * Stored in SQLite (table « univers »), seeded from design/souk.dc.html, edited in /admin.
+ */
+export interface Univers {
   id: number;
   slug: string;
   name: string;
-  metier: string;
-  tagline: string;
-  description: string;
+  allee: AlleeId;
+  palette: PaletteId;
+  /** Illustrative screen shown in the universe panel when no real screenshot is set. */
+  screen: ScreenId;
+  badge: string;
+  /** Listed among « Les 11 solutions du film ». */
+  film: boolean;
+  line1: string;
+  who: string;
   features: string[];
-  price: string | null;
-  accent: string;
-  layout: ScreenLayout;
+  screenTitle: string;
+  screenCta: string;
+  /** Real screenshots (desktop / phone); they replace the illustrative screen when set. */
   imageUrl: string | null;
-  /** Phone-format screenshot (portrait), used on phone screens. */
   mobileImageUrl: string | null;
-  demoUrl: string | null;
   position: number;
   published: boolean;
 }
 
-export type ProductInput = Omit<Product, 'id'>;
+export type UniversInput = Omit<Univers, 'id'>;
 
 export interface CatalogData {
-  products: Product[];
-  defaultDesign: DesignId;
+  univers: Univers[];
 }
 
 /** Built-in tracks, generated in the browser (no file, no rights to clear). */
@@ -72,6 +58,8 @@ export interface Lead {
   id: number;
   name: string;
   contact: string;
+  organisation: string;
+  /** Slug of the universe the visitor picked, if any. */
   productSlug: string | null;
   message: string;
   createdAt: string;

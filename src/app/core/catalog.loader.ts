@@ -31,6 +31,6 @@ export const catalogResolver: ResolveFn<CatalogData> = async () => {
     state.set(CATALOG_KEY, data);
     return data;
   } catch {
-    return { products: [], defaultDesign: 'etals' };
+    return { univers: [] };
   }
 };
