@@ -3,6 +3,10 @@ import { randomBytes, timingSafeEqual } from 'node:crypto';
 import type { DesignId } from '../app/core/catalog.model';
 import {
   createSession,
+  insertTrack,
+  listTracks,
+  removeTrack,
+  updateTrack,
   deleteProduct,
   deleteSession,
   getCatalog,
@@ -65,6 +69,13 @@ export function createApi(): Router {
   api.get('/catalog', handle((_req, res) => {
     res.set('Cache-Control', 'no-store').json(getCatalog());
   }));
+
+  api.get(
+    '/tracks',
+    handle((_req, res) => {
+      res.set('Cache-Control', 'no-store').json(listTracks());
+    }),
+  );
 
   api.post('/leads', handle((req, res) => {
     insertLead(req.body ?? {});
@@ -136,6 +147,39 @@ export function createApi(): Router {
     setDefaultDesign(String(req.body?.defaultDesign) as DesignId);
     res.json({ ok: true });
   }));
+
+  api.get(
+    '/admin/tracks',
+    requireAdmin,
+    handle((_req, res) => {
+      res.set('Cache-Control', 'no-store').json(listTracks(true));
+    }),
+  );
+
+  api.post(
+    '/admin/tracks',
+    requireAdmin,
+    handle((req, res) => {
+      res.status(201).json(insertTrack(req.body));
+    }),
+  );
+
+  api.put(
+    '/admin/tracks/:id',
+    requireAdmin,
+    handle((req, res) => {
+      res.json(updateTrack(Number(req.params['id']), req.body));
+    }),
+  );
+
+  api.post(
+    '/admin/tracks/:id/remove',
+    requireAdmin,
+    handle((req, res) => {
+      removeTrack(Number(req.params['id']));
+      res.json({ ok: true });
+    }),
+  );
 
   api.get('/admin/leads', requireAdmin, handle((_req, res) => {
     res.set('Cache-Control', 'no-store').json(listLeads());

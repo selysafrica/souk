@@ -1,4 +1,4 @@
-import type { CatalogData, DesignId, Lead, Product, ProductInput } from '../core/catalog.model';
+import type { CatalogData, DesignId, Lead, Product, ProductInput, Track, TrackInput } from '../core/catalog.model';
 
 export class ApiError extends Error {
   constructor(message: string, readonly status: number) {
@@ -34,4 +34,8 @@ export const adminApi = {
   reorder: (ids: number[]) => call<{ ok: true }>('PUT', '/api/admin/order', { ids }),
   setDesign: (defaultDesign: DesignId) => call<{ ok: true }>('PUT', '/api/admin/settings', { defaultDesign }),
   leads: () => call<Lead[]>('GET', '/api/admin/leads'),
+  tracks: () => call<Track[]>('GET', '/api/admin/tracks'),
+  createTrack: (t: TrackInput) => call<Track>('POST', '/api/admin/tracks', t),
+  updateTrack: (id: number, t: TrackInput) => call<Track>('PUT', `/api/admin/tracks/${id}`, t),
+  removeTrack: (id: number) => call<{ ok: true }>('POST', `/api/admin/tracks/${id}/remove`),
 };

@@ -1,8 +1,41 @@
 import { DOCUMENT } from '@angular/common';
-import { inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
+import { BUILTIN_TRACKS, type Track } from './catalog.model';
 
 const KEY = 'souk-sound';
+const TRACK_KEY = 'souk-track';
 type Cue = 'nav' | 'tap' | 'open' | 'close';
+
+/** One entry of the playlist: a generated track, or an audio file added in the admin. */
+export interface PlaylistItem {
+  key: string;
+  title: string;
+  subtitle: string;
+  kind: 'builtin' | 'file';
+  url?: string;
+}
+
+/** Patterns of the generated tracks (original compositions). */
+interface Pattern {
+  bpm: number;
+  chords: number[][];
+  roots: number[];
+  kick: number[];
+  snare: number[];
+  hat: 'eighths' | 'sixteenths' | 'offbeat';
+  bassEvery: number;
+  arp: boolean;
+  padVol: number;
+}
+
+const PATTERNS: Record<string, Pattern> = {
+  // Driving, A minor: Am F C G.
+  elan: { bpm: 100, chords: [[57, 60, 64], [53, 57, 60], [48, 55, 64], [55, 59, 62]], roots: [45, 41, 48, 43], kick: [0, 8], snare: [4, 12], hat: 'eighths', bassEvery: 2, arp: true, padVol: 0.035 },
+  // Calm, C major sevenths: Cmaj7 Am7 Fmaj7 G6.
+  lagune: { bpm: 84, chords: [[48, 52, 55, 59], [45, 48, 52, 55], [41, 45, 48, 52], [43, 47, 50, 52]], roots: [36, 33, 41, 43], kick: [0], snare: [8], hat: 'offbeat', bassEvery: 8, arp: true, padVol: 0.05 },
+  // Energetic, E minor: Em C G D.
+  plateau: { bpm: 116, chords: [[52, 55, 59], [48, 52, 55], [55, 59, 62], [50, 54, 57]], roots: [40, 36, 43, 38], kick: [0, 6, 8, 14], snare: [4, 12], hat: 'sixteenths', bassEvery: 2, arp: false, padVol: 0.03 },
+};
 
 /**
  * Showroom sound, synthesised with Web Audio (no audio files, no licensing):
@@ -12,6 +45,16 @@ type Cue = 'nav' | 'tap' | 'open' | 'close';
 export class Sound {
   private readonly win = inject(DOCUMENT).defaultView;
   readonly enabled = signal(false);
+  /** Tracks added by the team (audio files they hold the rights for). */
+  private readonly files = signal<Track[]>([]);
+  readonly playlist = computed<PlaylistItem[]>(() => [
+    ...BUILTIN_TRACKS.map((t) => ({ key: t.id, title: t.title, subtitle: `${t.mood} · Selys Africa`, kind: 'builtin' as const })),
+    ...this.files().map((t) => ({ key: `f${t.id}`, title: t.title, subtitle: t.artist || 'Morceau ajouté', kind: 'file' as const, url: t.url })),
+  ]);
+  readonly current = signal<string>('elan');
+  readonly currentItem = computed(() => this.playlist().find((t) => t.key === this.current()) ?? this.playlist()[0]);
+  private audio: HTMLAudioElement | null = null;
+  private loaded = false;
   private ctx: AudioContext | null = null;
   private master: GainNode | null = null;
   private musicBus: GainNode | null = null;
@@ -23,6 +66,8 @@ export class Sound {
     if (!this.win) return;
     try {
       if (this.win.localStorage.getItem(KEY) === 'on') this.enabled.set(true);
+      const saved = this.win.localStorage.getItem(TRACK_KEY);
+      if (saved) this.current.set(saved);
     } catch {
       /* storage unavailable */
     }
@@ -41,6 +86,40 @@ export class Sound {
       if (this.win!.document.hidden) void this.ctx.suspend();
       else if (this.enabled()) void this.ctx.resume();
     });
+  }
+
+  /** Loads the team's tracks once; a saved choice that no longer exists falls back to the first track. */
+  async loadPlaylist() {
+    if (this.loaded || !this.win) return;
+    this.loaded = true;
+    try {
+      const res = await fetch('/api/tracks');
+      if (res.ok) this.files.set(await res.json());
+    } catch {
+      /* offline: generated tracks only */
+    }
+    if (!this.playlist().some((t) => t.key === this.current())) this.current.set('elan');
+  }
+
+  choose(key: string) {
+    if (!this.playlist().some((t) => t.key === key)) return;
+    this.current.set(key);
+    try {
+      this.win?.localStorage.setItem(TRACK_KEY, key);
+    } catch {
+      /* ignore */
+    }
+    if (!this.enabled()) {
+      this.toggle();
+      return;
+    }
+    this.switchMusic();
+  }
+
+  step(delta: number) {
+    const list = this.playlist();
+    const i = list.findIndex((t) => t.key === this.current());
+    this.choose(list[(i + delta + list.length) % list.length].key);
   }
 
   toggle() {
@@ -110,14 +189,41 @@ export class Sound {
       this.musicBus.connect(this.master);
     }
     void this.ctx.resume();
+    void this.loadPlaylist().then(() => this.enabled() && this.switchMusic());
+  }
+
+  /** Starts the selected track: the sequencer for a generated one, the audio element for a file. */
+  private switchMusic() {
+    if (!this.ctx || !this.musicBus || !this.win) return;
+    const item = this.currentItem();
     const t = this.ctx.currentTime;
-    this.musicBus!.gain.cancelScheduledValues(t);
-    this.musicBus!.gain.setTargetAtTime(0.32, t, 1.2);
-    if (!this.timer) {
+    this.win.clearInterval(this.timer);
+    this.timer = 0;
+    this.audio?.pause();
+    this.musicBus.gain.cancelScheduledValues(t);
+    this.musicBus.gain.setValueAtTime(0.0001, t);
+    if (item.kind === 'file' && item.url) {
+      if (!this.audio) {
+        this.audio = new Audio();
+        this.audio.crossOrigin = 'anonymous';
+        this.audio.loop = true;
+        this.audio.preload = 'auto';
+        this.ctx.createMediaElementSource(this.audio).connect(this.musicBus);
+      }
+      if (!this.audio.src.endsWith(item.url)) this.audio.src = item.url;
+      this.audio.currentTime = 0;
+      void this.audio.play().catch(() => undefined);
+      this.musicBus.gain.setTargetAtTime(0.55, t, 0.8);
+    } else {
+      this.pattern = PATTERNS[item.key] ?? PATTERNS['elan'];
+      this.beat = 0;
       this.nextBeat = t + 0.1;
       this.timer = this.win.setInterval(() => this.schedule(), 50);
+      this.musicBus.gain.setTargetAtTime(0.32, t, 1.2);
     }
   }
+
+  private pattern: Pattern = PATTERNS['elan'];
 
   private stop() {
     if (!this.ctx || !this.musicBus || !this.win) return;
@@ -126,34 +232,31 @@ export class Sound {
     this.win.clearInterval(this.timer);
     this.timer = 0;
     this.win.setTimeout(() => {
+      if (!this.enabled()) this.audio?.pause();
       if (!this.enabled()) void this.ctx?.suspend();
     }, 1200);
   }
 
-  /** Look-ahead sequencer: 100 bpm, 16th-note steps, 4-bar progression in A minor (Am F C G). */
+  /** Look-ahead sequencer, 16th-note steps over a 4-bar progression. */
   private schedule() {
     const c = this.ctx!;
-    const step = 60 / 100 / 4;
-    const chords = [
-      [57, 60, 64],
-      [53, 57, 60],
-      [48, 55, 64],
-      [55, 59, 62],
-    ];
-    const roots = [45, 41, 48, 43];
+    const p = this.pattern;
+    const step = 60 / p.bpm / 4;
     while (this.nextBeat < c.currentTime + 0.15) {
       const t = this.nextBeat;
       const s = this.beat % 16;
       const bar = Math.floor(this.beat / 16) % 4;
-      if (s % 8 === 0) this.kick(t);
-      if (s % 4 === 2) this.hat(t, 0.05);
-      else if (s % 2 === 1) this.hat(t, 0.018);
-      if (s === 4 || s === 12) this.snare(t);
-      // Driving eighth-note bass.
-      if (s % 2 === 0) this.tone(this.hz(roots[bar] - 12 + (s === 14 ? 12 : 0)), t, step * 1.6, 0.16, 'sawtooth', 420, this.musicBus!);
-      // Warm pad on each bar, a pluck arpeggio on top.
-      if (s === 0) for (const n of chords[bar]) this.tone(this.hz(n), t, step * 16, 0.035, 'triangle', 1400, this.musicBus!, 0.35);
-      if (s % 4 === 0) this.tone(this.hz(chords[bar][(s / 4) % 3] + 12), t, step * 1.5, 0.05, 'square', 1800, this.musicBus!);
+      const chord = p.chords[bar];
+      if (p.kick.includes(s)) this.kick(t);
+      if (p.snare.includes(s)) this.snare(t);
+      if (p.hat === 'sixteenths') this.hat(t, s % 2 ? 0.02 : 0.045);
+      else if (p.hat === 'eighths') { if (s % 4 === 2) this.hat(t, 0.05); else if (s % 2 === 1) this.hat(t, 0.018); }
+      else if (s % 4 === 2) this.hat(t, 0.035);
+      if (s % p.bassEvery === 0)
+        this.tone(this.hz(p.roots[bar] - 12 + (s === 14 && p.bassEvery === 2 ? 12 : 0)), t, step * Math.max(1.6, p.bassEvery * 0.9), 0.16, 'sawtooth', 420, this.musicBus!);
+      if (s === 0) for (const n of chord) this.tone(this.hz(n), t, step * 16, p.padVol, 'triangle', 1400, this.musicBus!, 0.35);
+      if (p.arp && s % 4 === 0) this.tone(this.hz(chord[(s / 4) % chord.length] + 12), t, step * 2, 0.045, 'sine', 2200, this.musicBus!);
+      if (!p.arp && s % 2 === 0) this.tone(this.hz(chord[(s / 2) % chord.length] + 12), t, step * 0.9, 0.04, 'square', 1600, this.musicBus!);
       this.nextBeat += step;
       this.beat++;
     }

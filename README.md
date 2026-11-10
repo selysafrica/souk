@@ -90,3 +90,10 @@ La base SQLite vit dans le volume Docker `souk_souk_data` : les mises à jour ne
 - `/robots.txt` et `/sitemap.xml` sont générés à partir des produits publiés ; `/admin` n'est jamais indexé.
 - Les URL absolues utilisent `SITE_URL`, ou à défaut `https://APP_DOMAIN`.
 - Après la mise en ligne : déclarer `https://souk.selys-africa.com/sitemap.xml` dans Google Search Console, et vérifier l'aperçu avec le débogueur de partage de Facebook ou le Post Inspector de LinkedIn.
+
+## Son et playlist
+
+- Le bouton haut-parleur de l'en-tête ouvre le panneau « Son et musique » : interrupteur, morceau précédent/suivant, playlist. Le son est coupé par défaut ; le choix et le morceau sont mémorisés.
+- Trois morceaux intégrés (Élan, Lagune, Plateau), composés et générés dans le navigateur : aucun fichier, aucun droit à régler.
+- Ajouter un morceau : déposer le fichier (MP3/M4A) dans `public/musique/`, puis `/admin` → onglet **Musique** → « Ajouter un morceau » avec le lien `/musique/nom-du-fichier.mp3` et la mention des droits de diffusion (obligatoire).
+- Ne diffuser qu'un morceau dont Selys Africa détient les droits (licence, accord écrit de l'artiste ou du label, ou musique libre de droits).

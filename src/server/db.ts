@@ -8,6 +8,8 @@ import type {
   Product,
   ProductInput,
   ScreenLayout,
+  Track,
+  TrackInput,
 } from '../app/core/catalog.model';
 import { DESIGN_IDS, SCREEN_LAYOUTS } from '../app/core/catalog.model';
 import { SEED_PRODUCTS } from './seed';
@@ -53,6 +55,16 @@ function open(): DatabaseSyncType {
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
     CREATE TABLE IF NOT EXISTS sessions (token TEXT PRIMARY KEY, expires_at INTEGER NOT NULL);
+    CREATE TABLE IF NOT EXISTS tracks (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      title TEXT NOT NULL,
+      artist TEXT NOT NULL DEFAULT '',
+      url TEXT NOT NULL,
+      rights TEXT NOT NULL DEFAULT '',
+      position INTEGER NOT NULL DEFAULT 0,
+      published INTEGER NOT NULL DEFAULT 1,
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
   `);
   // Migration: databases created before the mobile screenshot field.
   const cols = (db.prepare('PRAGMA table_info(products)').all() as { name: string }[]).map((c) => c.name);
@@ -305,4 +317,68 @@ export function isValidSession(token: string): boolean {
 
 export function deleteSession(token: string): void {
   open().prepare('DELETE FROM sessions WHERE token = ?').run(token);
+}
+
+// ─── Playlist ───────────────────────────────────────────────────────────
+
+function toTrack(r: Row): Track {
+  return {
+    id: Number(r['id']),
+    title: String(r['title']),
+    artist: String(r['artist'] ?? ''),
+    url: String(r['url']),
+    rights: String(r['rights'] ?? ''),
+    position: Number(r['position']),
+    published: Number(r['published']) === 1,
+  };
+}
+
+export function listTracks(includeUnpublished = false): Track[] {
+  return (
+    open()
+      .prepare(`SELECT * FROM tracks ${includeUnpublished ? '' : 'WHERE published = 1'} ORDER BY position ASC, id ASC`)
+      .all() as Row[]
+  ).map(toTrack);
+}
+
+function cleanTrack(input: TrackInput): TrackInput {
+  const s = (v: unknown, max: number) => String(v ?? '').trim().slice(0, max);
+  const out: TrackInput = {
+    title: s(input.title, 120),
+    artist: s(input.artist, 120),
+    url: s(input.url, 500),
+    rights: s(input.rights, 300),
+    position: Number.isFinite(Number(input.position)) ? Math.trunc(Number(input.position)) : 0,
+    published: Boolean(input.published),
+  };
+  if (!out.title) throw new ValidationError('Le titre du morceau est obligatoire.');
+  if (!/^(\/|https:\/\/)\S+\.(mp3|m4a|aac|ogg|oga|opus|wav|webm)(\?\S*)?$/i.test(out.url))
+    throw new ValidationError(
+      'Le lien doit pointer vers un fichier audio (mp3, m4a, ogg, opus, wav…) commençant par / ou https://.',
+    );
+  if (!out.rights)
+    throw new ValidationError('Indiquez les droits de diffusion (licence, contrat ou accord de l’artiste).');
+  return out;
+}
+
+export function insertTrack(input: TrackInput): Track {
+  const t = cleanTrack(input);
+  const pos = (open().prepare('SELECT COALESCE(MAX(position), 0) + 1 AS p FROM tracks').get() as { p: number }).p;
+  const res = open()
+    .prepare('INSERT INTO tracks (title, artist, url, rights, position, published) VALUES (?, ?, ?, ?, ?, ?)')
+    .run(t.title, t.artist, t.url, t.rights, t.position || pos, t.published ? 1 : 0);
+  return toTrack(open().prepare('SELECT * FROM tracks WHERE id = ?').get(Number(res.lastInsertRowid)) as Row);
+}
+
+export function updateTrack(id: number, input: TrackInput): Track {
+  const t = cleanTrack(input);
+  const res = open()
+    .prepare('UPDATE tracks SET title = ?, artist = ?, url = ?, rights = ?, position = ?, published = ? WHERE id = ?')
+    .run(t.title, t.artist, t.url, t.rights, t.position, t.published ? 1 : 0, id);
+  if (res.changes === 0) throw new ValidationError('Morceau introuvable.');
+  return toTrack(open().prepare('SELECT * FROM tracks WHERE id = ?').get(id) as Row);
+}
+
+export function removeTrack(id: number): void {
+  open().prepare('DELETE FROM tracks WHERE id = ?').run(id);
 }

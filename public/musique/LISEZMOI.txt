@@ -1,0 +1,2 @@
+Déposez ici les fichiers audio dont Selys Africa détient les droits de diffusion,
+puis déclarez-les dans /admin, onglet « Musique » (lien : /musique/nom-du-fichier.mp3).

@@ -785,3 +785,73 @@ tr.is-hidden .prod strong {
     align-items: stretch;
   }
 }
+
+/* Music tab */
+.rights {
+  margin: 4px 0 20px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: #fff7e6;
+  color: #6b4a0c;
+  font-size: 0.9375rem;
+}
+
+.sub-title {
+  margin: 28px 0 10px;
+  font-size: 1.0625rem;
+  font-weight: 800;
+}
+
+.track-editor {
+  position: static;
+  max-height: none;
+  margin-bottom: 8px;
+
+  h2 {
+    font-size: 1.125rem;
+    font-weight: 800;
+  }
+}
+
+.tracks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+
+  li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 16px;
+    padding: 12px 14px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+  }
+
+  li > div:first-child,
+  li > strong {
+    flex: 1 1 220px;
+  }
+
+  strong,
+  .muted {
+    display: block;
+  }
+
+  .muted {
+    font-size: 0.875rem;
+    color: var(--fg-2);
+  }
+
+  li.is-hidden strong {
+    color: var(--fg-2);
+  }
+
+  audio {
+    height: 36px;
+    max-width: 100%;
+  }
+}

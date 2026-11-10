@@ -47,6 +47,27 @@ export interface CatalogData {
   defaultDesign: DesignId;
 }
 
+/** Built-in tracks, generated in the browser (no file, no rights to clear). */
+export const BUILTIN_TRACKS = [
+  { id: 'elan', title: 'Élan', mood: 'Entraînant' },
+  { id: 'lagune', title: 'Lagune', mood: 'Calme' },
+  { id: 'plateau', title: 'Plateau', mood: 'Énergique' },
+] as const;
+export type BuiltinTrackId = (typeof BUILTIN_TRACKS)[number]['id'];
+
+/** A track added by the team: an audio file Selys holds the broadcast rights for. */
+export interface Track {
+  id: number;
+  title: string;
+  artist: string;
+  url: string;
+  rights: string;
+  position: number;
+  published: boolean;
+}
+
+export type TrackInput = Omit<Track, 'id'>;
+
 export interface Lead {
   id: number;
   name: string;

@@ -8,6 +8,9 @@ import {
   type DesignId,
   type Lead,
   type Product,
+  type Track,
+  type TrackInput,
+  BUILTIN_TRACKS,
   type ProductInput,
   SCREEN_LAYOUT_LABELS,
   SCREEN_LAYOUTS,
@@ -16,7 +19,7 @@ import { Icon } from '../shared/icon';
 import { adminApi, ApiError } from './admin-api';
 import { Seo } from '../core/seo';
 
-type Tab = 'produits' | 'presentation' | 'demandes';
+type Tab = 'produits' | 'presentation' | 'musique' | 'demandes';
 
 interface Draft extends ProductInput {
   id: number | null;
@@ -56,6 +59,10 @@ export class Admin implements OnInit {
   protected readonly error = signal('');
   protected readonly notice = signal('');
   protected readonly confirmDelete = signal<number | null>(null);
+  protected readonly builtinTracks = BUILTIN_TRACKS;
+  protected readonly tracks = signal<Track[] | null>(null);
+  protected readonly trackDraft = signal<(TrackInput & { id: number | null }) | null>(null);
+  protected readonly confirmTrack = signal<number | null>(null);
   protected readonly published = computed(() => this.products().filter((p) => p.published).length);
   protected password = '';
   protected readonly loginError = signal('');
@@ -133,6 +140,7 @@ export class Admin implements OnInit {
     this.notice.set('');
     this.error.set('');
     if (t === 'demandes') await this.run(async () => this.leads.set(await adminApi.leads()), '');
+    if (t === 'musique') await this.run(async () => this.tracks.set(await adminApi.tracks()), '');
   }
 
   protected newProduct() {
@@ -255,6 +263,51 @@ export class Admin implements OnInit {
       await adminApi.setDesign(d);
       this.savedDesign.set(d);
     }, `La page d’accueil affiche maintenant « ${DESIGN_LABELS[d]} ».`);
+  }
+
+  protected newTrack() {
+    this.trackDraft.set({ id: null, title: '', artist: '', url: '/musique/', rights: '', position: 0, published: true });
+  }
+
+  protected editTrack(t: Track) {
+    this.trackDraft.set({ ...t });
+  }
+
+  protected patchTrack(change: Partial<TrackInput>) {
+    const d = this.trackDraft();
+    if (d) this.trackDraft.set({ ...d, ...change });
+  }
+
+  protected async saveTrack() {
+    const d = this.trackDraft();
+    if (!d) return;
+    const { id, ...input } = d;
+    const ok = await this.run(async () => {
+      if (id === null) await adminApi.createTrack(input);
+      else await adminApi.updateTrack(id, input);
+      this.tracks.set(await adminApi.tracks());
+    }, `« ${d.title} » est dans la playlist.`);
+    if (ok) this.trackDraft.set(null);
+  }
+
+  protected async toggleTrack(t: Track) {
+    const { id, ...rest } = t;
+    await this.run(async () => {
+      await adminApi.updateTrack(id, { ...rest, published: !t.published });
+      this.tracks.set(await adminApi.tracks());
+    }, t.published ? `« ${t.title} » est retiré de la playlist.` : `« ${t.title} » est de nouveau proposé.`);
+  }
+
+  protected async removeTrack(t: Track) {
+    if (this.confirmTrack() !== t.id) {
+      this.confirmTrack.set(t.id);
+      return;
+    }
+    this.confirmTrack.set(null);
+    await this.run(async () => {
+      await adminApi.removeTrack(t.id);
+      this.tracks.set(await adminApi.tracks());
+    }, `« ${t.title} » est supprimé.`);
   }
 
   protected productName(slug: string | null) {
