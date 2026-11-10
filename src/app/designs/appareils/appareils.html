@@ -8,7 +8,10 @@
     [class.is-ready]="ready()"
     aria-label="Vitrine des logiciels Selys Africa"
   >
-    <canvas #canvas class="scene" aria-hidden="true"></canvas>
+    <div class="scene" appSwipe (swipeLeft)="nav.go(1)" (swipeRight)="nav.go(-1)">
+      <canvas #canvas class="scene-canvas" aria-hidden="true"></canvas>
+      <app-scene-nav #nav tone="dark" />
+    </div>
 
     @if (showcase.products().length) {
       <ol class="menu" (keydown)="showcase.handleKey($event)">

@@ -442,10 +442,6 @@ export class EtalsScene extends Stage {
       const dx = e.clientX - this.downAt.x;
       const dy = e.clientY - this.downAt.y;
       this.downAt = null;
-      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
-        this.onSelect(this.active + (dx < 0 ? 1 : -1));
-        return;
-      }
       if (Math.hypot(dx, dy) < 6) {
         const r = el.getBoundingClientRect();
         const p = new THREE.Vector2(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);

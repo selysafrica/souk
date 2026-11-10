@@ -178,10 +178,10 @@ export class AppareilsScene extends Stage {
   protected override onResize() {
     const portrait = this.aspect < 0.9 || this.isSmall();
     if (portrait) {
-      this.camera.position.set(0, 2.9, 8.8);
-      this.camera.lookAt(0, 1.15, 0);
-      this.rig.position.set(-0.1, 0, 0);
-      this.rig.scale.setScalar(0.92);
+      this.camera.position.set(0, 3.2, 10.4);
+      this.camera.lookAt(0.25, 0.7, 0);
+      this.rig.position.set(0.5, 0, 0);
+      this.rig.scale.setScalar(0.88);
       this.phone?.position.set(1.15, 1.08, 1.35);
     } else {
       // Short wide screens (phone held sideways): step back so laptop and phone both fit.

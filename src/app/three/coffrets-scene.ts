@@ -344,6 +344,8 @@ export class CoffretsScene extends Stage {
   private bindPointer() {
     const el = this.canvas;
     el.addEventListener('pointerdown', (e) => {
+      // Touch: the swipe changes product (handled by the page); rotation is a mouse gesture.
+      if (e.pointerType !== 'mouse') return;
       this.dragging = true;
       this.lastX = e.clientX;
       el.setPointerCapture(e.pointerId);

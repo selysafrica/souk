@@ -5,12 +5,14 @@ import { CatalogIndex } from '../../shared/catalog-index';
 import { DemoForm } from '../../shared/demo-form';
 import { Icon } from '../../shared/icon';
 import { SiteFooter } from '../../shared/site-footer';
+import { SceneNav } from '../../shared/scene-nav';
 import { SiteHeader } from '../../shared/site-header';
+import { Swipe } from '../../shared/swipe';
 import type { EtalsScene } from '../../three/etals-scene';
 
 @Component({
   selector: 'app-etals',
-  imports: [SiteHeader, CatalogIndex, DemoForm, SiteFooter, Icon],
+  imports: [SiteHeader, CatalogIndex, DemoForm, SiteFooter, Icon, SceneNav, Swipe],
   providers: [Showcase],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './etals.html',

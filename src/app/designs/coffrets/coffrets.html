@@ -16,7 +16,10 @@
         <p class="backword" aria-hidden="true" [style.--p]="q.accent" [style.--w]="longest(q.metier)">{{ q.metier }}</p>
       }
     }
-    <canvas #canvas class="scene" aria-hidden="true"></canvas>
+    <div class="scene" appSwipe (swipeLeft)="nav.go(1)" (swipeRight)="nav.go(-1)">
+      <canvas #canvas class="scene-canvas" aria-hidden="true"></canvas>
+      <app-scene-nav #nav tone="light" />
+    </div>
 
     @for (p of [showcase.active()]; track p?.id) {
       @if (p) {
