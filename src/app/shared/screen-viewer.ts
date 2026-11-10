@@ -23,7 +23,11 @@ type View = 'desktop' | 'mobile';
           <button type="button" class="close" (click)="close()" aria-label="Fermer"><app-icon name="close" /></button>
         </div>
         <div class="body" [class.is-mobile]="src(p).mobile">
-          <img [src]="src(p).url" [alt]="'Écran de ' + p.name + (src(p).mobile ? ' sur téléphone' : ' sur ordinateur')" />
+          @if (src(p).mobile) {
+            <div class="phone"><img [src]="src(p).url" [alt]="'Écran de ' + p.name + ' sur téléphone'" /></div>
+          } @else {
+            <img [src]="src(p).url" [alt]="'Écran de ' + p.name + ' sur ordinateur'" />
+          }
         </div>
         <p class="note">Capture réalisée avec des données de démonstration.</p>
       }
@@ -60,7 +64,14 @@ type View = 'desktop' | 'mobile';
       display: block; width: min(100%, 1500px); height: auto; border-radius: 12px;
       box-shadow: 0 30px 60px -24px rgba(0,0,0,.8);
     }
-    .body.is-mobile img { width: min(100%, 430px); }
+    /* Phone: the whole screen, framed as a phone, fitted to the available height. */
+    .body.is-mobile { align-items: center; }
+    .phone {
+      flex: none; height: 100%; max-height: 900px; aspect-ratio: 780 / 1688; max-width: 100%;
+      padding: 10px; border-radius: 34px; background: #0b1416;
+      box-shadow: 0 0 0 2px #3c5c63, 0 30px 60px -24px rgba(0,0,0,.8);
+    }
+    .phone img { width: 100%; height: 100%; object-fit: contain; border-radius: 24px; box-shadow: none; }
     @media (min-width: 761px) { .body:not(.is-mobile) { align-items: center; } .body:not(.is-mobile) img { max-height: calc(100dvh - 130px); width: auto; max-width: 100%; } }
     .note { margin: 0; padding: 6px 16px 14px; text-align: center; font-size: .8125rem; color: #9fc4c1; }
     @keyframes appear { from { opacity: 0; transform: scale(.985); } }
