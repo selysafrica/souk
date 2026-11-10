@@ -1,0 +1,34 @@
+# Souk — déploiement Docker depuis le dépôt.
+#   Première fois : cp .env.example .env  (compléter ADMIN_PASSWORD, choisir le mode d'exposition)
+#                   deploy/update.sh
+#   Mises à jour  : deploy/update.sh       (git pull + reconstruction)
+#   Sauvegarde    : deploy/backup.sh       (copie cohérente de la base SQLite)
+#
+# Par défaut, seule l'application démarre, sur 127.0.0.1:APP_PORT : elle ne prend jamais
+# les ports 80/443. L'exposition HTTPS s'ajoute par COMPOSE_FILE dans .env :
+#   deploy/proxy-network.yml  reverse proxy Docker déjà en place (ex. Caddy du réseau « selys »)
+#   deploy/caddy.yml          serveur vierge : Caddy dédié sur 80/443
+name: souk
+
+services:
+  app:
+    build:
+      context: .
+    image: souk:latest
+    restart: unless-stopped
+    environment:
+      # Le rendu serveur n'accepte que ces noms d'hôte (protection contre l'usurpation d'en-tête Host).
+      # localhost et 127.0.0.1 sont toujours acceptés (HEALTHCHECK, deploy/update.sh).
+      ALLOWED_HOSTS: ${APP_DOMAIN:?APP_DOMAIN requis dans .env}
+      # Le proxy fixe X-Forwarded-Proto : les URL absolues sont générées en https.
+      NG_TRUST_PROXY_HEADERS: x-forwarded-proto
+      # Mot de passe de /admin : sans lui, l'administration refuse toute connexion en production.
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?ADMIN_PASSWORD requis dans .env}
+    volumes:
+      # Base SQLite (produits, réglages, demandes de démo, sessions admin).
+      - souk_data:/app/data
+    ports:
+      - '127.0.0.1:${APP_PORT:-4310}:4000'
+
+volumes:
+  souk_data:

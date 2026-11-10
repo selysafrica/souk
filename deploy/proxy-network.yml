@@ -1,0 +1,16 @@
+# Souk — branchement sur un reverse proxy Docker déjà en place sur le serveur
+# (par exemple le Caddy du réseau « selys »). Activé depuis .env :
+#   COMPOSE_FILE=docker-compose.yml:deploy/proxy-network.yml
+#   PROXY_NETWORK=selys
+# Le proxy joint alors l'application à l'adresse  souk:4000.
+services:
+  app:
+    networks:
+      default:
+      proxy:
+        aliases: [souk]
+
+networks:
+  proxy:
+    name: ${PROXY_NETWORK:-selys}
+    external: true

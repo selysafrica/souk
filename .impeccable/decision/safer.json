@@ -1,0 +1,51 @@
+{
+  "title": "Souk — directions plus sages",
+  "question": "Main plus classique : trois directions éprouvées et le standard du secteur. Celle que vous choisissez devient la présentation par défaut ; je construis les trois cartes « grounded » comme vos trois propositions.",
+  "options": [
+    {
+      "id": "coffrets",
+      "kind": "grounded",
+      "label": "Coffrets logiciels",
+      "lineage": "les boîtes de logiciels en rayon, version vitrine premium",
+      "thesis": "Chaque produit est un coffret 3D sur un présentoir tournant : on le fait pivoter, il s'ouvre et montre l'application.",
+      "palette": ["#F5FBFA", "#047A7F", "#43E0D0", "#0F2830"],
+      "materials": ["carton laqué mat", "présentoir tournant", "ombre douce au sol"],
+      "viewport": "Un coffret 3D géant au centre, aux couleurs du produit, qui tourne lentement ; à gauche son métier, son nom et « Demander une démo » ; en bas, la rangée des autres coffrets à faire défiler.",
+      "risk": "Familier et sûr : risque de ressembler à une page produit e-commerce si les coffrets ne sont pas soignés (faces, tranches, matière)."
+    },
+    {
+      "id": "vitrine-appareils",
+      "kind": "grounded",
+      "label": "Vitrine d'appareils",
+      "lineage": "les présentations produit sur téléphone et ordinateur en 3D",
+      "thesis": "Le logiciel se montre en marche : téléphone et ordinateur 3D qui se placent et tournent au défilement, l'écran affichant le produit.",
+      "palette": ["#02292B", "#047A7F", "#43E0D0", "#FFFFFF"],
+      "materials": ["aluminium brossé", "verre", "lumière studio"],
+      "viewport": "Un ordinateur et un téléphone 3D en flottement sur fond teal profond, l'écran montrant le produit actif ; titre, métier et bouton d'action, et une pastille par produit pour changer.",
+      "risk": "C'est la présentation la plus répandue chez les éditeurs SaaS ; elle exige de vraies captures d'écran pour convaincre."
+    },
+    {
+      "id": "etals",
+      "kind": "grounded",
+      "label": "Les étals du souk",
+      "lineage": "le marché couvert, lecture littérale du nom « Souk »",
+      "thesis": "Le catalogue est un marché : chaque produit tient son étal sous un auvent, et on se promène d'étal en étal.",
+      "palette": ["#047A7F", "#43E0D0", "#F2A900", "#FFFFFF"],
+      "materials": ["auvents en toile", "bois", "lumière chaude de fin d'après-midi"],
+      "viewport": "Une allée de marché en 3D stylisée ; l'étal actif au premier plan avec son enseigne, son pitch et le bouton d'action ; les étals suivants en profondeur.",
+      "risk": "Lecture la plus attendue du nom ; peut faire décor de jeu vidéo si la 3D est trop chargée."
+    }
+  ],
+  "reroll": {"registers": ["safer", "bolder"]},
+  "canon": true,
+  "canonCard": {
+    "kind": "canon",
+    "label": "Le standard du secteur",
+    "thesis": "La page d'apps à la Zoho, Odoo ou Sage, exécutée au même niveau de finition.",
+    "palette": ["#FFFFFF", "#0F2830", "#047A7F"],
+    "materials": ["grille nette", "captures d'écran", "cartes inclinables"],
+    "viewport": "Titre centré, filtres par métier, grille de cartes produits avec inclinaison 3D au survol.",
+    "risk": "Indiscernable de Zoho ou Odoo, par construction."
+  },
+  "steer": true
+}

@@ -1,0 +1,68 @@
+<app-site-header tone="dark" current="etals" />
+<main>
+  <h1 class="visually-hidden">Les logiciels de Selys Africa</h1>
+
+  <section
+    id="vitrine"
+    class="stage"
+    [class.is-ready]="ready()"
+    [class.is-flat]="failed()"
+    tabindex="0"
+    aria-roledescription="allée de produits"
+    aria-label="L’allée des étals. Flèches gauche et droite pour passer d’un étal à l’autre."
+    (keydown)="showcase.handleKey($event)"
+  >
+    <canvas #canvas class="scene" aria-hidden="true"></canvas>
+
+    @for (p of [showcase.active()]; track p?.id) {
+      @if (p) {
+        <div class="copy" aria-live="polite" [style.--p]="p.accent">
+          <h2 class="metier">{{ p.metier }}</h2>
+          <p class="name"><span class="swatch" aria-hidden="true"></span>{{ p.name }}</p>
+          <p class="tagline">{{ p.tagline }}</p>
+          <div class="actions">
+            <button type="button" class="btn btn--primary" (click)="showcase.requestDemo(p.slug)">
+              <app-icon name="chat" /> Demander une démo
+            </button>
+            <a class="btn btn--ghost" [href]="'#produit-' + p.slug">Voir le détail</a>
+          </div>
+        </div>
+      } @else {
+        <div class="copy">
+          <h2 class="metier">L’allée se prépare</h2>
+          <p class="tagline">Aucun produit n’est publié pour le moment. Revenez bientôt, ou écrivez-nous plus bas.</p>
+        </div>
+      }
+    }
+
+    @if (showcase.products().length > 1) {
+      <div class="walk">
+        <button type="button" class="step" (click)="showcase.select(showcase.index() - 1)" aria-label="Étal précédent">
+          <app-icon name="arrow-left" />
+        </button>
+        <ol class="names">
+          @for (p of showcase.products(); track p.id; let i = $index) {
+            <li>
+              <button type="button" [style.--p]="p.accent" [attr.aria-current]="i === showcase.index() ? 'true' : null" (click)="showcase.select(i)">
+                <span class="dot" aria-hidden="true"></span>{{ p.name }}
+              </button>
+            </li>
+          }
+        </ol>
+        <p class="count" aria-hidden="true">{{ showcase.index() + 1 }} / {{ showcase.products().length }}</p>
+        <button type="button" class="step" (click)="showcase.select(showcase.index() + 1)" aria-label="Étal suivant">
+          <app-icon name="arrow-right" />
+        </button>
+      </div>
+    }
+  </section>
+
+  <app-catalog-index
+    title="Toute l’allée"
+    intro="Chaque logiciel Selys Africa est pensé pour un métier précis. Prenez le temps de faire le tour."
+    seeLabel="Voir son étal"
+    marker="awning"
+  />
+  <app-demo-form title="Passez nous voir à l’étal" />
+</main>
+<app-site-footer />

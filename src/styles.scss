@@ -1,0 +1,167 @@
+@use '@fontsource-variable/montserrat';
+
+:root {
+  --teal: #047a7f;
+  --teal-deep: #035c60;
+  --teal-night: #02292b;
+  --aqua: #43e0d0;
+  --ink: #0f2830;
+  --ink-2: #2f4a4e;
+  --white: #ffffff;
+  --sun: #f2a900;
+  --danger: #b42318;
+  --font: 'Montserrat Variable', Montserrat, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --gutter: clamp(16px, 4vw, 56px);
+
+  /* Presentation-level roles, redefined by each design. */
+  --ground: var(--teal);
+  --ground-2: var(--teal-deep);
+  --fg: var(--white);
+  --fg-2: #e3f6f4;
+  --line: rgba(255, 255, 255, 0.24);
+  --action: var(--aqua);
+  --action-fg: var(--ink);
+  --focus: var(--aqua);
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scrollbar-color: color-mix(in srgb, var(--fg) 35%, transparent) var(--ground);
+}
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--fg);
+  background: var(--ground);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-variant-numeric: tabular-nums;
+}
+
+h1, h2, h3, p, ul, ol, figure {
+  margin: 0;
+}
+
+h1, h2, h3 {
+  text-wrap: balance;
+  line-height: 1.05;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+img, svg, canvas {
+  display: block;
+  max-width: 100%;
+}
+
+button, input, select, textarea {
+  font: inherit;
+  color: inherit;
+}
+
+a {
+  color: inherit;
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1.5px;
+}
+
+::selection {
+  background: var(--aqua);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Shared buttons, rebuilt per design through the role variables. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+  min-height: 48px;
+  padding: 0.8em 1.5em;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.005em;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 0.25s var(--ease-out),
+    background-color 0.25s var(--ease-out),
+    box-shadow 0.25s var(--ease-out);
+
+  app-icon {
+    --icon: 1.15em;
+  }
+
+  &:active {
+    transform: translateY(1px) scale(0.98);
+  }
+
+  &:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+}
+
+.btn--primary {
+  background: var(--action);
+  color: var(--action-fg);
+  box-shadow: 0 10px 24px -12px color-mix(in srgb, var(--ink) 70%, transparent);
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 30px -14px color-mix(in srgb, var(--ink) 80%, transparent);
+  }
+}
+
+.btn--ghost {
+  border-color: color-mix(in srgb, var(--fg) 70%, transparent);
+  color: var(--fg);
+  background: transparent;
+
+  &:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--fg) 12%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

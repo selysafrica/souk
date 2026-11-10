@@ -1,0 +1,195 @@
+<div class="admin">
+  @switch (state()) {
+    @case ('checking') {
+      <p class="checking" role="status">Vérification de la session…</p>
+    }
+    @case ('login') {
+      <main class="login">
+        <img src="/brand/selys-logo.png" alt="Selys Africa" width="1835" height="414" />
+        <h1>Administration du catalogue</h1>
+        <form (ngSubmit)="login()" novalidate>
+          <label for="password">Mot de passe</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" [(ngModel)]="password"
+            [attr.aria-invalid]="loginError() ? 'true' : null" aria-describedby="login-error" />
+          @if (loginError()) {
+            <p id="login-error" class="field-error" role="alert">{{ loginError() }}</p>
+          }
+          <button class="btn btn--primary" type="submit" [disabled]="busy()">{{ busy() ? 'Connexion…' : 'Se connecter' }}</button>
+        </form>
+      </main>
+    }
+    @case ('ready') {
+      <header class="top">
+        <a routerLink="/" class="brand"><img src="/brand/selys-logo.png" alt="Selys Africa" width="1835" height="414" /></a>
+        <span class="title">Catalogue Souk</span>
+        <nav class="tabs" aria-label="Sections de l’administration">
+          <button type="button" [attr.aria-current]="tab() === 'produits' ? 'page' : null" (click)="showTab('produits')">Produits</button>
+          <button type="button" [attr.aria-current]="tab() === 'presentation' ? 'page' : null" (click)="showTab('presentation')">Présentation</button>
+          <button type="button" [attr.aria-current]="tab() === 'demandes' ? 'page' : null" (click)="showTab('demandes')">Demandes de démo</button>
+        </nav>
+        <a class="link push" routerLink="/" target="_blank" rel="noopener">Voir la vitrine</a>
+        <button type="button" class="link" (click)="logout()"><app-icon name="logout" /> Déconnexion</button>
+      </header>
+
+      <div class="messages" aria-live="polite">
+        @if (notice()) { <p class="notice">{{ notice() }}</p> }
+        @if (error()) { <p class="alert" role="alert">{{ error() }}</p> }
+      </div>
+
+      @switch (tab()) {
+        @case ('produits') {
+          <main class="workspace" [class.has-draft]="draft()">
+            <section class="list" aria-labelledby="list-title">
+              <div class="list-head">
+                <div>
+                  <h1 id="list-title">Produits</h1>
+                  <p class="sub">{{ published() }} affiché{{ published() > 1 ? 's' : '' }} sur la vitrine, {{ products().length }} au total. L’ordre ci-dessous est l’ordre de la vitrine.</p>
+                </div>
+                <button type="button" class="btn btn--primary" (click)="newProduct()"><app-icon name="plus" /> Ajouter un produit</button>
+              </div>
+              @if (products().length) {
+                <table>
+                  <thead>
+                    <tr><th scope="col">Ordre</th><th scope="col">Produit</th><th scope="col">Vitrine</th><th scope="col"><span class="visually-hidden">Actions</span></th></tr>
+                  </thead>
+                  <tbody>
+                    @for (p of products(); track p.id; let i = $index; let first = $first; let last = $last) {
+                      <tr [class.is-editing]="draft()?.id === p.id" [class.is-hidden]="!p.published">
+                        <td class="order">
+                          <button type="button" class="icon-btn" [disabled]="first || busy()" (click)="move(i, -1)" [attr.aria-label]="'Monter ' + p.name"><app-icon name="up" /></button>
+                          <button type="button" class="icon-btn" [disabled]="last || busy()" (click)="move(i, 1)" [attr.aria-label]="'Descendre ' + p.name"><app-icon name="down" /></button>
+                        </td>
+                        <td>
+                          <div class="prod">
+                            <span class="swatch" [style.background]="p.accent" aria-hidden="true"></span>
+                            <div>
+                              <strong>{{ p.name }}</strong>
+                              <span class="muted">{{ p.metier }} · {{ p.price ?? 'Tarif sur demande' }}</span>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <button type="button" class="state" [class.on]="p.published" [disabled]="busy()" (click)="togglePublished(p)"
+                            [attr.aria-label]="(p.published ? 'Masquer ' : 'Afficher ') + p.name">
+                            <app-icon [name]="p.published ? 'eye' : 'eye-off'" /> {{ p.published ? 'Affiché' : 'Masqué' }}
+                          </button>
+                        </td>
+                        <td class="row-actions">
+                          <button type="button" class="btn btn--small" (click)="edit(p)">Modifier</button>
+                          <button type="button" class="btn btn--small btn--danger" [disabled]="busy()" (click)="remove(p)" (blur)="confirmDelete.set(null)">
+                            {{ confirmDelete() === p.id ? 'Confirmer la suppression' : 'Supprimer' }}
+                          </button>
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              } @else {
+                <div class="empty">
+                  <p><strong>Aucun produit pour l’instant.</strong></p>
+                  <p>Ajoutez le premier : il apparaîtra sur la vitrine dès qu’il sera marqué « Affiché ».</p>
+                </div>
+              }
+            </section>
+
+            @if (draft(); as d) {
+              <section class="editor" aria-labelledby="editor-title">
+                <div class="editor-head">
+                  <h2 id="editor-title">{{ d.id === null ? 'Nouveau produit' : 'Modifier ' + d.name }}</h2>
+                  <button type="button" class="link" (click)="draft.set(null)">Fermer</button>
+                </div>
+                <div class="sign-preview" [style.--p]="d.accent" aria-hidden="true">
+                  <span class="pm">{{ d.metier || 'Métier' }}</span>
+                  <span class="pn">{{ d.name || 'Nom du produit' }}</span>
+                </div>
+                <form (ngSubmit)="save()" novalidate class="fields">
+                  <div class="field"><label for="f-name">Nom du produit</label>
+                    <input id="f-name" name="name" required [ngModel]="d.name" (ngModelChange)="patch({ name: $event })" /></div>
+                  <div class="field"><label for="f-metier">Métier</label>
+                    <input id="f-metier" name="metier" required [ngModel]="d.metier" (ngModelChange)="patch({ metier: $event })" aria-describedby="h-metier" />
+                    <p class="help" id="h-metier">Affiché en très grand : quelques mots simples, ex. « Gestion du courrier ».</p></div>
+                  <div class="field"><label for="f-slug">Identifiant dans l’adresse</label>
+                    <input id="f-slug" name="slug" [ngModel]="d.slug" (ngModelChange)="patch({ slug: $event })" aria-describedby="h-slug" spellcheck="false" />
+                    <p class="help" id="h-slug">Minuscules, chiffres et tirets : /etals?produit={{ d.slug || '…' }}</p></div>
+                  <div class="field wide"><label for="f-tagline">Accroche</label>
+                    <input id="f-tagline" name="tagline" maxlength="160" [ngModel]="d.tagline" (ngModelChange)="patch({ tagline: $event })" /></div>
+                  <div class="field wide"><label for="f-desc">Description</label>
+                    <textarea id="f-desc" name="description" rows="4" maxlength="1200" [ngModel]="d.description" (ngModelChange)="patch({ description: $event })"></textarea></div>
+                  <div class="field wide"><label for="f-features">Points forts <span class="opt">(un par ligne, 8 au plus)</span></label>
+                    <textarea id="f-features" name="features" rows="4" [ngModel]="d.featuresText" (ngModelChange)="patch({ featuresText: $event })"></textarea></div>
+                  <div class="field"><label for="f-price">Prix</label>
+                    <input id="f-price" name="price" [ngModel]="d.price ?? ''" (ngModelChange)="patch({ price: $event || null })" aria-describedby="h-price" />
+                    <p class="help" id="h-price">Vide = « Tarif sur demande ». Ex. « Dès 15 000 FCFA / mois ».</p></div>
+                  <div class="field"><label for="f-accent">Couleur du produit</label>
+                    <div class="color">
+                      <input type="color" id="f-accent" name="accent" [ngModel]="d.accent" (ngModelChange)="patch({ accent: $event.toUpperCase() })" />
+                      <input name="accentHex" aria-label="Code couleur" spellcheck="false" [ngModel]="d.accent" (ngModelChange)="patch({ accent: $event })" />
+                    </div></div>
+                  <div class="field"><label for="f-layout">Écran provisoire</label>
+                    <select id="f-layout" name="layout" [ngModel]="d.layout" (ngModelChange)="patch({ layout: $event })" aria-describedby="h-layout">
+                      @for (l of layouts; track l) { <option [value]="l">{{ layoutLabels[l] }}</option> }
+                    </select>
+                    <p class="help" id="h-layout">Utilisé tant qu’aucune capture n’est fournie.</p></div>
+                  <div class="field"><label for="f-image">Capture d’écran (lien)</label>
+                    <input id="f-image" name="imageUrl" inputmode="url" placeholder="/captures/beaform.png" [ngModel]="d.imageUrl ?? ''" (ngModelChange)="patch({ imageUrl: $event || null })" aria-describedby="h-image" />
+                    <p class="help" id="h-image">Format paysage 16:10. Déposez le fichier dans <code>public/captures/</code>.</p></div>
+                  <label class="check wide">
+                    <input type="checkbox" name="published" [ngModel]="d.published" (ngModelChange)="patch({ published: $event })" />
+                    Afficher sur la vitrine
+                  </label>
+                  <div class="form-actions wide">
+                    <button class="btn btn--primary" type="submit" [disabled]="busy()">{{ busy() ? 'Enregistrement…' : 'Enregistrer' }}</button>
+                    <button class="btn btn--plain" type="button" (click)="draft.set(null)">Annuler</button>
+                  </div>
+                </form>
+              </section>
+            }
+          </main>
+        }
+        @case ('presentation') {
+          <main class="workspace single">
+            <h1>Présentation de la page d’accueil</h1>
+            <p class="sub">Les trois présentations restent consultables à leur adresse. Celle choisie ici s’affiche à l’accueil.</p>
+            <fieldset class="designs">
+              <legend class="visually-hidden">Présentation par défaut</legend>
+              @for (id of designs; track id) {
+                <label class="design" [class.is-on]="design() === id">
+                  <input type="radio" name="design" [value]="id" [checked]="design() === id" (change)="design.set(id)" />
+                  <span class="design-name">{{ designLabels[id] }}</span>
+                  <a [routerLink]="'/' + id" target="_blank" rel="noopener">Ouvrir /{{ id }}</a>
+                  @if (savedDesign() === id) { <span class="badge">Actuellement à l’accueil</span> }
+                </label>
+              }
+            </fieldset>
+            <button type="button" class="btn btn--primary" [disabled]="busy() || design() === savedDesign()" (click)="saveDesign()">Enregistrer</button>
+          </main>
+        }
+        @case ('demandes') {
+          <main class="workspace single">
+            <h1>Demandes de démo</h1>
+            @if (leads() === null) {
+              <p role="status">Chargement…</p>
+            } @else if (!leads()!.length) {
+              <div class="empty"><p><strong>Aucune demande pour l’instant.</strong></p><p>Les demandes envoyées depuis la vitrine arrivent ici.</p></div>
+            } @else {
+              <table class="leads">
+                <thead><tr><th scope="col">Date</th><th scope="col">Nom</th><th scope="col">Contact</th><th scope="col">Produit</th><th scope="col">Besoin</th></tr></thead>
+                <tbody>
+                  @for (l of leads(); track l.id) {
+                    <tr>
+                      <td class="nowrap">{{ l.createdAt }} UTC</td>
+                      <td>{{ l.name }}</td>
+                      <td><a [href]="l.contact.includes('@') ? 'mailto:' + l.contact : 'tel:' + l.contact">{{ l.contact }}</a></td>
+                      <td>{{ productName(l.productSlug) }}</td>
+                      <td class="msg">{{ l.message || '—' }}</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            }
+          </main>
+        }
+      }
+    }
+  }
+</div>

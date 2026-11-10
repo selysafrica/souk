@@ -1,0 +1,225 @@
+import { ChangeDetectionStrategy, Component, computed, OnInit, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import {
+  DESIGN_IDS,
+  DESIGN_LABELS,
+  type DesignId,
+  type Lead,
+  type Product,
+  type ProductInput,
+  SCREEN_LAYOUT_LABELS,
+  SCREEN_LAYOUTS,
+} from '../core/catalog.model';
+import { Icon } from '../shared/icon';
+import { adminApi, ApiError } from './admin-api';
+
+type Tab = 'produits' | 'presentation' | 'demandes';
+
+interface Draft extends ProductInput {
+  id: number | null;
+  featuresText: string;
+}
+
+const slugify = (s: string) =>
+  s
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 60);
+
+@Component({
+  selector: 'app-admin',
+  imports: [FormsModule, RouterLink, Icon],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: './admin.html',
+  styleUrl: './admin.scss',
+})
+export class Admin implements OnInit {
+  protected readonly designs = DESIGN_IDS;
+  protected readonly designLabels = DESIGN_LABELS;
+  protected readonly layouts = SCREEN_LAYOUTS;
+  protected readonly layoutLabels = SCREEN_LAYOUT_LABELS;
+
+  protected readonly state = signal<'checking' | 'login' | 'ready'>('checking');
+  protected readonly tab = signal<Tab>('produits');
+  protected readonly products = signal<Product[]>([]);
+  protected readonly design = signal<DesignId>('etals');
+  protected readonly savedDesign = signal<DesignId>('etals');
+  protected readonly leads = signal<Lead[] | null>(null);
+  protected readonly draft = signal<Draft | null>(null);
+  protected readonly busy = signal(false);
+  protected readonly error = signal('');
+  protected readonly notice = signal('');
+  protected readonly confirmDelete = signal<number | null>(null);
+  protected readonly published = computed(() => this.products().filter((p) => p.published).length);
+  protected password = '';
+  protected readonly loginError = signal('');
+  private slugTouched = false;
+
+  async ngOnInit() {
+    try {
+      await adminApi.session();
+      await this.enter();
+    } catch {
+      this.state.set('login');
+    }
+  }
+
+  protected async login() {
+    this.loginError.set('');
+    if (!this.password) {
+      this.loginError.set('Saisissez le mot de passe d’administration.');
+      return;
+    }
+    this.busy.set(true);
+    try {
+      await adminApi.login(this.password);
+      this.password = '';
+      await this.enter();
+    } catch (e) {
+      this.loginError.set(e instanceof Error ? e.message : 'Connexion impossible.');
+    } finally {
+      this.busy.set(false);
+    }
+  }
+
+  protected async logout() {
+    await adminApi.logout().catch(() => undefined);
+    this.state.set('login');
+  }
+
+  private async enter() {
+    await this.reload();
+    this.state.set('ready');
+  }
+
+  private async reload() {
+    const data = await adminApi.catalog();
+    this.products.set(data.products);
+    this.design.set(data.defaultDesign);
+    this.savedDesign.set(data.defaultDesign);
+  }
+
+  private async run(action: () => Promise<unknown>, success: string) {
+    this.error.set('');
+    this.notice.set('');
+    this.busy.set(true);
+    try {
+      await action();
+      this.notice.set(success);
+    } catch (e) {
+      if (e instanceof ApiError && e.status === 401) {
+        this.state.set('login');
+        this.loginError.set(e.message);
+      } else this.error.set(e instanceof Error ? e.message : 'Action impossible.');
+      return false;
+    } finally {
+      this.busy.set(false);
+    }
+    return true;
+  }
+
+  protected async showTab(t: Tab) {
+    this.tab.set(t);
+    this.notice.set('');
+    this.error.set('');
+    if (t === 'demandes') await this.run(async () => this.leads.set(await adminApi.leads()), '');
+  }
+
+  protected newProduct() {
+    this.slugTouched = false;
+    this.draft.set({
+      id: null,
+      slug: '',
+      name: '',
+      metier: '',
+      tagline: '',
+      description: '',
+      features: [],
+      featuresText: '',
+      price: null,
+      accent: '#43E0D0',
+      layout: 'dashboard',
+      imageUrl: null,
+      demoUrl: null,
+      position: this.products().length + 1,
+      published: false,
+    });
+  }
+
+  protected edit(p: Product) {
+    this.slugTouched = true;
+    this.draft.set({ ...p, featuresText: p.features.join('\n') });
+  }
+
+  protected patch(change: Partial<Draft>) {
+    const d = this.draft();
+    if (!d) return;
+    const next = { ...d, ...change };
+    if ('slug' in change) this.slugTouched = true;
+    if ('name' in change && d.id === null && !this.slugTouched) next.slug = slugify(next.name);
+    this.draft.set(next);
+  }
+
+  protected async save() {
+    const d = this.draft();
+    if (!d) return;
+    const { id, featuresText, ...rest } = d;
+    const input: ProductInput = { ...rest, features: featuresText.split('\n').map((f) => f.trim()).filter(Boolean) };
+    const ok = await this.run(async () => {
+      if (id === null) await adminApi.create(input);
+      else await adminApi.update(id, input);
+      await this.reload();
+    }, id === null ? `« ${d.name} » est ajouté au catalogue.` : `« ${d.name} » est enregistré.`);
+    if (ok) this.draft.set(null);
+  }
+
+  protected async togglePublished(p: Product) {
+    const { id, ...rest } = p;
+    await this.run(async () => {
+      await adminApi.update(id, { ...rest, published: !p.published });
+      await this.reload();
+    }, p.published ? `« ${p.name} » est masqué de la vitrine.` : `« ${p.name} » est visible sur la vitrine.`);
+  }
+
+  protected async move(index: number, delta: number) {
+    const list = [...this.products()];
+    const to = index + delta;
+    if (to < 0 || to >= list.length) return;
+    [list[index], list[to]] = [list[to], list[index]];
+    this.products.set(list);
+    await this.run(async () => {
+      await adminApi.reorder(list.map((p) => p.id));
+      await this.reload();
+    }, 'Ordre mis à jour.');
+  }
+
+  protected async remove(p: Product) {
+    if (this.confirmDelete() !== p.id) {
+      this.confirmDelete.set(p.id);
+      return;
+    }
+    this.confirmDelete.set(null);
+    await this.run(async () => {
+      await adminApi.remove(p.id);
+      if (this.draft()?.id === p.id) this.draft.set(null);
+      await this.reload();
+    }, `« ${p.name} » est supprimé.`);
+  }
+
+  protected async saveDesign() {
+    const d = this.design();
+    await this.run(async () => {
+      await adminApi.setDesign(d);
+      this.savedDesign.set(d);
+    }, `La page d’accueil affiche maintenant « ${DESIGN_LABELS[d]} ».`);
+  }
+
+  protected productName(slug: string | null) {
+    if (!slug) return 'Non précisé';
+    return this.products().find((p) => p.slug === slug)?.name ?? slug;
+  }
+}

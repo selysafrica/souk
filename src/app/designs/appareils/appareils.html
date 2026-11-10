@@ -1,0 +1,51 @@
+<app-site-header tone="dark" current="appareils" />
+<main>
+  <h1 class="visually-hidden">Les logiciels de Selys Africa</h1>
+
+  <section
+    id="vitrine"
+    class="stage"
+    [class.is-ready]="ready()"
+    aria-label="Vitrine des logiciels Selys Africa"
+  >
+    <canvas #canvas class="scene" aria-hidden="true"></canvas>
+
+    @if (showcase.products().length) {
+      <ol class="menu" (keydown)="showcase.handleKey($event)">
+        @for (p of showcase.products(); track p.id; let i = $index) {
+          <li [class.is-active]="i === showcase.index()" [style.--p]="p.accent">
+            <button type="button" class="name" [attr.aria-expanded]="i === showcase.index()" [attr.aria-controls]="'detail-' + p.slug" (click)="showcase.select(i)">
+              {{ p.name }}
+            </button>
+            @if (i === showcase.index()) {
+              <div class="detail" [id]="'detail-' + p.slug" aria-live="polite">
+                <p class="metier">{{ p.metier }}</p>
+                <p class="tagline">{{ p.tagline }}</p>
+                <div class="actions">
+                  <button type="button" class="btn btn--primary" (click)="showcase.requestDemo(p.slug)">
+                    <app-icon name="chat" /> Demander une démo
+                  </button>
+                  <a class="btn btn--ghost" [href]="'#produit-' + p.slug">Voir le détail</a>
+                </div>
+              </div>
+            }
+          </li>
+        }
+      </ol>
+    } @else {
+      <div class="menu empty">
+        <h2>La vitrine s’allume bientôt</h2>
+        <p>Aucun produit n’est publié pour le moment. Écrivez-nous plus bas.</p>
+      </div>
+    }
+  </section>
+
+  <app-catalog-index
+    title="Tous nos logiciels"
+    intro="Chaque logiciel tourne sur ordinateur, tablette ou téléphone. Voici ce qu’il fait, en clair."
+    seeLabel="Voir sur l’écran"
+    marker="screen"
+  />
+  <app-demo-form title="Voyez-le tourner chez vous" />
+</main>
+<app-site-footer />

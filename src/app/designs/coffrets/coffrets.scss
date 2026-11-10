@@ -1,0 +1,279 @@
+:host {
+  --ground: #eef6f5;
+  --ground-2: #ffffff;
+  --fg: #0f2830;
+  --fg-2: #2f4a4e;
+  --line: #c8d8da;
+  --action: #047a7f;
+  --action-fg: #ffffff;
+  --focus: #047a7f;
+  display: block;
+  background: var(--ground);
+  color: var(--fg);
+}
+
+.stage {
+  position: relative;
+  height: 100svh;
+  min-height: 640px;
+  max-height: 1100px;
+  overflow: hidden;
+  isolation: isolate;
+  outline-offset: -6px;
+}
+
+/* The métier, set huge on the showroom wall behind the box. */
+.backword {
+  position: absolute;
+  z-index: 0;
+  left: var(--gutter);
+  top: clamp(96px, 13vh, 140px);
+  width: 54vw;
+  text-align: left;
+  /* Sized from the longest word so it never breaks or runs off the wall. */
+  font-size: min(9rem, calc(52vw / (var(--w, 10) * 0.74)));
+  font-weight: 900;
+  line-height: 0.85;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--p) 26%, var(--ground));
+  pointer-events: none;
+  animation: wall 1.1s var(--ease-out) both;
+}
+
+@keyframes wall {
+  from {
+    opacity: 0;
+    letter-spacing: 0.02em;
+  }
+}
+
+.scene {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 1s var(--ease-out);
+  touch-action: pan-y;
+}
+
+.is-ready .scene {
+  opacity: 1;
+}
+
+.copy {
+  position: absolute;
+  z-index: 2;
+  left: var(--gutter);
+  bottom: clamp(150px, 19vh, 200px);
+  width: min(30rem, calc(100% - 2 * var(--gutter)));
+  display: grid;
+  gap: 10px;
+}
+
+h2 {
+  font-size: clamp(2.6rem, 5vw, 4.75rem);
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+  animation: rise 0.8s var(--ease-out) both;
+}
+
+.metier {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 1.125rem;
+  animation: rise 0.8s 0.05s var(--ease-out) both;
+
+  &::before {
+    content: '';
+    width: 10px;
+    height: 1.4em;
+    border-radius: 2px;
+    background: var(--p);
+  }
+}
+
+.tagline {
+  font-size: 1.125rem;
+  color: var(--fg-2);
+  animation: rise 0.8s 0.1s var(--ease-out) both;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+  animation: rise 0.8s 0.15s var(--ease-out) both;
+}
+
+.price {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--fg-2);
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+/* The shelf: small 3D boxes standing on a wooden plank; the chosen one is lifted, like the logo's raised bar. */
+.shelf {
+  position: absolute;
+  z-index: 2;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: 0;
+
+  ol {
+    position: relative;
+    list-style: none;
+    margin: 0;
+    padding: 26px 8px 0;
+    display: flex;
+    justify-content: center;
+    gap: clamp(8px, 1.6vw, 22px);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  /* The plank: a lit top surface and a darker front edge. */
+  &::after {
+    content: '';
+    display: block;
+    height: 22px;
+    margin-top: -2px;
+    background:
+      linear-gradient(#e6c08d 0 7px, #b98247 7px 100%);
+    border-radius: 3px;
+    box-shadow: 0 14px 22px -14px rgba(15, 40, 48, 0.55);
+  }
+
+  button {
+    display: grid;
+    justify-items: center;
+    gap: 10px;
+    min-width: 72px;
+    padding: 12px 6px 6px;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    color: var(--fg-2);
+    font-weight: 600;
+    font-size: 0.8125rem;
+    perspective: 400px;
+  }
+
+  .mini {
+    position: relative;
+    display: block;
+    width: 40px;
+    height: 54px;
+    transform-style: preserve-3d;
+    transform: rotateX(-10deg) rotateY(-26deg);
+    transition: transform 0.5s var(--ease-out);
+
+    > span {
+      position: absolute;
+      display: block;
+    }
+
+    .f {
+      inset: 0;
+      padding: 4px 3px;
+      border-radius: 2px;
+      background: var(--p);
+      color: #fff;
+      font-size: 0.4375rem;
+      font-weight: 900;
+      line-height: 1.1;
+      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      transform: translateZ(7px);
+      box-shadow: 0 10px 12px -8px rgba(15, 40, 48, 0.6);
+    }
+
+    .s {
+      top: 0;
+      bottom: 0;
+      right: -7px;
+      width: 14px;
+      background: color-mix(in srgb, var(--p) 70%, #0f2830);
+      transform: rotateY(90deg);
+    }
+
+    .t {
+      left: 0;
+      right: 0;
+      top: -7px;
+      height: 14px;
+      background: color-mix(in srgb, var(--p) 55%, #fff);
+      transform: rotateX(90deg);
+    }
+  }
+
+  button:hover .mini {
+    transform: rotateX(-10deg) rotateY(-12deg) translateY(-4px);
+  }
+
+  button[aria-current='true'] {
+    color: var(--fg);
+    font-weight: 800;
+
+    .mini {
+      transform: rotateX(-8deg) rotateY(0deg) translateY(-16px);
+    }
+  }
+
+  .label {
+    white-space: nowrap;
+  }
+}
+
+.hint {
+  position: absolute;
+  z-index: 2;
+  right: var(--gutter);
+  bottom: 130px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--fg-2);
+
+  app-icon {
+    --icon: 18px;
+  }
+}
+
+@media (max-width: 760px) {
+  .backword {
+    display: none;
+  }
+
+  .copy {
+    bottom: 150px;
+    gap: 8px;
+  }
+
+  .actions .btn {
+    flex: 1 1 auto;
+  }
+
+  .hint {
+    display: none;
+  }
+
+  .shelf ol {
+    justify-content: flex-start;
+  }
+}

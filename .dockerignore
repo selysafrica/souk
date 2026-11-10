@@ -1,0 +1,9 @@
+.git
+.angular
+.vscode
+.impeccable
+node_modules
+dist
+data
+.env
+*.log

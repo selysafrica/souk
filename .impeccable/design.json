@@ -1,0 +1,514 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-10T15:51:13+00:00",
+  "title": "Design System: Souk, catalogue Selys Africa",
+  "extensions": {
+    "colorMeta": {
+      "selys-teal": {
+        "role": "primary",
+        "displayName": "Teal Selys",
+        "canonical": "#047A7F",
+        "tonalRamp": [
+          "#000F10",
+          "#002A2D",
+          "#004A4D",
+          "#006B70",
+          "#298D92",
+          "#51AFB4",
+          "#79D6DB",
+          "#C1FBFE"
+        ]
+      },
+      "teal-deep": {
+        "role": "primary",
+        "displayName": "Teal profond",
+        "canonical": "#035C60",
+        "tonalRamp": [
+          "#000F10",
+          "#002A2C",
+          "#04494C",
+          "#1C6A6E",
+          "#428A8E",
+          "#64ACB0",
+          "#8AD3D7",
+          "#BEFCFF"
+        ]
+      },
+      "teal-night": {
+        "role": "primary",
+        "displayName": "Teal nuit",
+        "canonical": "#02292B",
+        "tonalRamp": [
+          "#000F11",
+          "#032A2C",
+          "#224748",
+          "#406567",
+          "#608587",
+          "#80A7A9",
+          "#A5CDCF",
+          "#CFF8FA"
+        ]
+      },
+      "teal-abyss": {
+        "role": "primary",
+        "displayName": "Teal abysse",
+        "canonical": "#031F21",
+        "tonalRamp": [
+          "#000F11",
+          "#0D292B",
+          "#294547",
+          "#476466",
+          "#668486",
+          "#87A5A7",
+          "#ACCBCD",
+          "#D5F6F8"
+        ]
+      },
+      "raised-turquoise": {
+        "role": "secondary",
+        "displayName": "Turquoise surélevé",
+        "canonical": "#43E0D0",
+        "tonalRamp": [
+          "#00100D",
+          "#002B27",
+          "#004B44",
+          "#156C63",
+          "#119085",
+          "#1BB6A8",
+          "#42DFCF",
+          "#B7FFF5"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Encre",
+        "canonical": "#0F2830",
+        "tonalRamp": [
+          "#000E15",
+          "#0F2830",
+          "#2B444D",
+          "#48626B",
+          "#67828C",
+          "#88A4AE",
+          "#ADCAD4",
+          "#D7F4FF"
+        ]
+      },
+      "ink-soft": {
+        "role": "neutral",
+        "displayName": "Encre douce",
+        "canonical": "#2F4A4E",
+        "tonalRamp": [
+          "#000F12",
+          "#0E292C",
+          "#2A4549",
+          "#476367",
+          "#678387",
+          "#87A5A9",
+          "#ACCBCF",
+          "#D6F5FA"
+        ]
+      },
+      "white": {
+        "role": "neutral",
+        "displayName": "Blanc",
+        "canonical": "#FFFFFF",
+        "tonalRamp": [
+          "#0B0B0B",
+          "#242424",
+          "#404040",
+          "#5D5D5D",
+          "#7D7D7D",
+          "#9E9E9E",
+          "#C4C4C4",
+          "#EEEEEE"
+        ]
+      },
+      "mist": {
+        "role": "neutral",
+        "displayName": "Brume",
+        "canonical": "#E3F6F4",
+        "tonalRamp": [
+          "#020E0D",
+          "#192726",
+          "#344342",
+          "#516160",
+          "#708180",
+          "#91A3A1",
+          "#B6C9C7",
+          "#E0F3F1"
+        ]
+      },
+      "night-mist": {
+        "role": "neutral",
+        "displayName": "Brume de nuit",
+        "canonical": "#C9E4E2",
+        "tonalRamp": [
+          "#000F0E",
+          "#122827",
+          "#2E4543",
+          "#4B6361",
+          "#6A8381",
+          "#8BA4A3",
+          "#B0CAC8",
+          "#DAF5F3"
+        ]
+      },
+      "showroom": {
+        "role": "neutral",
+        "displayName": "Salle d'exposition",
+        "canonical": "#EEF6F5",
+        "tonalRamp": [
+          "#070C0C",
+          "#202525",
+          "#3B4140",
+          "#585F5E",
+          "#787F7E",
+          "#99A09F",
+          "#BEC6C5",
+          "#E8F0EF"
+        ]
+      },
+      "showroom-line": {
+        "role": "neutral",
+        "displayName": "Filet clair",
+        "canonical": "#C8D8DA",
+        "tonalRamp": [
+          "#030D0F",
+          "#1A2728",
+          "#354344",
+          "#536162",
+          "#728082",
+          "#93A2A4",
+          "#B8C8CA",
+          "#E2F2F4"
+        ]
+      },
+      "workshop": {
+        "role": "neutral",
+        "displayName": "Atelier",
+        "canonical": "#F4F8F8",
+        "tonalRamp": [
+          "#090C0C",
+          "#222525",
+          "#3D4040",
+          "#5B5E5E",
+          "#7A7E7E",
+          "#9B9F9F",
+          "#C1C5C5",
+          "#EBEFEF"
+        ]
+      },
+      "workshop-ink-2": {
+        "role": "neutral",
+        "displayName": "Encre atelier",
+        "canonical": "#46636A",
+        "tonalRamp": [
+          "#000E14",
+          "#0C282F",
+          "#29454B",
+          "#46636A",
+          "#65838A",
+          "#86A5AC",
+          "#ABCBD2",
+          "#D4F5FD"
+        ]
+      },
+      "workshop-line": {
+        "role": "neutral",
+        "displayName": "Filet atelier",
+        "canonical": "#D5E2E3",
+        "tonalRamp": [
+          "#050D0E",
+          "#1C2627",
+          "#374243",
+          "#556061",
+          "#748081",
+          "#95A1A2",
+          "#BAC7C8",
+          "#E4F1F2"
+        ]
+      },
+      "danger": {
+        "role": "error",
+        "displayName": "Danger",
+        "canonical": "#B42318",
+        "tonalRamp": [
+          "#220000",
+          "#4C0000",
+          "#7E0000",
+          "#AD1A10",
+          "#D44536",
+          "#FB6957",
+          "#FBADA1",
+          "#FFE9E5"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Métier (Étals), nom du produit (Coffrets, Appareils actif) ; un seul par écran."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Titres de section : index du catalogue, formulaire de démo."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Nom du produit dans l'index."
+      },
+      "lead": {
+        "displayName": "Lead",
+        "purpose": "Accroche produit et intro de section, 34–40rem."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Descriptions, 62ch maximum, chiffres tabulaires."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Libellés, liste des étals, sélecteur, prix."
+      }
+    },
+    "roleVariables": {
+      "etals": {
+        "--ground": "#047A7F",
+        "--ground-2": "#035C60",
+        "--fg": "#FFFFFF",
+        "--fg-2": "#E3F6F4",
+        "--line": "rgba(255,255,255,0.24)",
+        "--action": "#43E0D0",
+        "--action-fg": "#0F2830",
+        "--focus": "#43E0D0"
+      },
+      "coffrets": {
+        "--ground": "#EEF6F5",
+        "--ground-2": "#FFFFFF",
+        "--fg": "#0F2830",
+        "--fg-2": "#2F4A4E",
+        "--line": "#C8D8DA",
+        "--action": "#047A7F",
+        "--action-fg": "#FFFFFF",
+        "--focus": "#047A7F"
+      },
+      "appareils": {
+        "--ground": "#02292B",
+        "--ground-2": "#031F21",
+        "--fg": "#FFFFFF",
+        "--fg-2": "#C9E4E2",
+        "--line": "rgba(255,255,255,0.18)",
+        "--action": "#43E0D0",
+        "--action-fg": "#0F2830",
+        "--focus": "#43E0D0"
+      },
+      "admin": {
+        "--ground": "#F4F8F8",
+        "--fg": "#0F2830",
+        "--fg-2": "#46636A",
+        "--line": "#D5E2E3",
+        "--action": "#047A7F",
+        "--action-fg": "#FFFFFF",
+        "--focus": "#047A7F"
+      }
+    },
+    "productAccent": {
+      "variable": "--p",
+      "source": "SQLite products.accent (#RRGGBB), défaut #43E0D0",
+      "derivations": {
+        "side": "color-mix(in srgb, var(--p) 70%, #0f2830)",
+        "top": "color-mix(in srgb, var(--p) 55%, #fff)",
+        "wallWord": "color-mix(in srgb, var(--p) 26%, var(--ground))"
+      }
+    },
+    "shadows": [
+      {
+        "name": "button-rest",
+        "value": "0 10px 24px -12px color-mix(in srgb, var(--ink) 70%, transparent)",
+        "purpose": "Bouton principal au repos."
+      },
+      {
+        "name": "button-hover",
+        "value": "0 16px 30px -14px color-mix(in srgb, var(--ink) 80%, transparent)",
+        "purpose": "Bouton principal au survol, avec translateY(-2px)."
+      },
+      {
+        "name": "object-small",
+        "value": "0 6px 10px -6px rgba(0,0,0,.5)",
+        "purpose": "Enseigne miniature de l'index."
+      },
+      {
+        "name": "object-screen",
+        "value": "0 10px 18px -10px rgba(0,0,0,.7)",
+        "purpose": "Écran miniature de l'index."
+      },
+      {
+        "name": "focus-admin",
+        "value": "0 0 0 3px rgba(4,122,127,.18)",
+        "purpose": "Halo de focus des champs admin."
+      }
+    ],
+    "focus": {
+      "outline": "3px solid var(--focus)",
+      "outlineOffset": "3px",
+      "radius": "4px"
+    },
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Toutes les transitions DOM (0.25s états, 0.8–0.9s entrée du texte, 1–1.2s fondu de la scène)."
+      },
+      {
+        "name": "ease-out-expo",
+        "value": "1 - 2^(-10t)",
+        "purpose": "Tweens de la scène 3D, 700–2200ms selon la distance ; durée nulle sous prefers-reduced-motion."
+      },
+      {
+        "name": "rise",
+        "value": "translateY(14–18px) + opacity 0, décalage 0.05–0.06s par ligne",
+        "purpose": "Entrée du texte de scène au changement de produit."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "names-collapse",
+        "value": "1180px"
+      },
+      {
+        "name": "appareils-stack",
+        "value": "860px"
+      },
+      {
+        "name": "stack",
+        "value": "760px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Bouton principal (sol sombre)",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Action principale « Demander une démo » sur les sols teal et teal nuit.",
+      "html": "<div class=\"ds-ground-teal\"><button class=\"ds-btn ds-btn-primary\"><svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 5h16v11H9l-5 4z\"/><path d=\"M8 9.5h8M8 12.5h5\"/></svg>Demander une démo</button></div>",
+      "css": ".ds-ground-teal{background:#047A7F;padding:24px;} .ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:.6em;min-height:48px;padding:.8em 1.5em;border-radius:999px;border:2px solid transparent;font-family: var(--font, 'Montserrat Variable', Montserrat, system-ui, sans-serif);font-weight:700;font-size:1rem;letter-spacing:.005em;cursor:pointer;transition:transform .25s cubic-bezier(.16,1,.3,1),background-color .25s cubic-bezier(.16,1,.3,1),box-shadow .25s cubic-bezier(.16,1,.3,1);} .ds-btn:active{transform:translateY(1px) scale(.98);} .ds-btn:focus-visible{outline:3px solid #43E0D0;outline-offset:3px;} .ds-btn-primary{background:#43E0D0;color:#0F2830;box-shadow:0 10px 24px -12px rgba(15,40,48,.7);} .ds-btn-primary:hover{transform:translateY(-2px);box-shadow:0 16px 30px -14px rgba(15,40,48,.8);}"
+    },
+    {
+      "name": "Bouton principal (sol clair)",
+      "kind": "button",
+      "refersTo": "button-primary-light",
+      "description": "Même bouton, rôle --action redéfini en teal pour Coffrets et l'admin.",
+      "html": "<div class=\"ds-ground-light\"><button class=\"ds-btn ds-btn-primary-light\"><svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 5h16v11H9l-5 4z\"/><path d=\"M8 9.5h8M8 12.5h5\"/></svg>Demander une démo</button></div>",
+      "css": ".ds-ground-light{background:#EEF6F5;padding:24px;} .ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:.6em;min-height:48px;padding:.8em 1.5em;border-radius:999px;border:2px solid transparent;font-family: var(--font, 'Montserrat Variable', Montserrat, system-ui, sans-serif);font-weight:700;font-size:1rem;letter-spacing:.005em;cursor:pointer;transition:transform .25s cubic-bezier(.16,1,.3,1),background-color .25s cubic-bezier(.16,1,.3,1),box-shadow .25s cubic-bezier(.16,1,.3,1);} .ds-btn:active{transform:translateY(1px) scale(.98);} .ds-btn:focus-visible{outline:3px solid #43E0D0;outline-offset:3px;} .ds-btn-primary-light{background:#047A7F;color:#fff;box-shadow:0 10px 24px -12px rgba(15,40,48,.7);} .ds-btn-primary-light:hover{transform:translateY(-2px);box-shadow:0 16px 30px -14px rgba(15,40,48,.8);} .ds-btn-primary-light:focus-visible{outline-color:#047A7F;}"
+    },
+    {
+      "name": "Bouton fantôme",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Action secondaire « Voir le détail », pilule cerclée.",
+      "html": "<div class=\"ds-ground-teal\"><button class=\"ds-btn ds-btn-ghost\">Voir le détail</button></div>",
+      "css": ".ds-ground-teal{background:#047A7F;padding:24px;} .ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:.6em;min-height:48px;padding:.8em 1.5em;border-radius:999px;border:2px solid transparent;font-family: var(--font, 'Montserrat Variable', Montserrat, system-ui, sans-serif);font-weight:700;font-size:1rem;letter-spacing:.005em;cursor:pointer;transition:transform .25s cubic-bezier(.16,1,.3,1),background-color .25s cubic-bezier(.16,1,.3,1),box-shadow .25s cubic-bezier(.16,1,.3,1);} .ds-btn:active{transform:translateY(1px) scale(.98);} .ds-btn:focus-visible{outline:3px solid #43E0D0;outline-offset:3px;} .ds-btn-ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.7);} .ds-btn-ghost:hover{background:rgba(255,255,255,.12);}"
+    },
+    {
+      "name": "Sélecteur de présentation",
+      "kind": "nav",
+      "refersTo": "presentation-switch-active",
+      "description": "Pilule translucide de l'en-tête ; la présentation courante prend le fond d'action.",
+      "html": "<div class=\"ds-ground-teal\"><nav class=\"ds-switch\"><a href=\"#\" aria-current=\"page\">Étals</a><a href=\"#\">Coffrets</a><a href=\"#\">Appareils</a></nav></div>",
+      "css": ".ds-ground-teal{background:#047A7F;padding:24px;} .ds-switch{display:inline-flex;padding:4px;border-radius:999px;background:rgba(4,122,127,.82);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.24);font-family: var(--font, 'Montserrat Variable', Montserrat, system-ui, sans-serif);font-size:.875rem;font-weight:600;} .ds-switch a{padding:8px 14px;min-height:36px;display:grid;place-items:center;border-radius:999px;text-decoration:none;color:#E3F6F4;transition:background-color .25s cubic-bezier(.16,1,.3,1),color .25s;} .ds-switch a:hover{color:#fff;} .ds-switch a[aria-current=page]{background:#43E0D0;color:#0F2830;} .ds-switch a:focus-visible{outline:3px solid #43E0D0;outline-offset:3px;}"
+    },
+    {
+      "name": "Liste des étals",
+      "kind": "chip",
+      "refersTo": "presentation-switch-active",
+      "description": "Navigation produit en bas de scène ; chaque item porte la barre d'accent du produit.",
+      "html": "<div class=\"ds-ground-teal\"><ul class=\"ds-names\"><li><button aria-current=\"true\"><span class=\"ds-dot\" style=\"--p:#F2A900\"></span>BeaForm</button></li><li><button><span class=\"ds-dot\" style=\"--p:#D9412B\"></span>BeaMS Couture</button></li><li><button><span class=\"ds-dot\" style=\"--p:#7B4FD0\"></span>BeaEvent</button></li></ul></div>",
+      "css": ".ds-ground-teal{background:#047A7F;padding:24px;} .ds-names{display:inline-flex;gap:4px;list-style:none;margin:0;padding:4px;border-radius:999px;background:rgba(3,76,80,.78);} .ds-names button{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border-radius:999px;border:0;background:transparent;color:#E3F6F4;font-family: var(--font, 'Montserrat Variable', Montserrat, system-ui, sans-serif);font-weight:600;font-size:.9375rem;cursor:pointer;transition:background-color .25s,color .25s;} .ds-names button:hover{color:#fff;background:rgba(255,255,255,.1);} .ds-names button[aria-current=true]{background:#43E0D0;color:#0F2830;} .ds-names button:focus-visible{outline:3px solid #43E0D0;outline-offset:3px;} .ds-dot{width:8px;height:16px;border-radius:2px;background:var(--p);}"
+    },
+    {
+      "name": "Champ du formulaire de démo",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "Champ teinté par le sol de la présentation ; focus par bordure d'action.",
+      "html": "<div class=\"ds-ground-teal\"><label class=\"ds-label\" for=\"ds-n\">Votre nom</label><input id=\"ds-n\" class=\"ds-input\" placeholder=\"Awa Diop\"></div>",
+      "css": ".ds-ground-teal{background:#047A7F;padding:24px;display:grid;gap:8px;color:#fff;font-family: var(--font, 'Montserrat Variable', Montserrat, system-ui, sans-serif);} .ds-label{font-weight:700;font-size:.9375rem;} .ds-input{width:100%;min-height:52px;padding:12px 16px;border-radius:14px;border:2px solid rgba(255,255,255,.24);background:rgba(255,255,255,.08);color:#fff;font:inherit;font-size:1rem;caret-color:#43E0D0;transition:border-color .2s,background-color .2s;} .ds-input::placeholder{color:rgba(227,246,244,.7);} .ds-input:hover{border-color:rgba(255,255,255,.55);} .ds-input:focus-visible{outline:none;border-color:#43E0D0;background:rgba(255,255,255,.12);}"
+    },
+    {
+      "name": "Flèche d'étal",
+      "kind": "button",
+      "refersTo": "step-arrow",
+      "description": "Précédent / suivant ronds de 52px sur la scène.",
+      "html": "<div class=\"ds-ground-teal\"><button class=\"ds-step\" aria-label=\"Étal suivant\"><svg viewBox=\"0 0 24 24\" width=\"22\" height=\"22\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 12h14M13 6l6 6-6 6\"/></svg></button></div>",
+      "css": ".ds-ground-teal{background:#047A7F;padding:24px;} .ds-step{width:52px;height:52px;display:grid;place-items:center;border-radius:50%;border:2px solid rgba(255,255,255,.7);background:rgba(3,76,80,.5);color:#fff;cursor:pointer;transition:background-color .25s,transform .25s cubic-bezier(.16,1,.3,1);} .ds-step:hover{background:rgba(255,255,255,.16);transform:scale(1.05);} .ds-step:focus-visible{outline:3px solid #43E0D0;outline-offset:3px;}"
+    },
+    {
+      "name": "Ligne d'index avec auvent",
+      "kind": "custom",
+      "refersTo": "",
+      "description": "Ligne du catalogue partagé, marqueur de monde Étals : auvent rayé accent et blanc, enseigne peinte.",
+      "html": "<div class=\"ds-ground-deep\"><div class=\"ds-row\" style=\"--p:#F2A900\"><span class=\"ds-marker\"><span class=\"ds-awning\"></span><span class=\"ds-board\">Formulaires en ligne</span></span><div><h3 class=\"ds-h3\">BeaForm</h3><p class=\"ds-metier\">Formulaires en ligne</p></div><ul class=\"ds-feat\"><li><svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"#43E0D0\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 12.5l4.5 4.5L19 7.5\"/></svg>Éditeur glisser-déposer</li></ul></div></div>",
+      "css": ".ds-ground-deep{background:#035C60;color:#fff;padding:24px;font-family: var(--font, 'Montserrat Variable', Montserrat, system-ui, sans-serif);} .ds-row{display:grid;grid-template-columns:120px 1fr 1fr;gap:24px;align-items:start;padding:32px 0;border-top:1px solid rgba(255,255,255,.24);border-bottom:1px solid rgba(255,255,255,.24);} .ds-marker{display:block;width:120px;} .ds-awning{display:block;height:30px;background:repeating-linear-gradient(90deg,var(--p) 0 15px,#fff 15px 30px);-webkit-mask:radial-gradient(circle at 7.5px 22px,#000 8px,transparent 8.5px) 0 0/15px 30px repeat-x,linear-gradient(#000 0 0) 0 0/100% 22px no-repeat;mask:radial-gradient(circle at 7.5px 22px,#000 8px,transparent 8.5px) 0 0/15px 30px repeat-x,linear-gradient(#000 0 0) 0 0/100% 22px no-repeat;} .ds-board{display:block;margin:8px 6px 0;padding:6px 4px;border:3px solid var(--p);border-radius:6px;background:#fff;color:#0F2830;font-size:.6875rem;font-weight:800;line-height:1.2;text-align:center;text-transform:uppercase;letter-spacing:.02em;box-shadow:0 6px 10px -6px rgba(0,0,0,.5);} .ds-h3{margin:0;font-size:2rem;font-weight:900;letter-spacing:-.02em;line-height:1.05;} .ds-metier{margin:6px 0 0;font-weight:600;color:#E3F6F4;} .ds-feat{list-style:none;margin:0;padding:0;} .ds-feat li{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:.9375rem;}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Le marché couvert Selys",
+    "overview": "**Creative North Star : « Le marché couvert Selys »**\n\nUn seul système de marque, trois présentations. Le catalogue est un lieu où l'on circule d'un produit à l'autre : l'allée des étals (défaut), le rayon de coffrets, la vitrine d'appareils. Chaque présentation est une variante du même système : mêmes jetons de marque, même typographie Montserrat, mêmes boutons, mêmes composants partagés (en-tête, index du catalogue, formulaire de démo, pied de page) ; seules les variables de rôle (`--ground`, `--ground-2`, `--fg`, `--fg-2`, `--line`, `--action`, `--action-fg`, `--focus`) sont redéfinies sur l'hôte de chaque présentation.\n\nLe teal Selys est engagé, pas décoratif : il peint le sol et les murs de l'expérience par défaut et en couvre plus de la moitié. Le turquoise est l'état actif, l'écho de la barre surélevée du logo. La personnalité de chaque produit vient de sa couleur d'accent, stockée en base (`--p`) : elle teinte la toile de l'auvent, la face du coffret, la barre de titre de l'écran, la petite barre verticale près du nom. La marque est une maison ; les accents sont ses métiers.\n\nLa scène WebGL porte l'objet produit, mais le texte vit dans le DOM, rendu côté serveur, lisible sans 3D. Le mouvement est un travelling qui ralentit longuement (ease-out exponentiel), jamais un rebond ; `prefers-reduced-motion` ramène tout tween à son état final.",
+    "keyCharacteristics": [
+      "Une marque, trois sols : teal (étals), clair teinté teal (coffrets), teal nuit (appareils).",
+      "Rôles redéfinis par présentation, composants partagés inchangés.",
+      "Accent produit piloté par la base, jamais codé en dur dans une feuille de style.",
+      "Montserrat 900 serrée pour le titre, 400–700 pour le texte.",
+      "Formes en pilule pour tout ce qui se touche ; barres verticales arrondies comme marque produit.",
+      "Texte SSR au premier plan, scène 3D en fond, scrim localisé derrière le texte seulement."
+    ],
+    "rules": [
+      {
+        "name": "La règle de la barre surélevée",
+        "body": "Le turquoise signifie « actif » ou « action principale ». Un seul élément turquoise plein par groupe de contrôle ; ailleurs il n'apparaît qu'en coche, focus ou sélection.",
+        "section": "colors"
+      },
+      {
+        "name": "La règle des rôles",
+        "body": "Une nouvelle présentation ne crée pas de composant : elle redéfinit les huit variables de rôle sur son hôte et réutilise `.btn`, l'en-tête, l'index, le formulaire et le pied de page.",
+        "section": "colors"
+      },
+      {
+        "name": "La règle de l'accent en base",
+        "body": "La couleur d'un produit vient toujours de la donnée (`--p`). Les dérivés se font par `color-mix` (côté : 70 % accent + encre ; dessus : 55 % accent + blanc ; mot mural : 26 % accent dans le sol).",
+        "section": "colors"
+      },
+      {
+        "name": "La règle du métier en clair",
+        "body": "Le métier (« Formulaires en ligne ») s'écrit en toutes lettres, en grand, en casse normale. Les seules capitales sont celles des objets du monde : l'enseigne peinte, l'étiquette du coffret, le mot mural des Coffrets.",
+        "section": "typography"
+      },
+      {
+        "name": "La règle de l'équilibre",
+        "body": "Les titres utilisent `text-wrap: balance` et un interlignage de 0.95–1.05 ; les paragraphes `text-wrap: pretty`.",
+        "section": "typography"
+      },
+      {
+        "name": "La règle de l'objet",
+        "body": "Seul ce qui représente un objet (bouton, enseigne, coffret, écran) porte une ombre. Les sections, champs et listes restent plats.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** définir une nouvelle présentation par ses huit variables de rôle et réutiliser les composants partagés.",
+      "**Do** tirer toute couleur de produit de `--p` et ses dérivés de `color-mix`.",
+      "**Do** garder le texte produit dans le DOM rendu côté serveur, la 3D en fond.",
+      "**Do** utiliser le turquoise (ou le teal sur fond clair) pour une seule action principale par groupe.",
+      "**Do** utiliser des tweens ease-out exponentiels et respecter `prefers-reduced-motion`.",
+      "**Do** garder des cibles tactiles de 44px minimum (48px pour les boutons)."
+    ],
+    "donts": [
+      "**Don't** construire une grille de cartes produits : l'index est une liste à filets.",
+      "**Don't** mettre l'accent produit sur du texte courant ni l'utiliser comme couleur d'action.",
+      "**Don't** étendre le scrim au-delà du texte : les étals doivent garder leurs vraies couleurs.",
+      "**Don't** inventer un prix : sans valeur, « Tarif sur demande ».",
+      "**Don't** ajouter de surtitre en petites capitales au-dessus des titres ; les capitales appartiennent aux enseignes et étiquettes du monde.",
+      "**Don't** utiliser de glyphes ou de police d'icônes : les icônes sont des SVG à trait 2px en `currentColor`."
+    ]
+  }
+}

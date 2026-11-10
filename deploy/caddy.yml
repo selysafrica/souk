@@ -1,0 +1,23 @@
+# Souk — Caddy dédié (HTTPS Let's Encrypt automatique), pour un serveur où 80/443 sont libres.
+# Activé depuis .env :  COMPOSE_FILE=docker-compose.yml:deploy/caddy.yml
+services:
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    depends_on: [app]
+    ports:
+      - '80:80'
+      - '443:443'
+      - '443:443/udp'
+    environment:
+      APP_DOMAIN: ${APP_DOMAIN}
+      ACME_EMAIL: ${ACME_EMAIL:-}
+    volumes:
+      # Chemin relatif à la racine du dépôt (dossier du premier fichier Compose).
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:
