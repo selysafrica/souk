@@ -165,3 +165,10 @@ a {
     scroll-behavior: auto !important;
   }
 }
+
+/* « Agrandir l’écran » next to the actions: larger screens only (phones use the banner button). */
+@media (max-width: 760px) {
+  .btn--zoom {
+    display: none !important;
+  }
+}

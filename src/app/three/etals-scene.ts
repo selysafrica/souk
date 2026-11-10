@@ -149,6 +149,7 @@ export class EtalsScene extends Stage {
     canvas: HTMLCanvasElement,
     private readonly products: Product[],
     private readonly onSelect: (index: number) => void,
+    private readonly onZoom: (index: number) => void = () => {},
   ) {
     super(canvas, 38);
     this.scene.background = new THREE.Color(TEAL);
@@ -294,10 +295,10 @@ export class EtalsScene extends Stage {
     group.add(body);
 
     // Posts.
-    const postGeo = new THREE.CylinderGeometry(0.045, 0.045, 2.9, 8);
+    const postGeo = new THREE.CylinderGeometry(0.045, 0.045, 3.35, 8);
     for (const [x, z] of [[-1.45, -0.62], [1.45, -0.62], [-1.45, 0.95], [1.45, 0.95]]) {
       const post = new THREE.Mesh(postGeo, iron);
-      post.position.set(x, 1.45 - (z > 0 ? 0.2 : 0), z);
+      post.position.set(x, 1.675 - (z > 0 ? 0.2 : 0), z);
       post.scale.y = z > 0 ? 0.86 : 1;
       post.castShadow = true;
       group.add(post);
@@ -307,19 +308,19 @@ export class EtalsScene extends Stage {
     const awningMat = new THREE.MeshStandardMaterial({ map: awningTexture(p.accent), side: THREE.DoubleSide, roughness: 0.85 });
     this.flutter(awningMat, 0.03);
     const awning = new THREE.Mesh(new THREE.PlaneGeometry(3.2, 1.9, 24, 10), awningMat);
-    awning.position.set(0, 2.68, 0.2);
+    awning.position.set(0, 3.13, 0.2);
     awning.rotation.x = -Math.PI / 2 + 0.28;
     awning.castShadow = true;
     group.add(awning);
     const valMat = new THREE.MeshStandardMaterial({ map: valanceTexture(p.accent), transparent: true, alphaTest: 0.4, side: THREE.DoubleSide });
     this.flutter(valMat, 0.04);
     const valance = new THREE.Mesh(new THREE.PlaneGeometry(3.2, 0.36, 24, 2), valMat);
-    valance.position.set(0, 2.24, 1.12);
+    valance.position.set(0, 2.69, 1.12);
     group.add(valance);
 
     // Hanging painted sign, hinged at the top so it can swing.
     const sign = new THREE.Group();
-    sign.position.set(0, 3.95, 0.35);
+    sign.position.set(0, 4.38, 0.35);
     const board = new THREE.Mesh(
       new THREE.BoxGeometry(2.3, 0.65, 0.05),
       [iron, iron, iron, iron, new THREE.MeshStandardMaterial({ map: signTexture(p), roughness: 0.5 }), iron],
@@ -347,20 +348,23 @@ export class EtalsScene extends Stage {
     stand.position.y = 0.12;
     const foot = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.03, 0.32), iron);
     screen.add(frame, face, stand, foot);
-    screen.rotation.x = -0.12;
+    // A large display: the product's real screen is what the stall sells.
+    screen.scale.setScalar(1.42);
+    screen.rotation.x = -0.1;
+    face.userData['screen'] = true;
     group.add(screen);
 
     // A few goods on the table, in the product colour.
     const goodsMat = new THREE.MeshStandardMaterial({ color: p.accent, roughness: 0.6 });
     const pale = new THREE.MeshStandardMaterial({ color: new THREE.Color(p.accent).lerp(new THREE.Color('#FFFFFF'), 0.6) });
     const boxA = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.24, 0.26), goodsMat);
-    boxA.position.set(1.08, 1.08, 0.18);
+    boxA.position.set(1.3, 1.08, 0.3);
     boxA.rotation.y = 0.3;
     const boxB = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.18, 0.2), pale);
-    boxB.position.set(1.06, 1.29, 0.16);
+    boxB.position.set(1.28, 1.29, 0.28);
     boxB.rotation.y = -0.2;
     const basket = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.16, 0.2, 16, 1, true), wood);
-    basket.position.set(-1.05, 1.06, 0.25);
+    basket.position.set(-1.3, 1.06, 0.35);
     for (const g of [boxA, boxB, basket]) {
       g.castShadow = true;
       group.add(g);
@@ -387,8 +391,8 @@ export class EtalsScene extends Stage {
       };
     }
     return {
-      pos: new THREE.Vector3(s.x - 4.4, 2.15, s.z + 7.6),
-      target: new THREE.Vector3(s.x - 2.1, 1.75, s.z - 0.4),
+      pos: new THREE.Vector3(s.x - 4.4, 2.35, s.z + 7.4),
+      target: new THREE.Vector3(s.x - 2.1, 2.0, s.z - 0.4),
     };
   }
 
@@ -445,7 +449,8 @@ export class EtalsScene extends Stage {
     el.addEventListener('pointermove', (e) => {
       const r = el.getBoundingClientRect();
       this.pointer.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
-      el.style.cursor = this.hit(this.pointer) !== null ? 'pointer' : 'grab';
+      const h = this.hitDetail(this.pointer);
+      el.style.cursor = h && h.index === this.active && h.screen ? 'zoom-in' : h ? 'pointer' : 'grab';
     });
     el.addEventListener('pointerdown', (e) => {
       this.downAt = { x: e.clientX, y: e.clientY, t: performance.now() };
@@ -458,20 +463,23 @@ export class EtalsScene extends Stage {
       if (Math.hypot(dx, dy) < 6) {
         const r = el.getBoundingClientRect();
         const p = new THREE.Vector2(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
-        const idx = this.hit(p);
-        if (idx !== null) this.onSelect(idx);
+        const h = this.hitDetail(p);
+        if (!h) return;
+        if (h.index === this.active && h.screen) this.onZoom(h.index);
+        else this.onSelect(h.index);
       }
     });
     el.addEventListener('pointerleave', () => this.pointer.set(0, 0));
   }
 
-  private hit(p: THREE.Vector2): number | null {
+  /** Which stall is under the pointer, and whether it is that stall's screen. */
+  private hitDetail(p: THREE.Vector2): { index: number; screen: boolean } | null {
     this.raycaster.setFromCamera(p, this.camera);
     const hits = this.raycaster.intersectObjects(this.stalls.map((s) => s.group), true);
     for (const h of hits) {
       let o: THREE.Object3D | null = h.object;
       while (o && o.userData['index'] === undefined) o = o.parent;
-      if (o) return o.userData['index'] as number;
+      if (o) return { index: o.userData['index'] as number, screen: h.object.userData['screen'] === true };
     }
     return null;
   }

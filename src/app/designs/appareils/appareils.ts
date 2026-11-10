@@ -6,13 +6,14 @@ import { DemoForm } from '../../shared/demo-form';
 import { Icon } from '../../shared/icon';
 import { SiteFooter } from '../../shared/site-footer';
 import { SceneNav } from '../../shared/scene-nav';
+import { ScreenViewer } from '../../shared/screen-viewer';
 import { SiteHeader } from '../../shared/site-header';
 import { Swipe } from '../../shared/swipe';
 import type { AppareilsScene } from '../../three/appareils-scene';
 
 @Component({
   selector: 'app-appareils',
-  imports: [SiteHeader, CatalogIndex, DemoForm, SiteFooter, Icon, SceneNav, Swipe],
+  imports: [SiteHeader, CatalogIndex, DemoForm, SiteFooter, Icon, SceneNav, Swipe, ScreenViewer],
   providers: [Showcase],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './appareils.html',

@@ -14,7 +14,7 @@
   >
     <div class="scene" appSwipe (swipeLeft)="nav.go(1)" (swipeRight)="nav.go(-1)">
       <canvas #canvas class="scene-canvas" aria-hidden="true"></canvas>
-      <app-scene-nav #nav tone="dark" />
+      <app-scene-nav #nav (zoom)="showcase.active() && viewer.open(showcase.active()!)" tone="dark" />
     </div>
 
     @for (p of [showcase.active()]; track p?.id) {
@@ -27,6 +27,11 @@
             <button type="button" class="btn btn--primary" (click)="showcase.requestDemo(p.slug)">
               <app-icon name="chat" /> Demander une démo
             </button>
+            @if (p.imageUrl || p.mobileImageUrl) {
+              <button type="button" class="btn btn--ghost btn--zoom" (click)="viewer.open(p)" aria-haspopup="dialog">
+                <app-icon name="zoom" /> Agrandir l’écran
+              </button>
+            }
             <a class="btn btn--ghost" [href]="'#produit-' + p.slug">Voir le détail</a>
           </div>
         </div>
@@ -69,3 +74,4 @@
   <app-demo-form title="Passez nous voir à l’étal" />
 </main>
 <app-site-footer />
+<app-screen-viewer #viewer />

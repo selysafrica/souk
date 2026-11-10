@@ -18,7 +18,7 @@
     }
     <div class="scene" appSwipe (swipeLeft)="nav.go(1)" (swipeRight)="nav.go(-1)">
       <canvas #canvas class="scene-canvas" aria-hidden="true"></canvas>
-      <app-scene-nav #nav tone="light" />
+      <app-scene-nav #nav (zoom)="showcase.active() && viewer.open(showcase.active()!)" tone="light" />
     </div>
 
     @for (p of [showcase.active()]; track p?.id) {
@@ -31,6 +31,11 @@
             <button type="button" class="btn btn--primary" (click)="showcase.requestDemo(p.slug)">
               <app-icon name="chat" /> Demander une démo
             </button>
+            @if (p.imageUrl || p.mobileImageUrl) {
+              <button type="button" class="btn btn--ghost btn--zoom" (click)="viewer.open(p)" aria-haspopup="dialog">
+                <app-icon name="zoom" /> Agrandir l’écran
+              </button>
+            }
             <button type="button" class="btn btn--ghost" [attr.aria-pressed]="open()" (click)="toggle()" [disabled]="!ready()">
               <app-icon name="open" /> {{ open() ? 'Refermer le coffret' : 'Ouvrir le coffret' }}
             </button>
@@ -71,3 +76,4 @@
   <app-demo-form title="Ouvrons le coffret ensemble" />
 </main>
 <app-site-footer />
+<app-screen-viewer #viewer />

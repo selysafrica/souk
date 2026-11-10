@@ -1,4 +1,4 @@
-import { afterNextRender, ChangeDetectionStrategy, Component, computed, DestroyRef, ElementRef, inject, input, signal, viewChild } from '@angular/core';
+import { afterNextRender, ChangeDetectionStrategy, Component, computed, DestroyRef, inject, input, output, signal } from '@angular/core';
 import { Showcase } from '../core/showcase';
 import { Icon } from './icon';
 
@@ -38,7 +38,7 @@ const HINT_KEY = 'souk-swipe-hint-seen';
       </div>
       @if (showcase.active(); as p) {
         @if (p.mobileImageUrl || p.imageUrl) {
-          <button type="button" class="zoom" (click)="openViewer()" aria-haspopup="dialog" [attr.aria-label]="'Agrandir l’écran de ' + p.name">
+          <button type="button" class="zoom" (click)="zoom.emit()" aria-haspopup="dialog" [attr.aria-label]="'Agrandir l’écran de ' + p.name">
             <app-icon name="zoom" />
           </button>
         }
@@ -49,18 +49,6 @@ const HINT_KEY = 'souk-swipe-hint-seen';
         </p>
       }
     }
-    <!-- Native modal dialog: opens in the top layer, above the header and the scene. -->
-    <dialog #viewer class="viewer" [attr.aria-label]="'Écran de ' + (showcase.active()?.name ?? '')" (close)="zoomOpen.set(false)">
-      @if (zoomOpen() && showcase.active(); as p) {
-        <div class="viewer-bar">
-          <p>{{ p.name }} <span>· pincez pour zoomer</span></p>
-          <button type="button" class="viewer-close" (click)="closeViewer()" aria-label="Fermer"><app-icon name="close" /></button>
-        </div>
-        <div class="viewer-body">
-          <img [src]="p.mobileImageUrl || p.imageUrl" [alt]="'Écran de ' + p.name + ' sur téléphone'" />
-        </div>
-      }
-    </dialog>
   `,
   styles: `
     :host {
@@ -102,21 +90,6 @@ const HINT_KEY = 'souk-swipe-hint-seen';
       border: 1px solid var(--nav-line); background: var(--nav-bg); color: var(--nav-fg); backdrop-filter: blur(8px);
     }
     .zoom app-icon { --icon: 22px; }
-    .viewer {
-      width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0;
-      flex-direction: column; background: rgba(2, 30, 32, 0.97); color: #fff;
-    }
-    .viewer[open] { display: flex; animation: appear .25s var(--ease-out); }
-    .viewer::backdrop { background: rgba(2, 30, 32, 0.6); }
-    .viewer-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 10px 10px 18px; }
-    .viewer-bar p { margin: 0; font-weight: 800; }
-    .viewer-bar span { font-weight: 500; opacity: .75; font-size: .875rem; }
-    .viewer-close { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 50%; border: 1px solid rgba(255,255,255,.3); background: transparent; color: #fff; }
-    .viewer-close app-icon { --icon: 22px; }
-    /* Native pinch-zoom and panning inside the viewer. */
-    .viewer-body { flex: 1; overflow: auto; touch-action: pan-x pan-y pinch-zoom; padding: 0 16px 24px; display: flex; justify-content: center; align-items: flex-start; }
-    .viewer-body img { width: min(100%, 520px); height: auto; border-radius: 14px; box-shadow: 0 20px 40px -20px rgba(0,0,0,.8); }
-    @keyframes appear { from { opacity: 0; transform: scale(.98); } }
     .hint {
       position: absolute; left: 50%; top: var(--nav-top, 14px); transform: translateX(-50%); margin: 0;
       display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;
@@ -134,17 +107,7 @@ export class SceneNav {
   readonly tone = input<'dark' | 'light'>('dark');
   protected readonly count = computed(() => this.showcase.products().length);
   protected readonly hint = signal(false);
-  protected readonly zoomOpen = signal(false);
-  private readonly viewer = viewChild<ElementRef<HTMLDialogElement>>('viewer');
-
-  protected openViewer() {
-    this.zoomOpen.set(true);
-    this.viewer()?.nativeElement.showModal();
-  }
-
-  protected closeViewer() {
-    this.viewer()?.nativeElement.close();
-  }
+  readonly zoom = output<void>();
   private timer = 0;
 
   constructor() {

@@ -6,13 +6,14 @@ import { DemoForm } from '../../shared/demo-form';
 import { Icon } from '../../shared/icon';
 import { SiteFooter } from '../../shared/site-footer';
 import { SceneNav } from '../../shared/scene-nav';
+import { ScreenViewer } from '../../shared/screen-viewer';
 import { SiteHeader } from '../../shared/site-header';
 import { Swipe } from '../../shared/swipe';
 import type { EtalsScene } from '../../three/etals-scene';
 
 @Component({
   selector: 'app-etals',
-  imports: [SiteHeader, CatalogIndex, DemoForm, SiteFooter, Icon, SceneNav, Swipe],
+  imports: [SiteHeader, CatalogIndex, DemoForm, SiteFooter, Icon, SceneNav, Swipe, ScreenViewer],
   providers: [Showcase],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './etals.html',
@@ -22,6 +23,7 @@ export class Etals {
   readonly catalog = input.required<CatalogData>();
   protected readonly showcase = inject(Showcase);
   private readonly canvas = viewChild<ElementRef<HTMLCanvasElement>>('canvas');
+  private readonly viewer = viewChild(ScreenViewer);
   protected readonly ready = signal(false);
   protected readonly failed = signal(false);
   private scene: EtalsScene | null = null;
@@ -34,7 +36,12 @@ export class Etals {
       if (!el || !this.showcase.products().length) return;
       try {
         const { EtalsScene } = await import('../../three/etals-scene');
-        this.scene = new EtalsScene(el, this.showcase.products(), (i) => this.showcase.select(i));
+        this.scene = new EtalsScene(
+          el,
+          this.showcase.products(),
+          (i) => this.showcase.select(i),
+          (i) => this.viewer()?.open(this.showcase.products()[i]),
+        );
         await this.scene.build(this.showcase.index());
         this.ready.set(true);
       } catch (e) {
