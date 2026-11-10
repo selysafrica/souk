@@ -81,3 +81,12 @@ Exposition HTTPS, une seule option dans `.env` :
 | `deploy/backup.sh` | copie cohérente de la base dans `backups/` (14 conservées) |
 
 La base SQLite vit dans le volume Docker `souk_souk_data` : les mises à jour ne la touchent pas. Restauration : voir l'en-tête de `deploy/backup.sh`.
+
+## Indexation et partage
+
+- Chaque page est rendue côté serveur avec titre, description, URL canonique, Open Graph, carte Twitter et données structurées (JSON-LD : organisation + liste des logiciels).
+- Un lien vers un produit (`/?produit=beagec`) montre le nom, l'accroche et la carte du produit dans WhatsApp, Facebook, LinkedIn ou X.
+- Cartes de partage (1200 × 630, JPG) : `public/og/souk.jpg` pour le catalogue et `public/og/<slug>.jpg` par produit. Un produit ajouté sans carte utilise celle du catalogue.
+- `/robots.txt` et `/sitemap.xml` sont générés à partir des produits publiés ; `/admin` n'est jamais indexé.
+- Les URL absolues utilisent `SITE_URL`, ou à défaut `https://APP_DOMAIN`.
+- Après la mise en ligne : déclarer `https://souk.selys-africa.com/sitemap.xml` dans Google Search Console, et vérifier l'aperçu avec le débogueur de partage de Facebook ou le Post Inspector de LinkedIn.

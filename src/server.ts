@@ -7,6 +7,7 @@ import {
 import express from 'express';
 import { join } from 'node:path';
 import { createApi } from './server/api';
+import { createSeoRoutes } from './server/seo-routes';
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
@@ -35,6 +36,12 @@ app.disable('x-powered-by');
 // Behind Nginx / Caddy: read the visitor's address from X-Forwarded-For (admin login throttling).
 app.set('trust proxy', process.env['TRUST_PROXY'] ?? 'loopback, uniquelocal');
 app.use('/api', createApi());
+app.use(createSeoRoutes());
+// The admin is never indexed, whatever the crawler reads first.
+app.use('/admin', (_req, res, next) => {
+  res.setHeader('X-Robots-Tag', 'noindex, nofollow');
+  next();
+});
 
 /**
  * Serve static files from /browser. Hashed build files are cached for a year;

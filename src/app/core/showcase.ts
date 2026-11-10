@@ -2,12 +2,14 @@ import { Location } from '@angular/common';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import type { Product } from './catalog.model';
+import { Seo } from './seo';
 
 /** Per-page state shared by a presentation and its sections: the active product and the demo request. */
 @Injectable()
 export class Showcase {
   private readonly location = inject(Location);
   private readonly route = inject(ActivatedRoute);
+  private readonly seo = inject(Seo);
   readonly products = signal<Product[]>([]);
   readonly index = signal(0);
   readonly active = computed(() => this.products()[this.index()] ?? null);
@@ -19,6 +21,8 @@ export class Showcase {
     const found = slug ? products.findIndex((p) => p.slug === slug) : -1;
     this.index.set(found >= 0 ? found : 0);
     this.demoSlug.set(this.active()?.slug ?? '');
+    // Without ?produit, the page speaks for the whole catalogue.
+    this.seo.forCatalog(products, found >= 0 ? this.active() : null);
   }
 
   /** Selects a product, wrapping around the ends; returns the new index. */
@@ -28,6 +32,7 @@ export class Showcase {
     const next = ((i % n) + n) % n;
     this.index.set(next);
     this.demoSlug.set(this.products()[next].slug);
+    this.seo.forCatalog(this.products(), this.products()[next]);
     const path = this.location.path().split('?')[0];
     this.location.replaceState(path, `produit=${this.products()[next].slug}`);
     return next;

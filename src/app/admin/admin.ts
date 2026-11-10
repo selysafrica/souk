@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDragPlaceholder, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -14,6 +14,7 @@ import {
 } from '../core/catalog.model';
 import { Icon } from '../shared/icon';
 import { adminApi, ApiError } from './admin-api';
+import { Seo } from '../core/seo';
 
 type Tab = 'produits' | 'presentation' | 'demandes';
 
@@ -59,6 +60,10 @@ export class Admin implements OnInit {
   protected password = '';
   protected readonly loginError = signal('');
   private slugTouched = false;
+
+  constructor() {
+    inject(Seo).noindex('Administration du catalogue · Souk');
+  }
 
   async ngOnInit() {
     try {
