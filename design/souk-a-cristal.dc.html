@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta charset="utf-8">
+<title>Souk — Selys Africa</title>
+<script src="assets/dc-runtime.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<style>/* cyrillic-ext */
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 200;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/geist/v5/gyByhwUxId8gMEwRGFWfOw.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 200;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/geist/v5/gyByhwUxId8gMEwYGFWfOw.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 200;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/geist/v5/gyByhwUxId8gMEwTGFWfOw.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 200;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/geist/v5/gyByhwUxId8gMEwSGFWfOw.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 200;
+  font-display: swap;
+  src: url("assets/geist-200.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/geist/v5/gyByhwUxId8gMEwRGFWfOw.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/geist/v5/gyByhwUxId8gMEwYGFWfOw.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/geist/v5/gyByhwUxId8gMEwTGFWfOw.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/geist/v5/gyByhwUxId8gMEwSGFWfOw.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url("assets/geist-200.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/geist/v5/gyByhwUxId8gMEwRGFWfOw.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/geist/v5/gyByhwUxId8gMEwYGFWfOw.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/geist/v5/gyByhwUxId8gMEwTGFWfOw.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/geist/v5/gyByhwUxId8gMEwSGFWfOw.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/geist-200.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/geist/v5/gyByhwUxId8gMEwRGFWfOw.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/geist/v5/gyByhwUxId8gMEwYGFWfOw.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/geist/v5/gyByhwUxId8gMEwTGFWfOw.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/geist/v5/gyByhwUxId8gMEwSGFWfOw.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/geist-200.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/geist/v5/gyByhwUxId8gMEwRGFWfOw.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/geist/v5/gyByhwUxId8gMEwYGFWfOw.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/geist/v5/gyByhwUxId8gMEwTGFWfOw.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/geist/v5/gyByhwUxId8gMEwSGFWfOw.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("assets/geist-200.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/instrumentserif/v5/jizHRFtNs2ka5fXjeivQ4LroWlx-6zAjgn7MsNo.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/instrument-serif-italic.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/instrumentserif/v5/jizBRFtNs2ka5fXjeivQ4LroWlx-6zsTjmbI.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/instrumentserif/v5/jizBRFtNs2ka5fXjeivQ4LroWlx-6zUTjg.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+</style>
+<style>
+body{margin:0;background:#F4F2F7}
+a{color:#4B3FB0}a:hover{color:#2E2580}
+*{box-sizing:border-box}
+@keyframes k-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
+@keyframes k-spin{to{transform:rotate(360deg)}}
+@keyframes k-holo{0%{background-position:0% 50%}100%{background-position:300% 50%}}
+@keyframes k-drift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(6vw,-4vh) scale(1.08)}66%{transform:translate(-5vw,5vh) scale(.94)}}
+@keyframes k-rise{from{opacity:0;transform:translateY(30px);filter:blur(8px)}to{opacity:1;transform:none;filter:none}}
+@keyframes k-enter{from{transform:scale(.06);border-radius:50%;opacity:.2}60%{opacity:1}to{transform:none;border-radius:0;opacity:1}}
+.orb-float{animation:k-float 9s ease-in-out infinite}
+.orb-spin{animation:k-spin 16s linear infinite}
+.aurora{animation:k-drift 26s ease-in-out infinite}
+.holo-text{background:linear-gradient(100deg,#17151F 0%,#17151F 18%,#7A63E8 30%,#3FBFB6 42%,#F09AC6 54%,#F2B98A 64%,#17151F 78%,#17151F 100%);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:k-holo 9s linear infinite}
+.rise{animation:k-rise 1.1s cubic-bezier(.2,.7,.1,1) both}
+.orbwrap .orb-body{transition:transform .7s cubic-bezier(.2,.7,.1,1),opacity .5s,filter .5s}
+.orbwrap:hover .orb-body,.orbwrap:focus-visible .orb-body{transform:scale(1.09)}
+.orbwrap:focus-visible{outline:none}
+.orbwrap:focus-visible .orb-body{box-shadow:0 0 0 3px #17151F}
+.orbwrap .orb-hint{opacity:0;transform:translateY(8px);transition:opacity .4s,transform .4s}
+.orbwrap:hover .orb-hint,.orbwrap:focus-visible .orb-hint{opacity:1;transform:none}
+.orbwrap.dim .orb-body{opacity:.25;filter:blur(4px) saturate(.5)}
+.chip{transition:background .3s,color .3s,box-shadow .3s}
+.chip:hover{box-shadow:0 10px 30px -14px rgba(80,60,160,.5)}
+.chip.on{background:#17151F;color:#F4F2F7}
+.btn-ink{transition:transform .3s,box-shadow .3s}
+.btn-ink:hover{transform:translateY(-2px);box-shadow:0 18px 40px -16px rgba(80,60,160,.7)}
+.glass-btn{transition:background .3s}
+.glass-btn:hover{background:rgba(255,255,255,.8)}
+.uni{animation:k-enter .95s cubic-bezier(.75,0,.15,1) both}
+.uni-in{animation:k-rise 1s .45s cubic-bezier(.2,.7,.1,1) both}
+.uni-in2{animation:k-rise 1s .6s cubic-bezier(.2,.7,.1,1) both}
+input:focus,select:focus,textarea:focus{outline:2px solid #7A63E8;outline-offset:2px}
+@keyframes k-pop{0%{transform:scale(0);opacity:0}70%{transform:scale(1.12);opacity:1}100%{transform:scale(1);opacity:1}}
+@keyframes k-up{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+@keyframes k-down{0%,100%{transform:translateY(0)}50%{transform:translateY(16px)}}
+@keyframes k-scene{0%{opacity:0;transform:scale(.94);filter:blur(14px)}18%{opacity:1;transform:none;filter:none}82%{opacity:1;transform:none;filter:none}100%{opacity:0;transform:scale(1.04);filter:blur(10px)}}
+@keyframes k-last{0%{opacity:0;transform:scale(.94);filter:blur(14px)}25%{opacity:1;transform:none;filter:none}100%{opacity:1;transform:scale(1.02)}}
+.scene{animation:k-scene 2.7s cubic-bezier(.3,.6,.2,1) both}
+.scene-last{animation:k-last 2.7s cubic-bezier(.3,.6,.2,1) both}
+.pop{animation:k-pop .9s cubic-bezier(.2,.9,.2,1.2) both}
+.bounce-up{animation:k-up 1.2s ease-in-out infinite}
+.bounce-down{animation:k-down 1.2s ease-in-out infinite}
+.still .orb-float,.still .orb-spin,.still .aurora,.still .holo-text{animation:none}
+@media (max-width:820px){
+.field{height:auto!important;display:grid!important;grid-template-columns:1fr 1fr;gap:28px 16px}
+.field .orbwrap{position:relative!important;left:auto!important;top:auto!important;width:100%!important;height:auto!important;aspect-ratio:1;transform:none!important}
+.hero-orb{opacity:.55}
+}
+@media (prefers-reduced-motion:reduce){.orb-float,.orb-spin,.aurora,.holo-text,.rise,.uni,.uni-in,.uni-in2{animation:none}}
+</style>
+</helmet>
+
+<div class="{{rootCls}}" sc-camel-on-mouse-move="{{move}}" style="position: relative; font-family: Geist, system-ui, sans-serif; color: #17151F; background: #F4F2F7; min-height: 100vh; overflow-x: hidden">
+
+<!-- AURORA -->
+<div aria-hidden="true" style="position: absolute; inset: 0 0 auto 0; height: 1100px; overflow: hidden; pointer-events: none">
+<div class="aurora" style="position: absolute; left: -10%; top: -20%; width: 70vw; height: 70vw; max-width: 900px; max-height: 900px; border-radius: 50%; background: #D9CCFF; filter: blur(110px); opacity: .85"></div>
+<div class="aurora" style="position: absolute; right: -15%; top: 5%; width: 60vw; height: 60vw; max-width: 820px; max-height: 820px; border-radius: 50%; background: #BDEFEA; filter: blur(110px); opacity: .8; animation-delay: -9s"></div>
+<div class="aurora" style="position: absolute; left: 30%; top: 45%; width: 50vw; height: 50vw; max-width: 700px; max-height: 700px; border-radius: 50%; background: #FFD9E8; filter: blur(120px); opacity: .7; animation-delay: -17s"></div>
+</div>
+
+<!-- NAV -->
+<header style="position: sticky; top: 16px; z-index: 20; max-width: 1320px; margin: 16px auto 0; padding: 0 24px">
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding: 10px 10px 10px 22px; border-radius: 999px; background: rgba(255,255,255,.5); backdrop-filter: blur(24px) saturate(1.5); -webkit-backdrop-filter: blur(24px) saturate(1.5); border: 1px solid rgba(255,255,255,.9); box-shadow: 0 20px 60px -30px rgba(70,50,150,.35)">
+<a href="#top" style="display: flex; align-items: center; gap: 12px; color: #17151F; text-decoration: none">
+<span aria-hidden="true" style="width: 28px; height: 28px; border-radius: 50%; background: radial-gradient(circle at 32% 28%, #FFFFFF 0%, rgba(255,255,255,0) 40%), conic-gradient(from 210deg, #C9B8FF, #9EE7E3, #FFD3B8, #FFB8DE, #C9B8FF); box-shadow: inset 0 0 0 1px rgba(255,255,255,.9)"></span>
+<span style="font-size: 18px; font-weight: 500; letter-spacing: -.02em">Selys <span style="font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; font-size: 21px">Souk</span></span>
+</a>
+<nav aria-label="Navigation principale" style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 15px">
+<a href="#balade" style="padding: 12px 16px; color: #3A3646; text-decoration: none">La balade</a>
+<a href="#ateliers" style="padding: 12px 16px; color: #3A3646; text-decoration: none">Les ateliers</a>
+<a href="#marchand" class="btn-ink" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 22px; border-radius: 999px; background: #17151F; color: #F4F2F7; text-decoration: none; font-weight: 500">Parler à un marchand</a>
+</nav>
+</div>
+</header>
+
+<!-- HERO -->
+<section id="top" style="position: relative; max-width: 1320px; margin: 0 auto; padding: 120px 40px 140px; min-height: 900px">
+<div class="hero-orb" aria-hidden="true" style="position: absolute; right: 2%; top: 70px; width: min(600px, 62vw); aspect-ratio: 1; transform: translate({{heroX}}, {{heroY}}); transition: transform 1.2s cubic-bezier(.2,.7,.1,1)">
+<div class="orb-float" style="width: 100%; height: 100%">
+<div style="position: relative; width: 100%; height: 100%; border-radius: 50%; overflow: hidden; background: radial-gradient(circle at 30% 24%, rgba(255,255,255,.98) 0%, rgba(255,255,255,0) 32%), radial-gradient(circle at 75% 80%, #FFB8DE 0%, rgba(255,255,255,0) 55%), radial-gradient(circle at 20% 80%, #9EE7E3 0%, rgba(255,255,255,0) 50%), radial-gradient(circle at 50% 50%, #E2D8FF 0%, #C9B8FF 100%); box-shadow: inset 0 0 0 1px rgba(255,255,255,.95), inset 0 -40px 90px rgba(255,255,255,.6), inset 30px 40px 80px rgba(255,255,255,.65), 0 80px 160px -60px rgba(110,80,220,.55)">
+<div class="orb-spin" style="position: absolute; inset: -25%; background: conic-gradient(from 0deg, rgba(255,255,255,0) 0deg, rgba(255,255,255,.85) 35deg, rgba(255,255,255,0) 80deg, #9EE7E3 150deg, rgba(255,255,255,0) 210deg, #FFD3B8 260deg, rgba(255,255,255,.7) 300deg, rgba(255,255,255,0) 340deg); mix-blend-mode: soft-light; opacity: {{holo}}"></div>
+<div style="position: absolute; left: 17%; top: 11%; width: 36%; height: 20%; border-radius: 50%; background: rgba(255,255,255,.8); filter: blur(16px); transform: rotate(-26deg)"></div>
+<div style="position: absolute; right: 16%; bottom: 14%; width: 14%; height: 8%; border-radius: 50%; background: rgba(255,255,255,.7); filter: blur(10px); transform: rotate(-26deg)"></div>
+</div>
+</div>
+</div>
+
+<sc-if value="{{showHero}}" hint-placeholder-val="{{ true }}">
+<div style="position: relative; max-width: 760px">
+<p class="rise" style="margin: 0; display: inline-flex; align-items: center; gap: 10px; padding: 9px 16px; border-radius: 999px; background: rgba(255,255,255,.55); border: 1px solid rgba(255,255,255,.95); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); font-size: 13px; letter-spacing: .04em; color: #3A3646"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: conic-gradient(#C9B8FF, #9EE7E3, #FFB8DE, #C9B8FF)"></span>Selys Africa · La vitrine de toutes nos solutions</p>
+<h1 class="rise holo-text" style="margin: 36px 0 0; font-weight: 200; font-size: clamp(150px, 23vw, 330px); line-height: .8; letter-spacing: -.07em; animation-delay: .1s">Souk</h1>
+<p class="rise" style="margin: 44px 0 0; max-width: 540px; font-size: clamp(20px, 1.8vw, 25px); line-height: 1.45; font-weight: 300; color: #3A3646; animation-delay: .22s"><span style="font-family: 'Instrument Serif', serif; font-style: italic; font-size: 1.25em; color: #17151F">Flânez.</span> Une bulle attire votre regard ? Touchez-la, et entrez dans son univers.</p>
+<div class="rise" style="margin-top: 48px; display: flex; flex-wrap: wrap; gap: 14px; animation-delay: .32s">
+<a href="#balade" class="btn-ink" style="display: inline-flex; align-items: center; gap: 12px; min-height: 58px; padding: 0 30px; border-radius: 999px; background: #17151F; color: #F4F2F7; text-decoration: none; font-weight: 500; font-size: 16px">Commencer la balade
+<svg width="18" height="18" sc-camel-view-box="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12l7 7 7-7"></path></svg></a>
+<a href="#marchand" class="glass-btn" style="display: inline-flex; align-items: center; min-height: 58px; padding: 0 30px; border-radius: 999px; background: rgba(255,255,255,.5); border: 1px solid rgba(255,255,255,.95); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: #17151F; text-decoration: none; font-size: 16px">Parler à un marchand</a>
+</div>
+<button type="button" class="rise glass-btn" sc-camel-on-click="{{replay}}" style="margin-top: 56px; display: inline-flex; align-items: center; gap: 14px; min-height: 52px; padding: 6px 20px 6px 6px; border-radius: 999px; border: 1px solid #FFFFFF; background: rgba(255,255,255,.45); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: #17151F; font: inherit; font-size: 15px; cursor: pointer; animation-delay: .42s">
+<span aria-hidden="true" style="width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at 32% 28%, #FFFFFF 0%, rgba(255,255,255,0) 45%), conic-gradient(from 210deg, #C9B8FF, #9EE7E3, #FFD3B8, #FFB8DE, #C9B8FF); box-shadow: inset 0 0 0 1px #FFFFFF">
+<svg width="14" height="14" sc-camel-view-box="0 0 24 24" fill="#17151F"><path d="M7 4l13 8-13 8z"></path></svg></span>
+Revoir le film d’accueil</button>
+</div>
+</sc-if>
+</section>
+
+<!-- LE FILM -->
+<section id="film" style="position: relative; max-width: 1320px; margin: 0 auto; padding: 40px 40px 120px">
+<div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 32px">
+<div>
+<p style="margin: 0 0 18px; font-size: 13px; letter-spacing: .24em; text-transform: uppercase; color: #5E5A6B">Le film</p>
+<h2 style="margin: 0; font-weight: 200; font-size: clamp(50px, 6vw, 92px); line-height: .96; letter-spacing: -.045em">Selys Africa,<br><span style="font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; letter-spacing: -.02em">en quarante secondes.</span></h2>
+</div>
+<p style="margin: 0; max-width: 360px; font-size: 17px; line-height: 1.6; color: #5E5A6B">Regardez le film, sautez au chapitre qui vous intéresse, puis touchez une solution pour entrer dans son univers.</p>
+</div>
+<div style="margin-top: 56px; padding: 12px; border-radius: 40px; background: rgba(255,255,255,.5); border: 1px solid #FFFFFF; backdrop-filter: blur(24px) saturate(1.4); -webkit-backdrop-filter: blur(24px) saturate(1.4); box-shadow: 0 80px 160px -80px rgba(70,50,150,.6)">
+<video ref="{{vidRef}}" src="assets/souk-film.mp4" poster="assets/souk-film-poster.jpg" controls="" playsinline="" preload="metadata" aria-label="Film de présentation Selys Africa" style="display: block; width: 100%; aspect-ratio: 16 / 9; border-radius: 30px; background: #0E3B3A; object-fit: cover"></video>
+</div>
+<div role="group" aria-label="Chapitres du film" style="margin-top: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr)); gap: 10px">
+<sc-for list="{{chapters}}" as="c" hint-placeholder-count="6">
+<button type="button" class="glass-btn" sc-camel-on-click="{{c.go}}" style="display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 16px 18px; border-radius: 20px; border: 1px solid #FFFFFF; background: rgba(255,255,255,.45); color: #17151F; font: inherit; text-align: left; cursor: pointer">
+<span style="font-size: 12px; letter-spacing: .14em; color: #5E5A6B">{{c.time}}</span>
+<span style="font-size: 16px">{{c.label}}</span></button>
+</sc-for>
+</div>
+<div style="margin-top: 56px">
+<p style="margin: 0 0 18px; font-size: 13px; letter-spacing: .24em; text-transform: uppercase; color: #5E5A6B">Les 11 solutions du film</p>
+<div style="display: flex; flex-wrap: wrap; gap: 10px">
+<sc-for list="{{filmOrbs}}" as="o" hint-placeholder-count="11">
+<button type="button" class="chip" sc-camel-on-click="{{o.open}}" style="display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 20px 0 8px; border-radius: 999px; border: 1px solid #FFFFFF; background: rgba(255,255,255,.55); color: #17151F; font: inherit; font-size: 15px; cursor: pointer">
+<span aria-hidden="true" style="width: 32px; height: 32px; border-radius: 50%; background: radial-gradient(circle at 32% 26%, #FFFFFF 0%, rgba(255,255,255,0) 42%), radial-gradient(circle at 50% 50%, {{o.c3}} 0%, {{o.c1}} 100%); box-shadow: inset 0 0 0 1px #FFFFFF"></span>{{o.name}}</button>
+</sc-for>
+</div>
+</div>
+</section>
+
+<!-- LA BALADE -->
+<section id="balade" style="position: relative; max-width: 1320px; margin: 0 auto; padding: 60px 40px 140px">
+<div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 32px">
+<div>
+<p style="margin: 0 0 18px; font-size: 13px; letter-spacing: .24em; text-transform: uppercase; color: #5E5A6B">La balade</p>
+<h2 style="margin: 0; font-weight: 200; font-size: clamp(54px, 6.6vw, 100px); line-height: .95; letter-spacing: -.045em">Dix-neuf univers,<br><span style="font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; letter-spacing: -.02em">à portée de main.</span></h2>
+</div>
+<p style="margin: 0; max-width: 360px; font-size: 17px; line-height: 1.6; color: #5E5A6B">Rien ne presse. Laissez les bulles venir à vous, ou choisissez une allée pour les faire briller.</p>
+</div>
+
+<div role="group" aria-label="Choisir une allée" style="margin-top: 48px; display: flex; flex-wrap: wrap; gap: 10px">
+<sc-for list="{{allees}}" as="a" hint-placeholder-count="5">
+<button type="button" class="{{a.cls}}" aria-pressed="{{a.pressed}}" sc-camel-on-click="{{a.pick}}" style="min-height: 46px; padding: 0 20px; border-radius: 999px; border: 1px solid rgba(255,255,255,.95); background: rgba(255,255,255,.55); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: #17151F; font: inherit; font-size: 15px; cursor: pointer">{{a.label}}</button>
+</sc-for>
+</div>
+
+<div class="field" style="position: relative; margin-top: 64px; height: {{fieldH}}">
+<sc-for list="{{orbs}}" as="o" hint-placeholder-count="9">
+<button type="button" class="{{o.cls}}" sc-camel-on-click="{{o.open}}" aria-label="Entrer dans l’univers {{o.name}}" style="position: absolute; left: {{o.left}}; top: {{o.top}}; width: {{o.size}}; height: {{o.size}}; padding: 0; border: 0; background: none; border-radius: 50%; cursor: pointer; font: inherit; color: #17151F; transform: translate({{o.px}}, {{o.py}}); transition: transform 1s cubic-bezier(.2,.7,.1,1)">
+<span class="orb-float" style="display: block; width: 100%; height: 100%; animation-delay: {{o.delay}}">
+<span class="orb-body" style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; width: 100%; height: 100%; border-radius: 50%; overflow: hidden; text-align: center; background: radial-gradient(circle at 32% 26%, rgba(255,255,255,.96) 0%, rgba(255,255,255,0) 34%), radial-gradient(circle at 74% 80%, {{o.c2}} 0%, rgba(255,255,255,0) 58%), radial-gradient(circle at 50% 50%, {{o.c3}} 0%, {{o.c1}} 100%); box-shadow: inset 0 0 0 1px rgba(255,255,255,.95), inset 0 -26px 60px rgba(255,255,255,.55), inset 18px 26px 50px rgba(255,255,255,.6), 0 50px 100px -40px {{o.shadow}}">
+<span class="orb-spin" aria-hidden="true" style="position: absolute; inset: -25%; background: conic-gradient(from {{o.rot}}, rgba(255,255,255,0) 0deg, rgba(255,255,255,.8) 40deg, rgba(255,255,255,0) 90deg, {{o.c2}} 160deg, rgba(255,255,255,0) 220deg, rgba(255,255,255,.6) 280deg, rgba(255,255,255,0) 330deg); mix-blend-mode: soft-light; opacity: {{holo}}; animation-delay: {{o.delay}}"></span>
+<span aria-hidden="true" style="position: absolute; left: 17%; top: 11%; width: 36%; height: 20%; border-radius: 50%; background: rgba(255,255,255,.8); filter: blur(12px); transform: rotate(-26deg)"></span>
+<span style="position: relative; font-size: 13px; letter-spacing: .2em; color: #3A3646">{{o.no}}</span>
+<span style="position: relative; padding: 0 14%; font-size: {{o.fs}}; font-weight: 400; letter-spacing: -.03em; line-height: 1.05">{{o.name}}</span>
+<span class="orb-hint" style="position: relative; margin-top: 8px; display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 999px; background: rgba(23,21,31,.88); color: #F4F2F7; font-size: 13px">Entrer
+<svg width="13" height="13" sc-camel-view-box="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span>
+</span>
+</span>
+</button>
+</sc-for>
+</div>
+</section>
+
+<!-- ATELIERS -->
+<section id="ateliers" style="position: relative; max-width: 1320px; margin: 0 auto; padding: 60px 40px 140px">
+<p style="margin: 0 0 18px; font-size: 13px; letter-spacing: .24em; text-transform: uppercase; color: #5E5A6B">Les ateliers</p>
+<h2 style="margin: 0; max-width: 960px; font-weight: 200; font-size: clamp(50px, 6vw, 92px); line-height: .96; letter-spacing: -.045em">Six expertises,<br><span style="font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; letter-spacing: -.02em">au service de votre performance.</span></h2>
+<div style="margin-top: 72px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 24px">
+<sc-for list="{{ateliers}}" as="w" hint-placeholder-count="3">
+<div style="position: relative; padding: 40px 36px 44px; border-radius: 32px; overflow: hidden; background: rgba(255,255,255,.5); border: 1px solid rgba(255,255,255,.95); backdrop-filter: blur(24px) saturate(1.4); -webkit-backdrop-filter: blur(24px) saturate(1.4); box-shadow: 0 40px 90px -50px rgba(70,50,150,.45)">
+<div aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 0; height: 3px; background: linear-gradient(90deg, #C9B8FF, #9EE7E3, #FFD3B8, #FFB8DE)"></div>
+<svg width="64" height="64" sc-camel-view-box="0 0 64 64" aria-hidden="true">
+<defs><linearGradient id="gem-{{w.id}}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="{{w.c1}}"></stop><stop offset=".55" stop-color="#FFFFFF"></stop><stop offset="1" stop-color="{{w.c2}}"></stop></linearGradient></defs>
+<path d="M32 4 L58 24 L32 60 L6 24 Z" fill="url(#gem-{{w.id}})" stroke="#FFFFFF" stroke-width="1.2"></path>
+<path d="M6 24 H58 M32 4 L22 24 L32 60 L42 24 Z" fill="none" stroke="#FFFFFF" stroke-width="1.2" stroke-opacity=".9"></path>
+</svg>
+<h3 style="margin: 32px 0 0; font-weight: 300; font-size: 32px; line-height: 1.1; letter-spacing: -.03em">{{w.name}}</h3>
+<p style="margin: 14px 0 0; font-size: 16px; line-height: 1.6; color: #5E5A6B">{{w.text}}</p>
+</div>
+</sc-for>
+</div>
+</section>
+
+<!-- MARCHAND -->
+<section id="marchand" style="position: relative; max-width: 1320px; margin: 0 auto; padding: 60px 40px 120px">
+<div style="position: relative; overflow: hidden; border-radius: 48px; padding: clamp(32px, 6vw, 88px); background: rgba(255,255,255,.45); border: 1px solid rgba(255,255,255,.95); box-shadow: 0 60px 140px -70px rgba(70,50,150,.55)">
+<div aria-hidden="true" style="position: absolute; right: -10%; top: -30%; width: 640px; height: 640px; border-radius: 50%; background: #D9CCFF; filter: blur(100px); opacity: .8"></div>
+<div aria-hidden="true" style="position: absolute; left: -10%; bottom: -40%; width: 560px; height: 560px; border-radius: 50%; background: #BDEFEA; filter: blur(100px); opacity: .8"></div>
+<div style="position: relative; display: flex; flex-wrap: wrap; gap: 64px; align-items: flex-start">
+<div style="flex: 1 1 440px; min-width: 0">
+<p style="margin: 0 0 18px; font-size: 13px; letter-spacing: .24em; text-transform: uppercase; color: #5E5A6B">Le marchand</p>
+<h2 style="margin: 0; font-weight: 200; font-size: clamp(54px, 7vw, 108px); line-height: .92; letter-spacing: -.05em">Au souk,<br>on ne vend pas.<br><span style="font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; letter-spacing: -.02em">On discute.</span></h2>
+<p style="margin: 36px 0 0; max-width: 440px; font-size: 18px; line-height: 1.6; color: #3A3646">Dites-nous ce que vous cherchez. On vous ouvre l’univers qui vous ressemble.</p>
+<div style="margin-top: 36px; display: flex; flex-direction: column; gap: 10px; font-size: 16px">
+<a href="tel:+2252722237969" style="color: #17151F; text-decoration: none">+225 27 22 23 79 69</a>
+<a href="mailto:hi@selys-africa.com" style="color: #17151F; text-decoration: none">hi@selys-africa.com</a>
+<a href="https://www.selys-africa.com" style="color: #17151F; text-decoration: none">www.selys-africa.com</a>
+</div>
+</div>
+<form sc-camel-on-submit="{{send}}" style="flex: 1 1 400px; min-width: 0; padding: 36px; border-radius: 32px; background: rgba(255,255,255,.65); border: 1px solid #FFFFFF; backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px)">
+<sc-if value="{{sent}}" hint-placeholder-val="{{ false }}">
+<div role="status" style="padding: 48px 0; text-align: center">
+<div class="holo-text" style="font-family: 'Instrument Serif', serif; font-style: italic; font-size: 64px; line-height: 1">Merci.</div>
+<p style="margin: 14px 0 0; color: #3A3646; font-size: 16px">Le marchand vous répond très vite.</p>
+</div>
+</sc-if>
+<sc-if value="{{notSent}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<label for="souk-nom" style="font-size: 13px; color: #5E5A6B">Votre nom</label>
+<input id="souk-nom" type="text" placeholder="Prénom et nom" style="min-height: 52px; padding: 0 18px; border-radius: 16px; border: 1px solid #E2DEEA; background: #FFFFFF; color: #17151F; font: inherit; font-size: 16px">
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<label for="souk-org" style="font-size: 13px; color: #5E5A6B">Votre organisation</label>
+<input id="souk-org" type="text" placeholder="Entreprise, institution…" style="min-height: 52px; padding: 0 18px; border-radius: 16px; border: 1px solid #E2DEEA; background: #FFFFFF; color: #17151F; font: inherit; font-size: 16px">
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<label for="souk-etal" style="font-size: 13px; color: #5E5A6B">L’univers qui vous intéresse</label>
+<sc-raw-select id="souk-etal" value="{{interest}}" sc-camel-on-change="{{pickInterest}}" style="min-height: 52px; padding: 0 18px; border-radius: 16px; border: 1px solid #E2DEEA; background: #FFFFFF; color: #17151F; font: inherit; font-size: 16px">
+<option value="">Je flâne encore…</option>
+<sc-for list="{{allOrbs}}" as="x" hint-placeholder-count="9"><option value="{{x.id}}">{{x.name}}</option></sc-for>
+</sc-raw-select>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<label for="souk-msg" style="font-size: 13px; color: #5E5A6B">Ce que vous cherchez</label>
+<textarea id="souk-msg" rows="3" placeholder="Racontez-nous votre besoin" style="padding: 14px 18px; border-radius: 16px; border: 1px solid #E2DEEA; background: #FFFFFF; color: #17151F; font: inherit; font-size: 16px; resize: vertical"></textarea>
+</div>
+<button type="submit" class="btn-ink" style="min-height: 56px; border-radius: 999px; border: 0; background: #17151F; color: #F4F2F7; font: inherit; font-weight: 500; font-size: 16px; cursor: pointer">Envoyer au marchand</button>
+</div>
+</sc-if>
+</form>
+</div>
+</div>
+</section>
+
+<footer style="max-width: 1320px; margin: 0 auto; padding: 32px 40px 48px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; font-size: 14px; color: #5E5A6B">
+<span><span style="color: #17151F; font-weight: 500">Selys <span style="font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; font-size: 17px">Souk</span></span> — Nos innovations vous distinguent.</span>
+<span>hi@selys-africa.com · +225 27 22 23 79 69 — © 2026 Selys Africa</span>
+</footer>
+
+<!-- L’UNIVERS -->
+<sc-if value="{{hasSel}}" hint-placeholder-val="{{ false }}">
+<div class="uni" role="dialog" aria-modal="true" aria-label="Univers {{cur.name}}" style="position: fixed; inset: 0; z-index: 60; overflow-y: auto; overflow-x: hidden; background: #F4F2F7; transform-origin: {{ox}} {{oy}}">
+<div aria-hidden="true" style="position: fixed; inset: 0; pointer-events: none; overflow: hidden">
+<div class="aurora" style="position: absolute; left: -15%; top: -25%; width: 80vmax; height: 80vmax; border-radius: 50%; background: {{cur.c1}}; filter: blur(120px); opacity: .9"></div>
+<div class="aurora" style="position: absolute; right: -20%; bottom: -30%; width: 70vmax; height: 70vmax; border-radius: 50%; background: {{cur.c2}}; filter: blur(120px); opacity: .85; animation-delay: -12s"></div>
+</div>
+
+<div style="position: relative; max-width: 1320px; margin: 0 auto; padding: 28px 40px 0; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px">
+<button type="button" class="glass-btn" sc-camel-on-click="{{close}}" style="display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 22px; border-radius: 999px; border: 1px solid #FFFFFF; background: rgba(255,255,255,.55); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: #17151F; font: inherit; font-size: 15px; cursor: pointer">
+<svg width="16" height="16" sc-camel-view-box="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M19 12H5M11 6l-6 6 6 6"></path></svg>Revenir au souk</button>
+<span style="font-size: 14px; letter-spacing: .2em; color: #3A3646">UNIVERS {{cur.no}} / {{total}}</span>
+</div>
+
+<div style="position: relative; max-width: 1320px; margin: 0 auto; padding: 72px 40px 80px; display: flex; flex-wrap: wrap; gap: 56px; align-items: center">
+<div class="uni-in" style="flex: 1 1 560px; min-width: 0">
+<p style="margin: 0; display: inline-flex; align-items: center; gap: 10px; padding: 8px 16px; border-radius: 999px; background: rgba(255,255,255,.6); border: 1px solid #FFFFFF; font-size: 13px; color: #3A3646">{{cur.alleeLabel}}<sc-if value="{{cur.badge}}" hint-placeholder-val="{{ false }}"><span aria-hidden="true">·</span><span style="color: #17151F; font-weight: 500">{{cur.badge}}</span></sc-if></p>
+<h2 style="margin: 28px 0 0; font-weight: 200; font-size: clamp(64px, 8.5vw, 140px); line-height: .9; letter-spacing: -.06em">{{cur.name}}</h2>
+<p style="margin: 32px 0 0; max-width: 600px; font-family: 'Instrument Serif', serif; font-style: italic; font-size: clamp(26px, 2.6vw, 36px); line-height: 1.25; color: #17151F">{{cur.line1}}</p>
+<p style="margin: 28px 0 0; max-width: 560px; font-size: 17px; line-height: 1.6; color: #3A3646"><span style="font-weight: 500; color: #17151F">Pour qui · </span>{{cur.who}}</p>
+<div style="margin-top: 44px; display: flex; flex-wrap: wrap; gap: 14px">
+<button type="button" class="btn-ink" sc-camel-on-click="{{askDemo}}" style="min-height: 58px; padding: 0 30px; border-radius: 999px; border: 0; background: #17151F; color: #F4F2F7; font: inherit; font-weight: 500; font-size: 16px; cursor: pointer">Demander une démo</button>
+<button type="button" class="glass-btn" sc-camel-on-click="{{askDemo}}" style="min-height: 58px; padding: 0 30px; border-radius: 999px; border: 1px solid #FFFFFF; background: rgba(255,255,255,.55); color: #17151F; font: inherit; font-size: 16px; cursor: pointer">Marchander le prix</button>
+</div>
+</div>
+<div class="uni-in2" aria-hidden="true" style="flex: 1 1 380px; display: flex; justify-content: center">
+<div class="orb-float" style="width: min(460px, 80vw); aspect-ratio: 1">
+<div style="position: relative; width: 100%; height: 100%; border-radius: 50%; overflow: hidden; background: radial-gradient(circle at 30% 24%, rgba(255,255,255,.98) 0%, rgba(255,255,255,0) 32%), radial-gradient(circle at 74% 80%, {{cur.c2}} 0%, rgba(255,255,255,0) 58%), radial-gradient(circle at 50% 50%, {{cur.c3}} 0%, {{cur.c1}} 100%); box-shadow: inset 0 0 0 1px #FFFFFF, inset 0 -40px 90px rgba(255,255,255,.6), inset 30px 40px 80px rgba(255,255,255,.65), 0 80px 160px -60px {{cur.shadow}}">
+<div class="orb-spin" style="position: absolute; inset: -25%; background: conic-gradient(from 0deg, rgba(255,255,255,0) 0deg, rgba(255,255,255,.85) 40deg, rgba(255,255,255,0) 90deg, {{cur.c2}} 160deg, rgba(255,255,255,0) 220deg, rgba(255,255,255,.65) 280deg, rgba(255,255,255,0) 330deg); mix-blend-mode: soft-light; opacity: {{holo}}"></div>
+<div style="position: absolute; left: 17%; top: 11%; width: 36%; height: 20%; border-radius: 50%; background: rgba(255,255,255,.85); filter: blur(16px); transform: rotate(-26deg)"></div>
+<div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: 'Instrument Serif', serif; font-style: italic; font-size: 150px; color: #17151F; opacity: .85">{{cur.no}}</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="uni-in2" style="position: relative; max-width: 1320px; margin: 0 auto; padding: 0 40px 64px">
+<p style="margin: 0 0 20px; font-size: 13px; letter-spacing: .24em; text-transform: uppercase; color: #3A3646">Dans cette bulle</p>
+<ul style="margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 16px">
+<sc-for list="{{cur.features}}" as="f" hint-placeholder-count="4">
+<li style="padding: 26px 26px 28px; border-radius: 26px; background: rgba(255,255,255,.55); border: 1px solid #FFFFFF; backdrop-filter: blur(20px) saturate(1.4); -webkit-backdrop-filter: blur(20px) saturate(1.4); font-size: 17px; line-height: 1.5">
+<span aria-hidden="true" style="display: block; width: 22px; height: 22px; margin-bottom: 18px; border-radius: 50%; background: radial-gradient(circle at 32% 28%, #FFFFFF 0%, rgba(255,255,255,0) 45%), conic-gradient({{cur.c1}}, {{cur.c2}}, {{cur.c3}}, {{cur.c1}}); box-shadow: inset 0 0 0 1px #FFFFFF"></span>{{f}}</li>
+</sc-for>
+</ul>
+</div>
+
+<div class="uni-in2" style="position: relative; max-width: 1320px; margin: 0 auto; padding: 0 40px 72px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 20px">
+<p style="margin: 0; font-size: 13px; letter-spacing: .24em; text-transform: uppercase; color: #3A3646">L’écran</p>
+<p style="margin: 0; font-size: 13px; color: #3A3646">Aperçu illustratif, à remplacer par vos captures réelles</p>
+</div>
+<div style="padding: 12px; border-radius: 34px; background: rgba(255,255,255,.5); border: 1px solid #FFFFFF; backdrop-filter: blur(24px) saturate(1.4); -webkit-backdrop-filter: blur(24px) saturate(1.4); box-shadow: 0 70px 140px -70px {{cur.shadow}}">
+<div style="border-radius: 24px; overflow: hidden; background: #FBFAFD; border: 1px solid #ECE8F2">
+<div style="display: flex; align-items: center; gap: 14px; padding: 14px 18px; border-bottom: 1px solid #ECE8F2">
+<span aria-hidden="true" style="display: flex; gap: 6px"><span style="width: 10px; height: 10px; border-radius: 50%; background: #E2DEEA"></span><span style="width: 10px; height: 10px; border-radius: 50%; background: #E2DEEA"></span><span style="width: 10px; height: 10px; border-radius: 50%; background: #E2DEEA"></span></span>
+<span style="flex: 1; max-width: 360px; margin: 0 auto; padding: 7px 14px; border-radius: 999px; background: #F1EEF6; font-size: 13px; color: #5E5A6B; text-align: center">{{cur.name}} · Selys Africa</span>
+</div>
+<div style="display: flex; min-height: 420px">
+<div aria-hidden="true" style="flex: none; width: 72px; padding: 22px 0; display: flex; flex-direction: column; align-items: center; gap: 18px; border-right: 1px solid #ECE8F2">
+<span style="width: 34px; height: 34px; border-radius: 50%; background: radial-gradient(circle at 32% 26%, #FFFFFF 0%, rgba(255,255,255,0) 42%), radial-gradient(circle at 50% 50%, {{cur.c3}} 0%, {{cur.c1}} 100%); box-shadow: inset 0 0 0 1px #FFFFFF"></span>
+<span style="width: 26px; height: 26px; border-radius: 9px; background: {{cur.c1}}"></span>
+<span style="width: 26px; height: 26px; border-radius: 9px; background: #EEEAF4"></span>
+<span style="width: 26px; height: 26px; border-radius: 9px; background: #EEEAF4"></span>
+<span style="width: 26px; height: 26px; border-radius: 9px; background: #EEEAF4"></span>
+</div>
+<div aria-hidden="true" style="flex: 1; min-width: 0; padding: 26px 28px; display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px">
+<span style="font-size: 22px; font-weight: 400; letter-spacing: -.02em">{{cur.screenTitle}}</span>
+<span style="padding: 8px 16px; border-radius: 999px; background: #17151F; color: #F4F2F7; font-size: 13px">{{cur.screenCta}}</span>
+</div>
+
+<sc-if value="{{scr.agenda}}" hint-placeholder-val="{{ false }}">
+<div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; flex: 1">
+<sc-for list="{{agendaCols}}" as="d" hint-placeholder-count="5">
+<div style="display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 16px; background: #F4F1F8">
+<span style="font-size: 13px; color: #5E5A6B">{{d.day}}</span>
+<sc-for list="{{d.ev}}" as="e" hint-placeholder-count="2"><span style="display: block; height: {{e.h}}; border-radius: 12px; background: {{e.c}}; box-shadow: inset 0 0 0 1px #FFFFFF"></span></sc-for>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{scr.chat}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 12px; flex: 1">
+<span style="align-self: flex-start; max-width: 60%; padding: 14px 18px; border-radius: 20px 20px 20px 6px; background: #F1EEF6; font-size: 15px">Bonjour, j’ai une question sur mon dossier.</span>
+<span style="align-self: flex-end; max-width: 60%; padding: 14px 18px; border-radius: 20px 20px 6px 20px; background: {{cur.c1}}; font-size: 15px">Bonjour, je m’en occupe. Pouvez-vous me donner votre référence ?</span>
+<span style="align-self: flex-start; max-width: 60%; padding: 14px 18px; border-radius: 20px 20px 20px 6px; background: #F1EEF6; font-size: 15px">Voici ma référence.</span>
+<span style="align-self: flex-end; display: inline-flex; gap: 5px; padding: 16px 18px; border-radius: 20px; background: {{cur.c1}}"><span style="width: 7px; height: 7px; border-radius: 50%; background: #17151F; opacity: .5"></span><span style="width: 7px; height: 7px; border-radius: 50%; background: #17151F; opacity: .35"></span><span style="width: 7px; height: 7px; border-radius: 50%; background: #17151F; opacity: .2"></span></span>
+<span style="margin-top: auto; display: flex; align-items: center; gap: 10px; padding: 10px 10px 10px 20px; border-radius: 999px; border: 1px solid #ECE8F2; color: #8A8597; font-size: 14px">Écrire un message…<span style="margin-left: auto; width: 36px; height: 36px; border-radius: 50%; background: #17151F"></span></span>
+</div>
+</sc-if>
+
+<sc-if value="{{scr.files}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 16px; flex: 1">
+<span style="display: block; padding: 12px 18px; border-radius: 999px; border: 1px solid #ECE8F2; color: #8A8597; font-size: 14px">Rechercher un document…</span>
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px">
+<sc-for list="{{tiles8}}" as="t" hint-placeholder-count="8">
+<div style="padding: 16px; border-radius: 18px; background: #F4F1F8; display: flex; flex-direction: column; gap: 10px">
+<span style="width: 38px; height: 30px; border-radius: 6px 10px 8px 8px; background: {{t.c}}; box-shadow: inset 0 0 0 1px #FFFFFF"></span>
+<span style="height: 8px; width: 80%; border-radius: 4px; background: #DCD7E4"></span>
+<span style="height: 8px; width: 50%; border-radius: 4px; background: #E8E4EE"></span>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{scr.dash}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 14px; flex: 1">
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px">
+<sc-for list="{{kpis}}" as="k" hint-placeholder-count="3">
+<div style="padding: 18px; border-radius: 18px; background: #F4F1F8; display: flex; flex-direction: column; gap: 12px">
+<span style="height: 8px; width: 50%; border-radius: 4px; background: #DCD7E4"></span>
+<span style="height: 22px; width: {{k.w}}; border-radius: 8px; background: {{k.c}}"></span>
+</div>
+</sc-for>
+</div>
+<div style="display: flex; gap: 14px; flex: 1">
+<div style="flex: 2; padding: 20px; border-radius: 18px; background: #F4F1F8; display: flex; align-items: flex-end; gap: 8px; min-height: 180px">
+<sc-for list="{{bars}}" as="b" hint-placeholder-count="12"><span style="flex: 1; height: {{b.h}}; border-radius: 8px 8px 4px 4px; background: {{b.c}}"></span></sc-for>
+</div>
+<div style="flex: 1; padding: 20px; border-radius: 18px; background: #F4F1F8; display: flex; align-items: center; justify-content: center">
+<span style="width: 130px; height: 130px; border-radius: 50%; background: conic-gradient({{cur.c1}} 0 42%, {{cur.c2}} 42% 70%, #E2DEEA 70% 100%); display: flex; align-items: center; justify-content: center"><span style="width: 80px; height: 80px; border-radius: 50%; background: #F4F1F8"></span></span>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{scr.people}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 10px; flex: 1">
+<sc-for list="{{rows5}}" as="r" hint-placeholder-count="5">
+<div style="display: flex; align-items: center; gap: 16px; padding: 14px 16px; border-radius: 18px; background: #F4F1F8">
+<span style="flex: none; width: 42px; height: 42px; border-radius: 50%; background: radial-gradient(circle at 32% 28%, #FFFFFF 0%, rgba(255,255,255,0) 45%), {{r.c}}"></span>
+<span style="flex: 1; display: flex; flex-direction: column; gap: 8px"><span style="height: 9px; width: {{r.w}}; border-radius: 4px; background: #CFC9D9"></span><span style="height: 8px; width: 30%; border-radius: 4px; background: #E3DFEA"></span></span>
+<span style="padding: 7px 14px; border-radius: 999px; background: {{r.c}}; font-size: 12px">{{r.tag}}</span>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{scr.form}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 16px; max-width: 560px">
+<sc-for list="{{fields}}" as="f" hint-placeholder-count="4">
+<div style="display: flex; flex-direction: column; gap: 8px"><span style="font-size: 13px; color: #5E5A6B">{{f}}</span><span style="height: 46px; border-radius: 14px; border: 1px solid #E2DEEA; background: #FFFFFF"></span></div>
+</sc-for>
+<span style="align-self: flex-start; padding: 13px 26px; border-radius: 999px; background: {{cur.c1}}; font-size: 14px">Envoyer</span>
+</div>
+</sc-if>
+
+<sc-if value="{{scr.card}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-wrap: wrap; gap: 28px; align-items: center; justify-content: center; flex: 1">
+<div style="width: 320px; aspect-ratio: 1.6; border-radius: 22px; padding: 22px; display: flex; flex-direction: column; justify-content: space-between; background: radial-gradient(circle at 25% 20%, rgba(255,255,255,.9) 0%, rgba(255,255,255,0) 40%), conic-gradient(from 200deg, {{cur.c1}}, {{cur.c2}}, {{cur.c3}}, {{cur.c1}}); box-shadow: inset 0 0 0 1px #FFFFFF, 0 40px 70px -30px {{cur.shadow}}">
+<svg width="34" height="34" sc-camel-view-box="0 0 24 24" fill="none" stroke="#17151F" stroke-width="1.6" stroke-linecap="round"><path d="M6 8a8 8 0 0 1 0 8M10 6a12 12 0 0 1 0 12M14 4a16 16 0 0 1 0 16"></path></svg>
+<span style="display: flex; flex-direction: column; gap: 8px"><span style="height: 10px; width: 60%; border-radius: 5px; background: rgba(23,21,31,.55)"></span><span style="height: 8px; width: 40%; border-radius: 4px; background: rgba(23,21,31,.3)"></span></span>
+</div>
+<div style="width: 200px; height: 330px; border-radius: 34px; border: 8px solid #17151F; background: #FFFFFF; padding: 22px 16px; display: flex; flex-direction: column; align-items: center; gap: 12px">
+<span style="width: 64px; height: 64px; border-radius: 50%; background: radial-gradient(circle at 32% 28%, #FFFFFF 0%, rgba(255,255,255,0) 45%), {{cur.c1}}"></span>
+<span style="height: 10px; width: 70%; border-radius: 5px; background: #CFC9D9"></span>
+<span style="height: 8px; width: 50%; border-radius: 4px; background: #E3DFEA"></span>
+<span style="margin-top: 10px; height: 38px; width: 100%; border-radius: 12px; background: {{cur.c1}}"></span>
+<span style="height: 38px; width: 100%; border-radius: 12px; background: #F1EEF6"></span>
+<span style="height: 38px; width: 100%; border-radius: 12px; background: #F1EEF6"></span>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{scr.rating}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 26px; flex: 1; text-align: center">
+<span style="font-size: 20px">Comment s’est passée votre visite ?</span>
+<div style="display: flex; gap: 14px">
+<sc-for list="{{faces}}" as="f" hint-placeholder-count="5">
+<span style="width: {{f.s}}; height: {{f.s}}; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: {{f.bg}}; box-shadow: inset 0 0 0 1px #FFFFFF">
+<svg width="60%" height="60%" sc-camel-view-box="0 0 40 40" fill="none" stroke="#17151F" stroke-width="2.2" stroke-linecap="round"><circle cx="14" cy="16" r="1.6" fill="#17151F"></circle><circle cx="26" cy="16" r="1.6" fill="#17151F"></circle><path d="{{f.mouth}}"></path></svg></span>
+</sc-for>
+</div>
+<div style="display: flex; gap: 10px"><sc-for list="{{rows5}}" as="r" hint-placeholder-count="5"><span style="width: 46px; height: 46px; border-radius: 50%; background: radial-gradient(circle at 32% 28%, #FFFFFF 0%, rgba(255,255,255,0) 45%), {{r.c}}"></span></sc-for></div>
+</div>
+</sc-if>
+
+<sc-if value="{{scr.queue}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-wrap: wrap; gap: 16px; flex: 1">
+<div style="flex: 1 1 240px; border-radius: 22px; padding: 28px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 10px; background: radial-gradient(circle at 25% 20%, rgba(255,255,255,.9) 0%, rgba(255,255,255,0) 45%), conic-gradient(from 200deg, {{cur.c1}}, {{cur.c2}}, {{cur.c3}}, {{cur.c1}})">
+<span style="font-size: 14px; letter-spacing: .2em">VOTRE TICKET</span>
+<span style="font-size: 76px; font-weight: 200; letter-spacing: -.04em; line-height: 1">A 24</span>
+<span style="font-size: 14px">Guichet 2</span>
+</div>
+<div style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 10px">
+<sc-for list="{{counters}}" as="g" hint-placeholder-count="4">
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 18px; border-radius: 16px; background: #F4F1F8; font-size: 15px"><span>{{g.n}}</span><span style="padding: 6px 12px; border-radius: 999px; background: {{g.c}}; font-size: 13px">{{g.t}}</span></div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div style="position: relative; max-width: 1320px; margin: 0 auto; padding: 0 40px 56px; display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between">
+<button type="button" class="glass-btn" sc-camel-on-click="{{goPrev}}" style="flex: 1 1 280px; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; padding: 24px 28px; border-radius: 28px; border: 1px solid #FFFFFF; background: rgba(255,255,255,.45); color: #17151F; font: inherit; text-align: left; cursor: pointer">
+<span style="font-size: 13px; color: #3A3646">← Bulle précédente</span>
+<span style="font-size: 28px; font-weight: 300; letter-spacing: -.03em">{{prev.name}}</span></button>
+<button type="button" class="glass-btn" sc-camel-on-click="{{goNext}}" style="flex: 1 1 280px; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; padding: 24px 28px; border-radius: 28px; border: 1px solid #FFFFFF; background: rgba(255,255,255,.45); color: #17151F; font: inherit; text-align: right; cursor: pointer">
+<span style="font-size: 13px; color: #3A3646">Continuer à flâner →</span>
+<span style="font-size: 28px; font-weight: 300; letter-spacing: -.03em">{{next.name}}</span></button>
+</div>
+</div>
+</sc-if>
+
+<!-- FILM D’ACCUEIL -->
+<sc-if value="{{introOn}}" hint-placeholder-val="{{ true }}">
+<div role="dialog" aria-modal="true" aria-label="Film d’accueil du Souk" style="position: fixed; inset: 0; z-index: 90; overflow: hidden; background: #F4F2F7; color: #17151F">
+<div aria-hidden="true" style="position: absolute; inset: 0; pointer-events: none">
+<div class="aurora" style="position: absolute; left: -15%; top: -25%; width: 75vmax; height: 75vmax; border-radius: 50%; background: #D9CCFF; filter: blur(120px); opacity: .9"></div>
+<div class="aurora" style="position: absolute; right: -20%; top: 10%; width: 65vmax; height: 65vmax; border-radius: 50%; background: #BDEFEA; filter: blur(120px); opacity: .85; animation-delay: -9s"></div>
+<div class="aurora" style="position: absolute; left: 25%; bottom: -35%; width: 60vmax; height: 60vmax; border-radius: 50%; background: #FFD9E8; filter: blur(130px); opacity: .8; animation-delay: -17s"></div>
+</div>
+
+<div style="position: absolute; left: 0; right: 0; top: 0; padding: 22px 28px; display: flex; flex-direction: column; gap: 18px">
+<div aria-hidden="true" style="display: flex; gap: 6px">
+<sc-for list="{{segs}}" as="g" hint-placeholder-count="6">
+<span style="flex: 1; height: 3px; border-radius: 3px; background: rgba(23,21,31,.12); overflow: hidden"><span style="display: block; height: 100%; width: {{g.w}}; background: #17151F"></span></span>
+</sc-for>
+</div>
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px">
+<span style="display: inline-flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 500"><span aria-hidden="true" style="width: 22px; height: 22px; border-radius: 50%; background: radial-gradient(circle at 32% 28%, #FFFFFF 0%, rgba(255,255,255,0) 40%), conic-gradient(from 210deg, #C9B8FF, #9EE7E3, #FFD3B8, #FFB8DE, #C9B8FF); box-shadow: inset 0 0 0 1px #FFFFFF"></span>Selys <span style="font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; font-size: 18px">Souk</span></span>
+<span style="display: flex; gap: 10px">
+<button type="button" sc-camel-on-click="{{togglePause}}" aria-label="{{pauseLabel}}" class="glass-btn" style="width: 46px; height: 46px; border-radius: 50%; border: 1px solid #FFFFFF; background: rgba(255,255,255,.55); color: #17151F; cursor: pointer; display: flex; align-items: center; justify-content: center">
+<sc-if value="{{paused}}" hint-placeholder-val="{{ false }}"><svg width="14" height="14" sc-camel-view-box="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M7 4l13 8-13 8z"></path></svg></sc-if>
+<sc-if value="{{playing}}" hint-placeholder-val="{{ true }}"><svg width="14" height="14" sc-camel-view-box="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M6 4h4v16H6zM14 4h4v16h-4z"></path></svg></sc-if>
+</button>
+<button type="button" sc-camel-on-click="{{skip}}" class="glass-btn" style="min-height: 46px; padding: 0 20px; border-radius: 999px; border: 1px solid #FFFFFF; background: rgba(255,255,255,.55); color: #17151F; font: inherit; font-size: 15px; cursor: pointer">Passer l’intro</button>
+</span>
+</div>
+</div>
+
+<div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 120px 24px; text-align: center">
+
+<sc-if value="{{sc0}}" hint-placeholder-val="{{ true }}">
+<div class="scene">
+<p style="margin: 0 0 22px; font-size: 14px; letter-spacing: .3em; text-transform: uppercase; color: #3A3646">Selys Africa présente</p>
+<p class="holo-text" style="margin: 0; font-weight: 200; font-size: clamp(90px, 16vw, 250px); line-height: .9; letter-spacing: -.06em">Bienvenue</p>
+</div>
+</sc-if>
+
+<sc-if value="{{sc1}}" hint-placeholder-val="{{ false }}">
+<div class="scene">
+<p style="margin: 0; font-weight: 200; font-size: clamp(64px, 10vw, 160px); line-height: .95; letter-spacing: -.055em">dans le Souk</p>
+<p style="margin: 10px 0 0; font-family: 'Instrument Serif', serif; font-style: italic; font-size: clamp(54px, 8vw, 130px); line-height: 1; letter-spacing: -.02em">de Selys Africa.</p>
+</div>
+</sc-if>
+
+<sc-if value="{{sc2}}" hint-placeholder-val="{{ false }}">
+<div class="scene" style="display: flex; flex-direction: column; align-items: center; gap: 36px">
+<span class="bounce-up" aria-hidden="true" style="width: 84px; height: 84px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at 32% 28%, #FFFFFF 0%, rgba(255,255,255,0) 45%), conic-gradient(from 210deg, #C9B8FF, #9EE7E3, #FFD3B8, #FFB8DE, #C9B8FF); box-shadow: inset 0 0 0 1px #FFFFFF, 0 30px 60px -24px rgba(110,80,220,.6)">
+<svg width="30" height="30" sc-camel-view-box="0 0 24 24" fill="none" stroke="#17151F" stroke-width="1.8" stroke-linecap="round"><path d="M12 19V5M5 12l7-7 7 7"></path></svg></span>
+<p style="margin: 0; font-weight: 200; font-size: clamp(64px, 10vw, 160px); line-height: .95; letter-spacing: -.055em">Cliquez <span style="font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; letter-spacing: -.02em">en haut.</span></p>
+</div>
+</sc-if>
+
+<sc-if value="{{sc3}}" hint-placeholder-val="{{ false }}">
+<div class="scene" style="display: flex; flex-direction: column; align-items: center; gap: 36px">
+<p style="margin: 0; font-weight: 200; font-size: clamp(64px, 10vw, 160px); line-height: .95; letter-spacing: -.055em">Défilez <span style="font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; letter-spacing: -.02em">en bas.</span></p>
+<span class="bounce-down" aria-hidden="true" style="width: 84px; height: 84px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at 32% 28%, #FFFFFF 0%, rgba(255,255,255,0) 45%), conic-gradient(from 30deg, #9EE7E3, #C9B8FF, #FFB8DE, #FFD3B8, #9EE7E3); box-shadow: inset 0 0 0 1px #FFFFFF, 0 30px 60px -24px rgba(60,170,160,.6)">
+<svg width="30" height="30" sc-camel-view-box="0 0 24 24" fill="none" stroke="#17151F" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12l7 7 7-7"></path></svg></span>
+</div>
+</sc-if>
+
+<sc-if value="{{sc4}}" hint-placeholder-val="{{ false }}">
+<div class="scene" style="position: relative">
+<sc-for list="{{introOrbs}}" as="b" hint-placeholder-count="6">
+<span class="pop" aria-hidden="true" style="position: absolute; left: {{b.x}}; top: {{b.y}}; width: {{b.s}}; height: {{b.s}}; border-radius: 50%; animation-delay: {{b.d}}; background: radial-gradient(circle at 32% 26%, rgba(255,255,255,.96) 0%, rgba(255,255,255,0) 36%), radial-gradient(circle at 74% 80%, {{b.c2}} 0%, rgba(255,255,255,0) 60%), radial-gradient(circle at 50% 50%, #FFFFFF 0%, {{b.c1}} 100%); box-shadow: inset 0 0 0 1px #FFFFFF, 0 30px 60px -26px {{b.c1}}"></span>
+</sc-for>
+<p style="position: relative; margin: 0; font-weight: 200; font-size: clamp(56px, 8.4vw, 136px); line-height: .95; letter-spacing: -.055em">Découvrez<br>tous nos <span style="font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; letter-spacing: -.02em">étalages.</span></p>
+</div>
+</sc-if>
+
+<sc-if value="{{sc5}}" hint-placeholder-val="{{ false }}">
+<div class="scene-last">
+<p class="holo-text" style="margin: 0; font-weight: 200; font-size: clamp(70px, 11vw, 180px); line-height: .92; letter-spacing: -.06em">La suite</p>
+<p style="margin: 6px 0 0; font-family: 'Instrument Serif', serif; font-style: italic; font-size: clamp(60px, 9vw, 150px); line-height: 1; letter-spacing: -.02em">commence.</p>
+</div>
+</sc-if>
+
+</div>
+</div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;holo&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:0.9,&quot;min&quot;:0.2,&quot;max&quot;:1,&quot;step&quot;:0.05,&quot;section&quot;:&quot;Cristal&quot;},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;section&quot;:&quot;Cristal&quot;},&quot;intro&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;section&quot;:&quot;Film d’accueil&quot;},&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:6400}}">
+var SOUK_ALLEES = { gov: "Gouvernement", client: "Relation client", docs: "Documents & RH", data: "Data & IA", metiers: "Métiers & commerce" };
+var P = {
+  lilac: ["#C9B8FF", "#9EE7E3", "#F6F1FF", "#9C84F0"],
+  aqua: ["#9EE7E3", "#C9B8FF", "#EFFFFD", "#5FC9C2"],
+  peach: ["#FFD3B8", "#FFB8DE", "#FFF4EC", "#F09A86"],
+  sky: ["#B8D8FF", "#9EE7E3", "#F1F6FF", "#7FA8E8"],
+  pink: ["#FFB8DE", "#C9B8FF", "#FFF0F7", "#E58AB8"],
+  butter: ["#FFE2A8", "#FFB8C8", "#FFF8EA", "#E8B060"],
+  mauve: ["#E6C8FF", "#B8F0E8", "#FAF3FF", "#B48AE8"],
+  mint: ["#BFF5D6", "#FFE7A8", "#F2FFF7", "#6FCB97"],
+  ice: ["#A8ECF2", "#BFF5D6", "#F0FDFF", "#5FC0CF"]
+};
+function mk(id, name, allee, pal, scr, badge, film, line1, who, features, screenTitle, screenCta) {
+  return { id: id, name: name, allee: allee, c1: P[pal][0], c2: P[pal][1], c3: P[pal][2], sh: P[pal][3], scr: scr, badge: badge, film: film, line1: line1, who: who, features: features, screenTitle: screenTitle, screenCta: screenCta };
+}
+var SOUK = [
+  mk("govagenda", "GovAgenda", "gov", "lilac", "agenda", "", true,
+    "L’agenda des autorités, partagé, synchronisé et sécurisé.",
+    "Gouvernements, ministères, cabinets et directions.",
+    ["Planification des rendez-vous et réunions officielles", "Agendas partagés entre cabinets et services", "Rappels et notifications automatiques", "Accès sécurisé selon les rôles"], "Agenda de la semaine", "Nouveau rendez-vous"),
+  mk("avis", "Avisclientele.io", "client", "aqua", "rating", "", false,
+    "Le client note le service, et l’agent qui l’a servi. Améliorer · Mesurer · Décider.",
+    "Banques, assurances, hôpitaux et institutions publiques.",
+    ["Parcours en trois gestes : l’agent, le service, le commentaire", "Les agents reconnus par leur photo, pas par leur nom", "Des émotions animées pour noter en une seconde", "Des retours qui deviennent des décisions"], "Votre avis compte", "Envoyer"),
+  mk("selysai", "Selys AI", "data", "pink", "chat", "", true,
+    "Des agents IA qui répondent, trient et agissent, jour et nuit.",
+    "Entreprises et institutions qui veulent automatiser sans perdre le lien humain.",
+    ["Agents IA conçus sur mesure", "Réponses automatiques aux demandes", "Connexion à vos outils existants", "Passage de relais à un humain quand il le faut"], "Assistant Selys AI", "Nouvel agent"),
+  mk("archive", "Selys Archive", "docs", "sky", "files", "", true,
+    "Archivage physique et numérique, et gouvernance de l’information.",
+    "Administrations, banques, entreprises aux fonds documentaires importants.",
+    ["Numérisation des fonds papier", "Classement et recherche instantanée", "Conservation et gouvernance sécurisées"], "Fonds d’archives", "Numériser"),
+  mk("nfc", "Selys NFC", "metiers", "mauve", "card", "En ligne", true,
+    "La carte de visite qui se partage d’un geste. Un tap, et votre profil est chez l’autre.",
+    "Professionnels, équipes commerciales, entreprises qui veulent marquer les esprits.",
+    ["Cartes de visite NFC reliées à un profil en ligne", "Plateforme MyNFC by Selys (selysnfc.app)", "Ambition : le géant africain de la carte NFC d’ici 2030"], "Ma carte NFC", "Partager"),
+  mk("govconnect", "GovConnect", "gov", "ice", "chat", "", true,
+    "Le lien direct entre l’administration et les citoyens.",
+    "Administrations publiques, ministères et citoyens.",
+    ["Point d’entrée unique vers les services publics", "Demandes et suivi en ligne", "Échanges sécurisés entre administration et citoyens"], "Guichet en ligne", "Nouvelle demande"),
+  mk("callcenter", "Call Center IA", "client", "peach", "chat", "Démo en ligne", false,
+    "L’IA décroche, comprend, et passe la main à un conseiller quand l’appel se complique.",
+    "Assureurs, banques, et demain les gouvernements avec un numéro unique.",
+    ["Appels passés directement depuis la plateforme web", "Escalade vers un conseiller humain sur les cas complexes", "Chatbot voix ou écrit qui réunit Facebook, Instagram, Messenger et WhatsApp", "Langues locales ajoutées progressivement"], "Conversation en cours", "Transférer"),
+  mk("beaged", "BeaGed", "docs", "lilac", "files", "", true,
+    "La gestion électronique des documents : tout retrouver en une seconde.",
+    "Toute organisation qui croule sous les documents.",
+    ["Numérisation et indexation", "Recherche plein texte", "Droits d’accès et gestion des versions"], "Mes documents", "Importer"),
+  mk("analytics", "Selys Analytics", "data", "aqua", "dash", "", true,
+    "Vos données deviennent des décisions.",
+    "Directions générales, ministères et entreprises.",
+    ["Tableaux de bord en temps réel", "Indicateurs clés par service", "Analyses et rapports automatiques"], "Tableau de bord", "Exporter"),
+  mk("resto", "Selys Resto", "metiers", "butter", "card", "", false,
+    "Le restaurant digitalisé par un simple tag NFC posé sur la table.",
+    "Restaurants et chaînes de restaurants.",
+    ["Menu vidéo et commande ou précommande depuis la table", "Gestion des tables et des serveurs, alarme serveur", "Notation du service par les clients", "Portefeuille rechargeable et livraison mensuelle de repas"], "Table 7", "Commander"),
+  mk("bearh", "Bea-RH", "docs", "mint", "people", "", true,
+    "Les ressources humaines simplifiées, du dossier collaborateur aux congés.",
+    "Directions RH, PME et grandes organisations.",
+    ["Dossiers des collaborateurs centralisés", "Congés et absences", "Suivi des équipes et des talents"], "Équipe", "Ajouter"),
+  mk("gfa", "GFA", "client", "sky", "queue", "", false,
+    "La gestion de file d’attente qui rend l’accueil en agence fluide et serein.",
+    "Banques et lieux d’accueil du public.",
+    ["Gestion des tickets et des passages en agence", "[FONCTIONNALITÉ CLÉ À COMPLÉTER]", "[FONCTIONNALITÉ CLÉ À COMPLÉTER]"], "Accueil de l’agence", "Appeler le suivant"),
+  mk("sante", "Selys Santé Bénin", "gov", "mint", "dash", "En compétition", false,
+    "Simplifier le parcours administratif de santé pour chaque citoyen.",
+    "L’État, les administrations de santé et les citoyens.",
+    ["Candidat au Prix national de la simplification administrative du Bénin", "[FONCTIONNALITÉ CLÉ À COMPLÉTER]", "[FONCTIONNALITÉ CLÉ À COMPLÉTER]"], "Parcours santé", "Suivre"),
+  mk("beagec", "BeaGec", "docs", "peach", "files", "", true,
+    "La gestion électronique du courrier : chaque courrier suivi, de l’arrivée à la réponse.",
+    "Administrations, secrétariats et directions générales.",
+    ["Enregistrement des courriers entrants et sortants", "Circuit d’imputation et de validation", "Traçabilité complète de chaque courrier"], "Courrier du jour", "Enregistrer"),
+  mk("couture", "Selys Couture", "metiers", "pink", "people", "", false,
+    "De la prise de mesure à la satisfaction du client, avec la silhouette modélisée.",
+    "Couturiers et ateliers de couture, même peu équipés en numérique.",
+    ["Les mesures deviennent une modélisation de la silhouette du client", "Un fichier clients hyper simple, pensé pour tous", "Paiement intégré", "Commission sur les paiements et abonnement"], "Mes clients", "Nouvelle mesure"),
+  mk("beaevent", "BeaEvent", "docs", "butter", "agenda", "", true,
+    "Organiser un événement, de l’invitation à l’accueil des participants.",
+    "Entreprises, institutions et organisateurs d’événements.",
+    ["Invitations et inscriptions en ligne", "Badges et accueil des participants", "Suivi en temps réel"], "Programme", "Inviter"),
+  mk("erp", "ERP BTP", "metiers", "ice", "dash", "Déjà installé", false,
+    "Tout le chantier dans un seul logiciel, de l’administration à la technique, avec l’IA.",
+    "Entreprises de construction et de BTP : bâtiments, immeubles, routes.",
+    ["Toutes les fonctions de l’entreprise dans une seule plateforme", "IA intégrée au cœur des opérations", "Déjà en service chez un premier groupe BTP"], "Chantiers", "Nouveau chantier"),
+  mk("beaform", "BeaForm", "docs", "mauve", "form", "", true,
+    "Créer des formulaires en ligne et collecter les réponses sans effort.",
+    "Toute équipe qui collecte des informations.",
+    ["Création simple de formulaires", "Collecte et export des réponses", "Partage par lien"], "Nouveau formulaire", "Publier"),
+  mk("jaya", "Jaya", "metiers", "mint", "people", "", false,
+    "Le pont entre ceux qui rêvent un projet et ceux qui peuvent le financer.",
+    "Porteurs de projets, jusque dans les villages, advisors et investisseurs.",
+    ["Mise en relation porteurs de projets, advisors et investisseurs", "Ouvert aux projets des villes comme des villages", "[FONCTIONNALITÉ CLÉ À COMPLÉTER]"], "Projets à découvrir", "Proposer un projet")
+];
+var SOUK_ATELIERS = [
+  { id: "e1", c1: "#C9B8FF", c2: "#9EE7E3", name: "Archivage numérique & gouvernance", text: "Vos archives papier et numériques, classées, retrouvées en un instant, protégées." },
+  { id: "e2", c1: "#FFB8DE", c2: "#C9B8FF", name: "Agents IA", text: "Des assistants intelligents qui travaillent avec vos équipes, sans relâche." },
+  { id: "e3", c1: "#FFD3B8", c2: "#FFE2A8", name: "Solutions métier sur mesure", text: "Quand aucune bulle ne vous ressemble encore, on la crée avec vous." },
+  { id: "e4", c1: "#A8ECF2", c2: "#B8D8FF", name: "Smart Government", text: "Des administrations plus simples, plus rapides, plus proches des citoyens." },
+  { id: "e5", c1: "#9EE7E3", c2: "#BFF5D6", name: "Data Intelligence & Analytics", text: "Des données qui parlent, et des décisions qui suivent." },
+  { id: "e6", c1: "#B8D8FF", c2: "#E6C8FF", name: "Cybersécurité & gouvernance", text: "Une protection invisible et constante, pour vos données et vos systèmes." }
+];
+var SOUK_CHAPTERS = [[0, "0:00", "L’Afrique numérique"], [4, "0:04", "Notre présence"], [8, "0:08", "La plateforme"], [18, "0:18", "Nos 11 solutions"], [24, "0:24", "Nos expertises"], [35, "0:35", "Nous contacter"]];
+var SOUK_SCREENS = {
+  agendaCols: [["Lun", ["70px", "40px"]], ["Mar", ["110px"]], ["Mer", ["50px", "60px", "30px"]], ["Jeu", ["90px"]], ["Ven", ["40px", "80px"]]],
+  bars: [38, 52, 44, 66, 58, 74, 62, 80, 70, 88, 76, 94],
+  rowW: ["46%", "38%", "52%", "34%", "44%"],
+  rowTag: ["Actif", "En cours", "Actif", "Nouveau", "Actif"],
+  fields: ["Nom complet", "Adresse e-mail", "Votre demande", "Pièce jointe"],
+  counters: [["Guichet 1", "A 23"], ["Guichet 2", "A 24"], ["Guichet 3", "B 11"], ["Conseiller", "C 05"]],
+  mouths: ["M13 28 Q20 22 27 28", "M13 27 Q20 25 27 27", "M13 26 L27 26", "M13 25 Q20 30 27 25", "M12 24 Q20 33 28 24"]
+};
+var SOUK_SCENE_MS = 2700;
+var SOUK_SCENES = 6;
+var SOUK_INTRO_ORBS = [
+  { x: "-38%", y: "-70%", s: "120px", c1: "#C9B8FF", c2: "#9EE7E3", d: ".05s" },
+  { x: "96%", y: "-80%", s: "90px", c1: "#FFB8DE", c2: "#FFD3B8", d: ".2s" },
+  { x: "112%", y: "60%", s: "140px", c1: "#9EE7E3", c2: "#B8D8FF", d: ".35s" },
+  { x: "-30%", y: "78%", s: "100px", c1: "#FFE2A8", c2: "#FFB8C8", d: ".5s" },
+  { x: "40%", y: "-120%", s: "70px", c1: "#BFF5D6", c2: "#9EE7E3", d: ".65s" },
+  { x: "52%", y: "128%", s: "80px", c1: "#E6C8FF", c2: "#FFB8DE", d: ".8s" }
+];
+class Component extends DCLogic {
+  componentDidMount() {
+    var self = this;
+    this._iv = setInterval(function () {
+      var s = self.state || {};
+      if (s.introDone || s.paused || (self.props.intro === false)) return;
+      var t = (s.t || 0) + 100;
+      if (t >= SOUK_SCENE_MS * SOUK_SCENES) self.setState({ introDone: true, t: 0 });
+      else self.setState({ t: t });
+    }, 100);
+  }
+  componentWillUnmount() { clearInterval(this._iv); }
+  renderVals() {
+    var self = this;
+    var s = this.state || {};
+    var introOn = (this.props.intro ?? true) && !s.introDone;
+    var t = s.t || 0;
+    var scene = Math.min(SOUK_SCENES - 1, Math.floor(t / SOUK_SCENE_MS));
+    var segs = [];
+    for (var k = 0; k < SOUK_SCENES; k++) {
+      var w = k < scene ? 100 : (k > scene ? 0 : Math.round(((t - k * SOUK_SCENE_MS) / SOUK_SCENE_MS) * 100));
+      segs.push({ w: w + "%" });
+    }
+    var introVals = {
+      introOn: introOn,
+      showHero: !introOn,
+      segs: segs,
+      sc0: scene === 0, sc1: scene === 1, sc2: scene === 2, sc3: scene === 3, sc4: scene === 4, sc5: scene === 5,
+      introOrbs: SOUK_INTRO_ORBS,
+      paused: !!s.paused,
+      playing: !s.paused,
+      pauseLabel: s.paused ? "Reprendre le film" : "Mettre le film en pause",
+      togglePause: function () { self.setState({ paused: !s.paused }); },
+      skip: function () { self.setState({ introDone: true, t: 0, paused: false }); },
+      replay: function () { window.scrollTo(0, 0); self.setState({ introDone: false, t: 0, paused: false, sel: null }); }
+    };
+    var allee = s.allee || "all";
+    var holo = this.props.holo ?? 0.9;
+    var motion = this.props.motion ?? true;
+    var mx = motion ? (s.mx || 0) : 0;
+    var my = motion ? (s.my || 0) : 0;
+    var base = SOUK.map(function (x, i) {
+      var row = Math.floor(i / 4), col = i % 4;
+      var size = 205 + ((i * 37) % 75);
+      return Object.assign({}, x, {
+        no: (i < 9 ? "0" : "") + (i + 1),
+        alleeLabel: SOUK_ALLEES[x.allee],
+        shadow: x.sh + "cc",
+        left: (2 + col * 23 + (row % 2 ? 7 : 0) + ((i * 13) % 4)) + "%",
+        top: (row * 300 + ((i * 53) % 70)) + "px",
+        sizeN: size,
+        depth: 0.5 + ((i * 29) % 8) / 10
+      });
+    });
+    var orbs = base.map(function (x, i) {
+      var on = allee === "all" || x.allee === allee;
+      return Object.assign({}, x, {
+        cls: on ? "orbwrap" : "orbwrap dim",
+        size: x.sizeN + "px",
+        fs: Math.round(x.sizeN / 10) + "px",
+        px: Math.round(mx * 26 * x.depth) + "px",
+        py: Math.round(my * 20 * x.depth) + "px",
+        delay: (-1.3 * i) + "s",
+        rot: (i * 40) + "deg",
+        open: function (e) { self.openAt(x.id, e); }
+      });
+    });
+    var defs = [["all", "Tout le souk"], ["gov", "Gouvernement"], ["client", "Relation client"], ["docs", "Documents & RH"], ["data", "Data & IA"], ["metiers", "Métiers & commerce"]];
+    var allees = defs.map(function (d) {
+      return { label: d[1], pressed: String(d[0] === allee), cls: d[0] === allee ? "chip on" : "chip", pick: function () { self.setState({ allee: d[0] }); } };
+    });
+    var ci = base.findIndex(function (x) { return x.id === s.sel; });
+    if (ci < 0) ci = 0;
+    var cur = base[ci];
+    var prev = base[(ci + base.length - 1) % base.length];
+    var next = base[(ci + 1) % base.length];
+    return Object.assign(introVals, {
+      rootCls: motion ? "" : "still",
+      total: String(base.length),
+      fieldH: (Math.ceil(base.length / 4) * 300 + 80) + "px",
+      filmOrbs: orbs.filter(function (x) { return x.film; }),
+      chapters: SOUK_CHAPTERS.map(function (c) { return { time: c[1], label: c[2], go: function () { var v = self._vidEl; if (v) { v.currentTime = c[0]; var pr = v.play && v.play(); if (pr && pr.catch) pr.catch(function () {}); } } }; }),
+      vidRef: this._vidRef || (this._vidRef = function (el) { self._vidEl = el; }),
+      scr: { agenda: cur.scr === "agenda", chat: cur.scr === "chat", files: cur.scr === "files", dash: cur.scr === "dash", people: cur.scr === "people", form: cur.scr === "form", card: cur.scr === "card", rating: cur.scr === "rating", queue: cur.scr === "queue" },
+      agendaCols: SOUK_SCREENS.agendaCols.map(function (d, j) { return { day: d[0], ev: d[1].map(function (h, k) { return { h: h, c: (j + k) % 2 ? cur.c2 : cur.c1 }; }) }; }),
+      tiles8: [0, 1, 2, 3, 4, 5, 6, 7].map(function (j) { return { c: j % 3 === 0 ? cur.c2 : cur.c1 }; }),
+      kpis: [{ w: "70%", c: cur.c1 }, { w: "55%", c: cur.c2 }, { w: "82%", c: cur.c1 }],
+      bars: SOUK_SCREENS.bars.map(function (h, j) { return { h: h + "%", c: j % 4 === 3 ? cur.c2 : cur.c1 }; }),
+      rows5: SOUK_SCREENS.rowW.map(function (w, j) { return { w: w, tag: SOUK_SCREENS.rowTag[j], c: j % 2 ? cur.c2 : cur.c1 }; }),
+      fields: SOUK_SCREENS.fields,
+      counters: SOUK_SCREENS.counters.map(function (g, j) { return { n: g[0], t: g[1], c: j === 1 ? cur.c1 : "#ECE8F2" }; }),
+      faces: SOUK_SCREENS.mouths.map(function (m, j) { return { mouth: m, s: j === 4 ? "74px" : "58px", bg: j === 4 ? cur.c1 : "#F1EEF6" }; }),
+      holo: holo,
+      heroX: Math.round(mx * -34) + "px",
+      heroY: Math.round(my * -26) + "px",
+      allees: allees,
+      orbs: orbs,
+      allOrbs: base,
+      ateliers: SOUK_ATELIERS,
+      hasSel: !!s.sel,
+      cur: cur, prev: prev, next: next,
+      ox: s.ox || "50%", oy: s.oy || "50%",
+      interest: s.interest || "",
+      sent: !!s.sent, notSent: !s.sent,
+      move: function (e) {
+        if (!motion) return;
+        var w = window.innerWidth || 1, h = window.innerHeight || 1;
+        self._m = [(e.clientX / w) * 2 - 1, (e.clientY / h) * 2 - 1];
+        if (self._raf) return;
+        self._raf = requestAnimationFrame(function () { self._raf = null; self.setState({ mx: self._m[0], my: self._m[1] }); });
+      },
+      close: function () { self.setState({ sel: null }); },
+      goPrev: function (e) { self.openAt(prev.id, e); },
+      goNext: function (e) { self.openAt(next.id, e); },
+      askDemo: function () {
+        self.setState({ interest: s.sel, sel: null });
+        setTimeout(function () { var el = document.getElementById("marchand"); if (el) el.scrollIntoView({ behavior: "smooth" }); }, 80);
+      },
+      pickInterest: function (e) { self.setState({ interest: e.target.value }); },
+      send: function (e) { e.preventDefault(); self.setState({ sent: true }); }
+    });
+  }
+  openAt(id, e) {
+    var self = this;
+    var ox = e && e.clientX ? Math.round(e.clientX) + "px" : "50%";
+    var oy = e && e.clientY ? Math.round(e.clientY) + "px" : "50%";
+    if (this.state && this.state.sel) {
+      this.setState({ sel: null });
+      requestAnimationFrame(function () { self.setState({ sel: id, ox: ox, oy: oy }); });
+    } else {
+      this.setState({ sel: id, ox: ox, oy: oy });
+    }
+  }
+}
+</script>
+
+
+</body></html>
