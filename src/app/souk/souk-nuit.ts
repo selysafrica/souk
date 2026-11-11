@@ -89,8 +89,10 @@ export class SoukNuit implements OnInit {
   readonly sending = signal(false);
 
   private opener: HTMLElement | null = null;
-  /** Day theme (tones of proposal A); night is the design's default. Remembered per visitor. */
-  readonly day = signal(false);
+  /** Day theme by default; the night theme of the design on demand. Remembered per visitor. */
+  readonly day = signal(true);
+  /** Phone-width promenade: smaller, closer bubbles so the walk fits the screen. */
+  private readonly compact = signal(false);
 
   toggleTheme() {
     const day = !this.day();
@@ -115,6 +117,11 @@ export class SoukNuit implements OnInit {
       }
       this.day.set(this.doc.documentElement.classList.contains('theme-jour'));
       const win = this.doc.defaultView!;
+      const mq = win.matchMedia('(max-width: 600px)');
+      const onMq = () => this.compact.set(mq.matches);
+      onMq();
+      mq.addEventListener('change', onMq);
+      destroy.onDestroy(() => mq.removeEventListener('change', onMq));
       const onPop = () => {
         const s = new URL(win.location.href).searchParams.get('univers');
         this.taste.set(s && this.base().some((x) => x.slug === s) ? s : null);
@@ -190,6 +197,8 @@ export class SoukNuit implements OnInit {
 
   readonly stalls = computed(() => {
     const pos = this.pos();
+    // On phones the design's distances (330px aside, 320px bubble) overflow: same walk, scaled down.
+    const k = this.compact();
     return this.base().map((x, i) => {
       const d = i - pos;
       const side = i % 2 ? 1 : -1;
@@ -207,18 +216,18 @@ export class SoukNuit implements OnInit {
         op = 1;
         blur = 'none';
       } else {
-        X = side * (330 + d * 40);
-        Y = -d * 26;
+        X = side * (k ? 150 + d * 18 : 330 + d * 40);
+        Y = -d * (k ? 18 : 26);
         Z = -d * 520;
         op = Math.max(0, 1 - d * 0.15);
         blur = d > 3 ? 'blur(' + (d - 3) + 'px)' : 'none';
       }
-      const size = d === 0 ? 320 : 260;
+      const size = k ? (d === 0 ? 230 : 170) : d === 0 ? 320 : 260;
       return {
         ...x,
         size: size + 'px',
         half: -size / 2 + 'px',
-        fs: Math.round(size / 10) + 'px',
+        fs: Math.round(size / (k ? 9 : 10)) + 'px',
         x: X + 'px',
         y: Y + 'px',
         z: Z + 'px',
