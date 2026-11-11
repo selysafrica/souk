@@ -126,3 +126,11 @@ html.bf-tuck .beaform-floating { opacity: 0; visibility: hidden; transform: tran
   .beaform-floating { left: auto !important; right: 16px !important; bottom: calc(16px + env(safe-area-inset-bottom)) !important; }
 }
 @media (prefers-reduced-motion: reduce) { .beaform-floating { transition: none; } }
+
+/* ─── Fiche d'un univers : les trois parties à la suite ─── */
+.fiche { margin-top: 28px; display: flex; flex-direction: column; gap: 36px; }
+.fiche-part + .fiche-part { padding-top: 32px; border-top: 1px solid rgba(var(--n-glass-rgb), .12); }
+.fiche-h { margin: 0 0 18px; font-size: 12px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: var(--n-muted); }
+@media (max-width: 600px) {
+  [role='dialog'] .fiche .b-float { width: 150px !important; height: 150px !important; }
+}

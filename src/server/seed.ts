@@ -35,6 +35,7 @@ export const SEED_UNIVERS: Omit<UniversInput, 'position'>[] = SOUK.map((u) => {
     screenCta: u.screenCta,
     imageUrl: shot ? `/captures/${shot}-desktop.webp` : null,
     mobileImageUrl: shot && !DESKTOP_ONLY.has(shot) ? `/captures/${shot}-mobile.webp` : null,
+    link: null,
     published: true,
   };
 });

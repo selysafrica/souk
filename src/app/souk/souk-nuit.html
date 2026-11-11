@@ -191,7 +191,7 @@
 @if (tasting) {
 <div style="position: fixed; inset: 0; z-index: 60; display: flex; align-items: center; justify-content: center; padding: 24px">
 <button type="button" aria-label="Fermer la dégustation" (click)="closeTaste()" style="position: absolute; inset: 0; width: 100%; border: 0; background: var(--n-scrim); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); cursor: pointer"></button>
-<div class="b-rise" role="dialog" aria-modal="true" [attr.aria-label]="'Dégustation de ' + t.name" style="position: relative; width: min(980px, 100%); max-height: calc(100vh - 48px); overflow-y: auto; border-radius: 36px; background: var(--n-panel); border: 1px solid rgba(var(--n-glass-rgb),.14); box-shadow: 0 60px 140px -40px {{t.c1}}">
+<div class="b-rise" role="dialog" aria-modal="true" [attr.aria-label]="'Dégustation de ' + t.name" style="position: relative; width: min(980px, 100%); max-height: calc(100vh - 48px); overflow-y: auto; overflow-x: hidden; border-radius: 36px; background: var(--n-panel); border: 1px solid rgba(var(--n-glass-rgb),.14); box-shadow: 0 60px 140px -40px {{t.c1}}">
 <div aria-hidden="true" style="position: absolute; right: -120px; top: -160px; width: 460px; height: 460px; border-radius: 50%; background: {{t.c1}}; filter: blur(110px); opacity: .45"></div>
 <div style="position: relative; padding: 36px 36px 32px">
 <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px">
@@ -202,23 +202,19 @@
 <button type="button" (click)="closeTaste()" aria-label="Fermer" class="gbtn" style="flex: none; width: 48px; height: 48px; border-radius: 50%; border: 1px solid rgba(var(--n-glass-rgb),.25); background: rgba(var(--n-glass-rgb),.06); color: var(--n-ink); cursor: pointer; display: flex; align-items: center; justify-content: center">
 <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
 </div>
-<div role="tablist" aria-label="Les trois bouchées" style="margin-top: 26px; display: flex; flex-wrap: wrap; gap: 8px">
-@for (sp of spoons; track $index) {
-<button type="button" role="tab" [attr.aria-selected]="sp.sel" [class]="sp.cls" (click)="sp.pick()" style="min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid rgba(var(--n-glass-rgb),.22); background: transparent; color: var(--n-ink); font: inherit; font-size: 15px; cursor: pointer">{{sp.label}}</button>
-}
-</div>
-
-<div role="tabpanel" style="margin-top: 26px; min-height: 340px">
-@if (sp0) {
-<div class="b-rise" style="display: flex; flex-wrap: wrap; gap: 32px; align-items: center">
+<div class="fiche">
+<section class="fiche-part" aria-labelledby="fp-1">
+<h4 id="fp-1" class="fiche-h">À quoi ça sert</h4>
+<div style="display: flex; flex-wrap: wrap; gap: 32px; align-items: center">
 <p style="flex: 1 1 400px; margin: 0; font-family: 'Instrument Serif', serif; font-style: italic; font-size: clamp(30px, 3.2vw, 44px); line-height: 1.2">{{t.line1}}</p>
 <div aria-hidden="true" class="b-float" style="flex: none; width: 220px; height: 220px; border-radius: 50%; overflow: hidden; position: relative; background: radial-gradient(circle at 32% 26%, rgba(255,255,255,.96) 0%, rgba(255,255,255,0) 34%), radial-gradient(circle at 74% 80%, {{t.c2}} 0%, rgba(255,255,255,0) 58%), radial-gradient(circle at 50% 50%, {{t.c3}} 0%, {{t.c1}} 100%); box-shadow: 0 0 100px -10px {{t.c1}}">
 <span class="b-spin" style="position: absolute; inset: -25%; background: conic-gradient(from 0deg, rgba(255,255,255,0) 0deg, rgba(255,255,255,.75) 40deg, rgba(255,255,255,0) 90deg, {{t.c2}} 160deg, rgba(255,255,255,0) 220deg); mix-blend-mode: soft-light"></span></div>
 </div>
-}
+</section>
 
-@if (sp1) {
-<div class="b-rise cap" [class.cap-has-mob]="!!t.mobileImageUrl">
+<section class="fiche-part" aria-labelledby="fp-2">
+<h4 id="fp-2" class="fiche-h">L’écran</h4>
+<div class="cap" [class.cap-has-mob]="!!t.mobileImageUrl">
 @if (t.mobileImageUrl) {
 <a class="cap-phone" [href]="t.mobileImageUrl" target="_blank" rel="noopener" [attr.aria-label]="'Voir l’écran mobile de ' + t.name + ' en grand'">
 <span class="cap-phone-notch" aria-hidden="true"></span>
@@ -253,13 +249,13 @@
 @if (t.imageUrl || t.mobileImageUrl) {
 <p style="margin: 10px 0 0; font-size: 13px; color: var(--n-muted)">Écran réel du logiciel, présenté avec des données de démonstration.</p>
 }
-}
+</section>
 
-@if (sp2) {
-<div class="b-rise" style="display: flex; flex-wrap: wrap; gap: 28px">
+<section class="fiche-part" aria-labelledby="fp-3">
+<h4 id="fp-3" class="fiche-h">Pour qui, et ce qu’il y a dedans</h4>
+<div style="display: flex; flex-wrap: wrap; gap: 28px">
 <div style="flex: 1 1 300px">
-<p style="margin: 0; font-size: 12px; letter-spacing: .22em; text-transform: uppercase; color: var(--n-muted)">Pour qui</p>
-<p style="margin: 12px 0 0; font-size: 20px; line-height: 1.5">{{t.who}}</p>
+<p style="margin: 0; font-size: 20px; line-height: 1.5">{{t.who}}</p>
 </div>
 <ul style="flex: 1 1 380px; margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px">
 @for (f of t.features; track $index) {
@@ -267,12 +263,17 @@
 }
 </ul>
 </div>
-}
+</section>
 </div>
 
 <div style="margin-top: 28px; padding-top: 24px; border-top: 1px solid rgba(var(--n-glass-rgb),.12); display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center">
 <button type="button" class="hbtn" (click)="toggleTaste()" [attr.aria-pressed]="tInBasketStr" style="min-height: 54px; padding: 0 26px; border-radius: 999px; border: 0; background: var(--n-ink); color: var(--n-bg); font: inherit; font-weight: 500; font-size: 16px; cursor: pointer">{{tBasketLabel}}</button>
-<button type="button" class="gbtn" (click)="nextSpoon()" style="min-height: 54px; padding: 0 24px; border-radius: 999px; border: 1px solid rgba(var(--n-glass-rgb),.25); background: rgba(var(--n-glass-rgb),.06); color: var(--n-ink); font: inherit; font-size: 16px; cursor: pointer">{{nextSpoonLabel}}</button>
+@if (t.link) {
+<a class="gbtn" [href]="t.link" target="_blank" rel="noopener" [attr.aria-label]="'Découvrir ' + t.name + ' (nouvel onglet)'" style="display: inline-flex; align-items: center; gap: 10px; min-height: 54px; padding: 0 24px; border-radius: 999px; border: 1px solid rgba(var(--n-glass-rgb),.25); background: rgba(var(--n-glass-rgb),.06); color: var(--n-ink); text-decoration: none; font-size: 16px">Découvrir {{t.name}}
+<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"></path></svg></a>
+} @else {
+<button type="button" class="gbtn" (click)="continueWalk()" style="min-height: 54px; padding: 0 24px; border-radius: 999px; border: 1px solid rgba(var(--n-glass-rgb),.25); background: rgba(var(--n-glass-rgb),.06); color: var(--n-ink); font: inherit; font-size: 16px; cursor: pointer">Continuer la promenade</button>
+}
 </div>
 </div>
 </div>

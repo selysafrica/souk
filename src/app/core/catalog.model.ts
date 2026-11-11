@@ -23,6 +23,8 @@ export interface Univers {
   /** Real screenshots (desktop / phone); they replace the illustrative screen when set. */
   imageUrl: string | null;
   mobileImageUrl: string | null;
+  /** Product site or demo, opened in a new tab from the universe's sheet. */
+  link: string | null;
   position: number;
   published: boolean;
 }

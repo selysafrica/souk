@@ -63,6 +63,9 @@ function open(): DatabaseSyncType {
   // Databases created before the organisation field on demo requests.
   const leadCols = (db.prepare('PRAGMA table_info(leads)').all() as { name: string }[]).map((c) => c.name);
   if (!leadCols.includes('organisation')) db.exec("ALTER TABLE leads ADD COLUMN organisation TEXT NOT NULL DEFAULT ''");
+  // Databases created before the product link of each universe.
+  const universCols = (db.prepare('PRAGMA table_info(univers)').all() as { name: string }[]).map((c) => c.name);
+  if (!universCols.includes('link')) db.exec('ALTER TABLE univers ADD COLUMN link TEXT');
   // The 19 universes of design/souk.dc.html replace the former catalogue (table « products » is left
   // untouched, no longer read). Seeded once: afterwards the admin is the reference.
   const count = db.prepare('SELECT COUNT(*) AS n FROM univers').get() as { n: number };
@@ -128,6 +131,7 @@ function toUnivers(r: Row): Univers {
     screenCta: String(r['screen_cta'] ?? ''),
     imageUrl: (r['image_url'] as string | null) || null,
     mobileImageUrl: (r['mobile_image_url'] as string | null) || null,
+    link: (r['link'] as string | null) || null,
     position: Number(r['position']),
     published: Number(r['published']) === 1,
   };
@@ -167,6 +171,7 @@ function clean(input: UniversInput): UniversInput {
     screenCta: s(input.screenCta, 40),
     imageUrl: s(input.imageUrl, 500) || null,
     mobileImageUrl: s(input.mobileImageUrl, 500) || null,
+    link: s(input.link, 500) || null,
     position: Number.isFinite(Number(input.position)) ? Math.trunc(Number(input.position)) : 0,
     published: Boolean(input.published),
   };
@@ -181,17 +186,19 @@ function clean(input: UniversInput): UniversInput {
     if (url && !/^(https?:\/\/|\/)/.test(url))
       throw new ValidationError('Les liens doivent commencer par https://, http:// ou /.');
   }
+  if (out.link && !/^https:\/\/[^\s]+$/.test(out.link))
+    throw new ValidationError('Le lien du produit doit être une adresse complète commençant par https://.');
   return out;
 }
 
 function params(u: UniversInput) {
   return [
     u.slug, u.name, u.allee, u.palette, u.screen, u.badge, u.film ? 1 : 0, u.line1, u.who,
-    JSON.stringify(u.features), u.screenTitle, u.screenCta, u.imageUrl, u.mobileImageUrl, u.position, u.published ? 1 : 0,
+    JSON.stringify(u.features), u.screenTitle, u.screenCta, u.imageUrl, u.mobileImageUrl, u.link, u.position, u.published ? 1 : 0,
   ] as const;
 }
 
-const COLS = 'slug, name, allee, palette, screen, badge, film, line1, who, features, screen_title, screen_cta, image_url, mobile_image_url, position, published';
+const COLS = 'slug, name, allee, palette, screen, badge, film, line1, who, features, screen_title, screen_cta, image_url, mobile_image_url, link, position, published';
 
 export function insertUnivers(input: UniversInput): Univers {
   const u = clean(input);

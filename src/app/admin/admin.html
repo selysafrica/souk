@@ -150,6 +150,9 @@
                   <div class="field"><label for="f-scta">Bouton de l’écran</label>
                     <input id="f-scta" name="screenCta" maxlength="40" [ngModel]="d.screenCta" (ngModelChange)="patch({ screenCta: $event })" /></div>
                   <label class="check"><input type="checkbox" name="film" [ngModel]="d.film" (ngModelChange)="patch({ film: $event })" /> Dans les solutions du film</label>
+                  <div class="field wide"><label for="f-link">Lien du produit</label>
+                    <input id="f-link" name="link" inputmode="url" spellcheck="false" placeholder="https://" [ngModel]="d.link ?? ''" (ngModelChange)="patch({ link: $event || null })" aria-describedby="h-link" />
+                    <p class="help" id="h-link">Site ou démo du produit, ouvert dans un nouvel onglet depuis la fiche. Sans lien, le bouton n’apparaît pas.</p></div>
                   <div class="field"><label for="f-image">Capture web (lien)</label>
                     <input id="f-image" name="imageUrl" inputmode="url" placeholder="/captures/beaform-desktop.png" [ngModel]="d.imageUrl ?? ''" (ngModelChange)="patch({ imageUrl: $event || null })" aria-describedby="h-image" />
                     <p class="help" id="h-image">Paysage 16:10 (1440 × 900). Fichier dans <code>public/captures/</code>.</p></div>

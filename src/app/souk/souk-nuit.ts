@@ -41,7 +41,6 @@ const B_STARS = Array.from({ length: 46 }, (_, i) => ({
   s: 1 + (i % 3) + 'px',
   d: -(i % 7) * 0.6 + 's',
 }));
-const SPOONS = ['1 · À quoi ça sert', '2 · L’écran', '3 · Pour qui, et ce qu’il y a dedans'];
 
 interface Stall extends Univers {
   no: string;
@@ -79,7 +78,6 @@ export class SoukNuit implements OnInit {
   private readonly pos = signal(0);
   private readonly basket = signal<string[]>([]);
   private readonly taste = signal<string | null>(null);
-  private readonly spoon = signal(0);
   private readonly sent_ = signal(false);
 
   readonly formName = signal('');
@@ -349,23 +347,6 @@ export class SoukNuit implements OnInit {
   get t() {
     return this.base().find((x) => x.slug === this.taste()) ?? this.cur;
   }
-  get spoons() {
-    return SPOONS.map((label, k) => ({
-      label,
-      sel: String(k === this.spoon()),
-      cls: k === this.spoon() ? 'spoon on' : 'spoon',
-      pick: () => this.spoon.set(k),
-    }));
-  }
-  get sp0() {
-    return this.spoon() === 0;
-  }
-  get sp1() {
-    return this.spoon() === 1;
-  }
-  get sp2() {
-    return this.spoon() === 2;
-  }
   get v() {
     const vk = B_SCR[this.t.screen] ?? 'card';
     return { chat: vk === 'chat', dash: vk === 'dash', files: vk === 'files', card: vk === 'card' };
@@ -386,9 +367,6 @@ export class SoukNuit implements OnInit {
   }
   get tBasketLabel() {
     return this.inB(this.t.slug) ? 'Dans mon panier ✓' : 'Ajouter à mon panier de démos';
-  }
-  get nextSpoonLabel() {
-    return this.spoon() < 2 ? 'Bouchée suivante' : 'Continuer la promenade';
   }
 
   // ─── Actions ───────────────────────────────────────────────────────────
@@ -411,17 +389,14 @@ export class SoukNuit implements OnInit {
   toggleTaste() {
     this.toggle(this.t.slug);
   }
-  nextSpoon() {
-    if (this.spoon() < 2) this.spoon.update((s) => s + 1);
-    else {
-      this.closeTaste();
-      this.go(this.pos() + 1);
-    }
+  /** From the sheet of a universe without a product link: back to the walk, one stall further. */
+  continueWalk() {
+    this.closeTaste();
+    this.go(this.pos() + 1);
   }
 
   private openTaste(slug: string) {
     this.opener = this.doc.activeElement as HTMLElement | null;
-    this.spoon.set(0);
     this.taste.set(slug);
     this.sound.play('open');
     this.setUrl(slug);

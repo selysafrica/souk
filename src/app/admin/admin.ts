@@ -153,6 +153,7 @@ export class Admin implements OnInit {
       screenCta: '',
       imageUrl: null,
       mobileImageUrl: null,
+      link: null,
       position: this.products().length + 1,
       published: false,
     });
