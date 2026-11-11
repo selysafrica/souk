@@ -24,7 +24,15 @@ import { SoukSound } from './souk-sound';
 
 /** Screen used in the « L’écran » bite, per illustrative screen (B_SCR in the design). */
 const B_SCR: Record<string, 'chat' | 'dash' | 'files' | 'card'> = {
-  agenda: 'dash', chat: 'chat', files: 'files', dash: 'dash', people: 'files', form: 'files', card: 'card', rating: 'card', queue: 'card',
+  agenda: 'dash',
+  chat: 'chat',
+  files: 'files',
+  dash: 'dash',
+  people: 'files',
+  form: 'files',
+  card: 'card',
+  rating: 'card',
+  queue: 'card',
 };
 /** The 46 stars of the design (B_STARS). */
 const B_STARS = Array.from({ length: 46 }, (_, i) => ({
@@ -82,6 +90,20 @@ export class SoukNuit implements OnInit {
   readonly sending = signal(false);
 
   private opener: HTMLElement | null = null;
+  /** Day theme (tones of proposal A); night is the design's default. Remembered per visitor. */
+  readonly day = signal(false);
+
+  toggleTheme() {
+    const day = !this.day();
+    this.day.set(day);
+    this.doc.documentElement.classList.toggle('theme-jour', day);
+    try {
+      this.doc.defaultView?.localStorage.setItem('souk-theme', day ? 'jour' : 'nuit');
+    } catch {
+      /* storage unavailable: the choice lasts for this visit */
+    }
+    this.sound.play('tap');
+  }
 
   constructor() {
     const destroy = inject(DestroyRef);
@@ -92,6 +114,7 @@ export class SoukNuit implements OnInit {
         v.muted = true;
         void v.play()?.catch(() => undefined);
       }
+      this.day.set(this.doc.documentElement.classList.contains('theme-jour'));
       const win = this.doc.defaultView!;
       const onPop = () => {
         const s = new URL(win.location.href).searchParams.get('univers');
@@ -103,11 +126,19 @@ export class SoukNuit implements OnInit {
     effect(() => {
       const open = this.taste();
       const list = this.catalog().univers;
-      untracked(() => this.seo.forSouk(list, open ? (list.find((u) => u.slug === open) ?? null) : null));
+      untracked(() =>
+        this.seo.forSouk(list, open ? (list.find((u) => u.slug === open) ?? null) : null),
+      );
     });
     effect(() => {
       if (!this.taste()) return;
-      setTimeout(() => this.host.nativeElement.querySelector<HTMLElement>('[role=dialog] button[aria-label="Fermer"]')?.focus(), 0);
+      setTimeout(
+        () =>
+          this.host.nativeElement
+            .querySelector<HTMLElement>('[role=dialog] button[aria-label="Fermer"]')
+            ?.focus(),
+        0,
+      );
     });
   }
 
@@ -126,7 +157,16 @@ export class SoukNuit implements OnInit {
   readonly base = computed<Stall[]>(() =>
     this.catalog().univers.map((x, i) => {
       const [c1, c2, c3, sh] = P[x.palette] ?? P.lilac;
-      return { ...x, c1, c2, c3, sh, no: (i < 9 ? '0' : '') + (i + 1), alleeLabel: SOUK_ALLEES[x.allee], idx: i };
+      return {
+        ...x,
+        c1,
+        c2,
+        c3,
+        sh,
+        no: (i < 9 ? '0' : '') + (i + 1),
+        alleeLabel: SOUK_ALLEES[x.allee],
+        idx: i,
+      };
     }),
   );
   private get N() {
@@ -154,19 +194,39 @@ export class SoukNuit implements OnInit {
       const side = i % 2 ? 1 : -1;
       let X: number, Y: number, Z: number, op: number, blur: string;
       if (d < 0) {
-        X = side * 900; Y = 120; Z = 500; op = 0; blur = 'blur(6px)';
+        X = side * 900;
+        Y = 120;
+        Z = 500;
+        op = 0;
+        blur = 'blur(6px)';
       } else if (d === 0) {
-        X = 0; Y = 0; Z = 0; op = 1; blur = 'none';
+        X = 0;
+        Y = 0;
+        Z = 0;
+        op = 1;
+        blur = 'none';
       } else {
-        X = side * (330 + d * 40); Y = -d * 26; Z = -d * 520; op = Math.max(0, 1 - d * 0.15); blur = d > 3 ? 'blur(' + (d - 3) + 'px)' : 'none';
+        X = side * (330 + d * 40);
+        Y = -d * 26;
+        Z = -d * 520;
+        op = Math.max(0, 1 - d * 0.15);
+        blur = d > 3 ? 'blur(' + (d - 3) + 'px)' : 'none';
       }
       const size = d === 0 ? 320 : 260;
       return {
         ...x,
-        size: size + 'px', half: -size / 2 + 'px', fs: Math.round(size / 10) + 'px',
-        x: X + 'px', y: Y + 'px', z: Z + 'px', op, blur,
-        pe: op > 0.05 ? 'auto' : 'none', tab: d >= 0 && d < 6 ? '0' : '-1',
-        rot: i * 40 + 'deg', delay: -1.1 * i + 's',
+        size: size + 'px',
+        half: -size / 2 + 'px',
+        fs: Math.round(size / 10) + 'px',
+        x: X + 'px',
+        y: Y + 'px',
+        z: Z + 'px',
+        op,
+        blur,
+        pe: op > 0.05 ? 'auto' : 'none',
+        tab: d >= 0 && d < 6 ? '0' : '-1',
+        rot: i * 40 + 'deg',
+        delay: -1.1 * i + 's',
         aria: d === 0 ? 'Goûter ' + x.name : 'Marcher jusqu’à ' + x.name,
         go: () => (d === 0 ? this.openTaste(x.slug) : this.go(i)),
       };
@@ -177,54 +237,127 @@ export class SoukNuit implements OnInit {
     const N = this.N;
     return [
       ...this.base().map((x, i) => ({
-        label: 'Aller à ' + x.name, s: i === pos ? '14px' : '8px', ring: i === pos ? '6px' : '0',
-        c: i <= pos ? x.c1 : 'rgba(255,255,255,.35)', go: () => this.go(i),
+        label: 'Aller à ' + x.name,
+        s: i === pos ? '14px' : '8px',
+        ring: i === pos ? '6px' : '0',
+        c: i <= pos ? x.c1 : 'rgba(255,255,255,.35)',
+        go: () => this.go(i),
       })),
-      { label: 'Bout de l’allée', s: pos === N ? '14px' : '8px', ring: pos === N ? '6px' : '0', c: pos === N ? '#F4F0FF' : 'rgba(255,255,255,.35)', go: () => this.go(N) },
+      {
+        label: 'Bout de l’allée',
+        s: pos === N ? '14px' : '8px',
+        ring: pos === N ? '6px' : '0',
+        c: pos === N ? '#F4F0FF' : 'rgba(255,255,255,.35)',
+        go: () => this.go(N),
+      },
     ];
   });
 
-  get muted() { return !this.sound_(); }
+  get muted() {
+    return !this.sound_();
+  }
   readonly stars = B_STARS;
-  get pathW() { return (this.N ? (this.pos() / this.N) * 100 : 0) + '%'; }
-  get floorY() { return this.pos() * 240 + 'px'; }
-  get cur() { return this.base()[Math.min(this.pos(), this.N - 1)]; }
-  get glowA() { return this.cur?.c1; }
-  get glowB() { return this.cur?.c2; }
-  get alleeNow() { return this.pos() === this.N ? 'Le bout du souk' : this.cur?.alleeLabel; }
-  get stepLabel() { return (this.pos() === this.N ? this.N : this.pos() + 1) + ' / ' + this.N; }
-  get atStall() { return this.pos() < this.N; }
-  get atEnd() { return this.pos() === this.N; }
-  get curInBasketStr() { return String(this.inB(this.cur.slug)); }
-  get curBasketLabel() { return this.inB(this.cur.slug) ? 'Dans mon panier' : '+ Ajouter au panier'; }
-  get basketCount() { return String(this.basket().length); }
-  get basketEmpty() { return this.basket().length === 0; }
+  get pathW() {
+    return (this.N ? (this.pos() / this.N) * 100 : 0) + '%';
+  }
+  get floorY() {
+    return this.pos() * 240 + 'px';
+  }
+  get cur() {
+    return this.base()[Math.min(this.pos(), this.N - 1)];
+  }
+  get glowA() {
+    return this.cur?.c1;
+  }
+  get glowB() {
+    return this.cur?.c2;
+  }
+  get alleeNow() {
+    return this.pos() === this.N ? 'Le bout du souk' : this.cur?.alleeLabel;
+  }
+  get stepLabel() {
+    return (this.pos() === this.N ? this.N : this.pos() + 1) + ' / ' + this.N;
+  }
+  get atStall() {
+    return this.pos() < this.N;
+  }
+  get atEnd() {
+    return this.pos() === this.N;
+  }
+  get curInBasketStr() {
+    return String(this.inB(this.cur.slug));
+  }
+  get curBasketLabel() {
+    return this.inB(this.cur.slug) ? 'Dans mon panier' : '+ Ajouter au panier';
+  }
+  get basketCount() {
+    return String(this.basket().length);
+  }
+  get basketEmpty() {
+    return this.basket().length === 0;
+  }
   get basketItems() {
-    return this.base().filter((x) => this.inB(x.slug)).map((x) => ({ ...x, remove: () => this.toggle(x.slug) }));
+    return this.base()
+      .filter((x) => this.inB(x.slug))
+      .map((x) => ({ ...x, remove: () => this.toggle(x.slug) }));
   }
   get demoLabel() {
     const n = this.basket().length;
     return n > 1 ? n + ' démos' : n === 1 ? 'ma démo' : 'une démo';
   }
-  get sent() { return this.sent_(); }
-  get notSent() { return !this.sent_(); }
-  get tasting() { return !!this.taste() && this.N > 0; }
-  get t() { return this.base().find((x) => x.slug === this.taste()) ?? this.cur; }
-  get spoons() {
-    return SPOONS.map((label, k) => ({ label, sel: String(k === this.spoon()), cls: k === this.spoon() ? 'spoon on' : 'spoon', pick: () => this.spoon.set(k) }));
+  get sent() {
+    return this.sent_();
   }
-  get sp0() { return this.spoon() === 0; }
-  get sp1() { return this.spoon() === 1; }
-  get sp2() { return this.spoon() === 2; }
+  get notSent() {
+    return !this.sent_();
+  }
+  get tasting() {
+    return !!this.taste() && this.N > 0;
+  }
+  get t() {
+    return this.base().find((x) => x.slug === this.taste()) ?? this.cur;
+  }
+  get spoons() {
+    return SPOONS.map((label, k) => ({
+      label,
+      sel: String(k === this.spoon()),
+      cls: k === this.spoon() ? 'spoon on' : 'spoon',
+      pick: () => this.spoon.set(k),
+    }));
+  }
+  get sp0() {
+    return this.spoon() === 0;
+  }
+  get sp1() {
+    return this.spoon() === 1;
+  }
+  get sp2() {
+    return this.spoon() === 2;
+  }
   get v() {
     const vk = B_SCR[this.t.screen] ?? 'card';
     return { chat: vk === 'chat', dash: vk === 'dash', files: vk === 'files', card: vk === 'card' };
   }
-  get bars() { const t = this.t; return [38, 52, 44, 66, 58, 74, 62, 80, 70, 88, 76, 94].map((h, j) => ({ h: h + '%', c: j % 4 === 3 ? t.c2 : t.c1 })); }
-  get tiles() { const t = this.t; return [0, 1, 2, 3, 4, 5, 6, 7].map((j) => ({ c: j % 3 === 0 ? t.c2 : t.c1 })); }
-  get tInBasketStr() { return String(this.inB(this.t.slug)); }
-  get tBasketLabel() { return this.inB(this.t.slug) ? 'Dans mon panier ✓' : 'Ajouter à mon panier de démos'; }
-  get nextSpoonLabel() { return this.spoon() < 2 ? 'Bouchée suivante' : 'Continuer la promenade'; }
+  get bars() {
+    const t = this.t;
+    return [38, 52, 44, 66, 58, 74, 62, 80, 70, 88, 76, 94].map((h, j) => ({
+      h: h + '%',
+      c: j % 4 === 3 ? t.c2 : t.c1,
+    }));
+  }
+  get tiles() {
+    const t = this.t;
+    return [0, 1, 2, 3, 4, 5, 6, 7].map((j) => ({ c: j % 3 === 0 ? t.c2 : t.c1 }));
+  }
+  get tInBasketStr() {
+    return String(this.inB(this.t.slug));
+  }
+  get tBasketLabel() {
+    return this.inB(this.t.slug) ? 'Dans mon panier ✓' : 'Ajouter à mon panier de démos';
+  }
+  get nextSpoonLabel() {
+    return this.spoon() < 2 ? 'Bouchée suivante' : 'Continuer la promenade';
+  }
 
   // ─── Actions ───────────────────────────────────────────────────────────
 
@@ -237,12 +370,24 @@ export class SoukNuit implements OnInit {
       void v.play()?.catch(() => undefined);
     }
   }
-  back() { this.go(this.pos() - 1); }
-  fwd() { this.go(this.pos() + 1); }
-  restart() { this.go(0); }
-  tasteCur() { this.openTaste(this.cur.slug); }
-  toggleCur() { this.toggle(this.cur.slug); }
-  toggleTaste() { this.toggle(this.t.slug); }
+  back() {
+    this.go(this.pos() - 1);
+  }
+  fwd() {
+    this.go(this.pos() + 1);
+  }
+  restart() {
+    this.go(0);
+  }
+  tasteCur() {
+    this.openTaste(this.cur.slug);
+  }
+  toggleCur() {
+    this.toggle(this.cur.slug);
+  }
+  toggleTaste() {
+    this.toggle(this.t.slug);
+  }
   nextSpoon() {
     if (this.spoon() < 2) this.spoon.update((s) => s + 1);
     else {
@@ -287,7 +432,8 @@ export class SoukNuit implements OnInit {
     e.preventDefault();
     this.formError.set('');
     if (!this.formName().trim()) return this.formError.set('Indiquez votre nom.');
-    if (!this.formContact().trim()) return this.formError.set('Indiquez un e-mail ou un téléphone pour qu’on vous recontacte.');
+    if (!this.formContact().trim())
+      return this.formError.set('Indiquez un e-mail ou un téléphone pour qu’on vous recontacte.');
     const picked = this.basketItems;
     this.sending.set(true);
     try {
@@ -299,7 +445,9 @@ export class SoukNuit implements OnInit {
           organisation: this.formOrg(),
           contact: this.formContact(),
           productSlug: picked[0]?.slug ?? '',
-          message: picked.length ? 'Panier de dégustation : ' + picked.map((p) => p.name).join(', ') : '',
+          message: picked.length
+            ? 'Panier de dégustation : ' + picked.map((p) => p.name).join(', ')
+            : '',
         }),
       });
       if (!res.ok) {
@@ -309,7 +457,11 @@ export class SoukNuit implements OnInit {
       this.sent_.set(true);
       this.sound.play('tap');
     } catch (err) {
-      this.formError.set(err instanceof Error && err.message !== 'Failed to fetch' ? err.message : 'Connexion perdue : vérifiez votre réseau puis réessayez.');
+      this.formError.set(
+        err instanceof Error && err.message !== 'Failed to fetch'
+          ? err.message
+          : 'Connexion perdue : vérifiez votre réseau puis réessayez.',
+      );
     } finally {
       this.sending.set(false);
     }

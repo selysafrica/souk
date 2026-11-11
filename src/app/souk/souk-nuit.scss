@@ -34,3 +34,38 @@ input:focus,textarea:focus{outline:2px solid #C9B8FF;outline-offset:2px}
 .hbtn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
 button:focus-visible, a:focus-visible { outline: 2px solid #C9B8FF; outline-offset: 3px; }
 ::selection { background: #C9B8FF; color: #0B0A1A; }
+
+/* ─── Thèmes : nuit (valeurs exactes du design) et jour (tons de la proposition A). ─── */
+:root {
+  --n-bg: #0B0A1A; --n-bg-rgb: 11, 10, 26; --n-ink: #F4F0FF; --n-ink2: #D9D3F0; --n-muted: #B9B2D6;
+  --n-soft: #E4DEF7; --n-panel: #13112A; --n-glass-rgb: 255, 255, 255; --n-scrim: rgba(5, 4, 14, .75);
+}
+:root.theme-jour {
+  --n-bg: #F4F2F7; --n-bg-rgb: 244, 242, 247; --n-ink: #17151F; --n-ink2: #3A3646; --n-muted: #5E5A6B;
+  --n-soft: #3A3646; --n-panel: #FFFFFF; --n-glass-rgb: 23, 21, 31; --n-scrim: rgba(244, 242, 247, .78);
+}
+body { background: var(--n-bg); transition: background-color .5s; }
+.theme-jour .star { display: none; }
+.theme-jour .b-holo { background-image: linear-gradient(100deg, #17151F 0%, #17151F 18%, #7A63E8 30%, #3FBFB6 42%, #F09AC6 54%, #F2B98A 64%, #17151F 78%, #17151F 100%); }
+.theme-jour #rdv [aria-hidden='true'] { opacity: .22 !important; }
+.theme-jour .dot span[style*='255,255,255'] { filter: invert(.8); }
+.theme-btn {
+  width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; cursor: pointer;
+  border: 1px solid rgba(var(--n-glass-rgb), .25); background: rgba(var(--n-glass-rgb), .08); color: var(--n-ink);
+}
+
+/* ─── Mobile : bannière ─── */
+@media (max-width: 820px) {
+  .entree { min-height: 100svh !important; }
+  /* Nav on one line: logo, basket, theme, sound; the walk and the appointment stay reachable below. */
+  #entree header { flex-wrap: nowrap !important; padding: 18px 20px !important; }
+  #entree header nav { flex-wrap: nowrap !important; gap: 6px !important; }
+  #entree header .nav-walk, #entree header .nav-rdv { display: none !important; }
+  #entree header nav a[href='#panier'] { padding: 10px 12px !important; border-radius: 999px; border: 1px solid rgba(var(--n-glass-rgb), .25); white-space: nowrap; }
+  /* A deeper veil, so the title never sits on the film's own lettering. */
+  .entree-veil { background: linear-gradient(180deg, rgba(var(--n-bg-rgb), .6) 0%, rgba(var(--n-bg-rgb), .1) 22%, rgba(var(--n-bg-rgb), .2) 34%, rgba(var(--n-bg-rgb), .9) 52%, var(--n-bg) 64%) !important; }
+  #entree header > a { flex: none; white-space: nowrap; }
+  #entree > div[style*='z-index: 2'] { padding: 0 20px 40px !important; gap: 24px !important; }
+  #entree h1 { font-size: clamp(64px, 19vw, 96px) !important; }
+  #entree .b-rise > a, #entree .b-rise > button { flex: 1 1 100%; justify-content: center; }
+}
