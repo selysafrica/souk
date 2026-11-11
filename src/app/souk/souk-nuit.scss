@@ -69,3 +69,23 @@ body { background: var(--n-bg); transition: background-color .5s; }
   #entree h1 { font-size: clamp(64px, 19vw, 96px) !important; }
   #entree .b-rise > a, #entree .b-rise > button { flex: 1 1 100%; justify-content: center; }
 }
+
+/* ─── Captures : cadre navigateur sur ordinateur, cadre téléphone sur mobile ─── */
+.cap-phone { display: none; }
+@media (max-width: 820px) {
+  .cap-has-mob .cap-desk { display: none; }
+  .cap-has-mob .cap-phone {
+    display: block; position: relative; width: fit-content; margin: 0 auto; padding: 9px;
+    border-radius: 42px; background: #0D0B14;
+    border: 1px solid rgba(var(--n-glass-rgb), .22);
+    box-shadow: 0 30px 70px -30px rgba(0, 0, 0, .55);
+  }
+  .cap-phone img {
+    display: block; height: min(560px, 62svh); width: auto; max-width: 72vw;
+    object-fit: cover; object-position: top; border-radius: 33px; background: #F8F6FC;
+  }
+  .cap-phone-notch {
+    position: absolute; top: 17px; left: 50%; transform: translateX(-50%); z-index: 1;
+    width: 64px; height: 18px; border-radius: 999px; background: #0D0B14;
+  }
+}

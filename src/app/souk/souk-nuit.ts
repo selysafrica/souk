@@ -159,6 +159,8 @@ export class SoukNuit implements OnInit {
       const [c1, c2, c3, sh] = P[x.palette] ?? P.lilac;
       return {
         ...x,
+        // A bracketed text is an editorial note, never a feature to show.
+        features: x.features.filter((f) => !/^\[.*\]$/.test(f.trim())),
         c1,
         c2,
         c3,

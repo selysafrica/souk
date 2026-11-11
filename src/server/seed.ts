@@ -5,13 +5,17 @@ import { SOUK } from '../app/souk/data/souk';
  * Real screenshots taken earlier (demonstration data), matched to the universes of the design.
  * The former « SAE » archive screens are BeaGed's, and BeaMS Couture became Selys Couture.
  */
-const CAPTURES: Record<string, string> = {
+export const CAPTURES: Record<string, string> = {
+  bearh: 'bearh',
   beaform: 'beaform',
   beaevent: 'beaevent',
   beagec: 'beagec',
   beaged: 'sae-ged',
   couture: 'beams-couture',
 };
+
+/** Captures that only exist in the desktop format: phones show the desktop capture, fitted. */
+const DESKTOP_ONLY = new Set(['bearh']);
 
 /** The 19 universes of design/souk.dc.html, in the design's order. */
 export const SEED_UNIVERS: Omit<UniversInput, 'position'>[] = SOUK.map((u) => {
@@ -30,7 +34,7 @@ export const SEED_UNIVERS: Omit<UniversInput, 'position'>[] = SOUK.map((u) => {
     screenTitle: u.screenTitle,
     screenCta: u.screenCta,
     imageUrl: shot ? `/captures/${shot}-desktop.webp` : null,
-    mobileImageUrl: shot ? `/captures/${shot}-mobile.webp` : null,
+    mobileImageUrl: shot && !DESKTOP_ONLY.has(shot) ? `/captures/${shot}-mobile.webp` : null,
     published: true,
   };
 });

@@ -67,7 +67,39 @@ function open(): DatabaseSyncType {
   // untouched, no longer read). Seeded once: afterwards the admin is the reference.
   const count = db.prepare('SELECT COUNT(*) AS n FROM univers').get() as { n: number };
   if (count.n === 0) SEED_UNIVERS.forEach((u, i) => insertUnivers({ ...u, position: i + 1 }));
+  else upgradeUnivers(db);
   return db;
+}
+
+/** Marker left by the design for features still to be written; never shown publicly. */
+const PLACEHOLDER = /^\[.*\]$/;
+
+/**
+ * Brings an already seeded database up to date, once: captures added since the seed fill only the
+ * universes that still have none, and design placeholders are dropped. Runs a single time (flag in
+ * settings) so that a capture the admin removes later is not brought back.
+ */
+function upgradeUnivers(db: DatabaseSyncType): void {
+  const FLAG = 'upgrade:2026-11-11-captures';
+  if (db.prepare('SELECT 1 FROM settings WHERE key = ?').get(FLAG)) return;
+  const rows = db.prepare('SELECT id, slug, features, image_url, mobile_image_url FROM univers').all() as Row[];
+  const update = db.prepare('UPDATE univers SET features = ?, image_url = ?, mobile_image_url = ? WHERE id = ?');
+  for (const r of rows) {
+    const seed = SEED_UNIVERS.find((u) => u.slug === r['slug']);
+    let features: string[] = [];
+    try {
+      features = (JSON.parse(String(r['features'] ?? '[]')) as unknown[]).map(String);
+    } catch {
+      continue;
+    }
+    const kept = features.filter((f) => !PLACEHOLDER.test(f.trim()));
+    const image = (r['image_url'] as string | null) || (seed?.imageUrl ?? null);
+    const mobile = (r['image_url'] as string | null) ? (r['mobile_image_url'] as string | null) : (seed?.mobileImageUrl ?? null);
+    if (kept.length !== features.length || image !== r['image_url'] || mobile !== r['mobile_image_url']) {
+      update.run(JSON.stringify(kept), image, mobile, r['id'] as number);
+    }
+  }
+  db.prepare('INSERT INTO settings (key, value) VALUES (?, ?)').run(FLAG, new Date().toISOString());
 }
 
 type Row = Record<string, unknown>;

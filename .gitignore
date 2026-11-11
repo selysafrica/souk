@@ -56,3 +56,6 @@ Thumbs.db
 
 # Export Claude Design d’origine (doublon de design/souk.dc.html + design/assets)
 design/Souk*.html
+
+# Captures brutes reçues (converties en public/captures/*.webp)
+design/captures-sources/

@@ -88,11 +88,11 @@ export const SOUK: SoukSeed[] = [
   mk("gfa", "GFA", "client", "sky", "queue", "", false,
     "La gestion de file d’attente qui rend l’accueil en agence fluide et serein.",
     "Banques et lieux d’accueil du public.",
-    ["Gestion des tickets et des passages en agence", "[FONCTIONNALITÉ CLÉ À COMPLÉTER]", "[FONCTIONNALITÉ CLÉ À COMPLÉTER]"], "Accueil de l’agence", "Appeler le suivant"),
+    ["Gestion des tickets et des passages en agence"], "Accueil de l’agence", "Appeler le suivant"),
   mk("sante", "Selys Santé Bénin", "gov", "mint", "dash", "En compétition", false,
     "Simplifier le parcours administratif de santé pour chaque citoyen.",
     "L’État, les administrations de santé et les citoyens.",
-    ["Candidat au Prix national de la simplification administrative du Bénin", "[FONCTIONNALITÉ CLÉ À COMPLÉTER]", "[FONCTIONNALITÉ CLÉ À COMPLÉTER]"], "Parcours santé", "Suivre"),
+    ["Candidat au Prix national de la simplification administrative du Bénin"], "Parcours santé", "Suivre"),
   mk("beagec", "BeaGec", "docs", "peach", "files", "", true,
     "La gestion électronique du courrier : chaque courrier suivi, de l’arrivée à la réponse.",
     "Administrations, secrétariats et directions générales.",
@@ -116,7 +116,7 @@ export const SOUK: SoukSeed[] = [
   mk("jaya", "Jaya", "metiers", "mint", "people", "", false,
     "Le pont entre ceux qui rêvent un projet et ceux qui peuvent le financer.",
     "Porteurs de projets, jusque dans les villages, advisors et investisseurs.",
-    ["Mise en relation porteurs de projets, advisors et investisseurs", "Ouvert aux projets des villes comme des villages", "[FONCTIONNALITÉ CLÉ À COMPLÉTER]"], "Projets à découvrir", "Proposer un projet")
+    ["Mise en relation porteurs de projets, advisors et investisseurs", "Ouvert aux projets des villes comme des villages"], "Projets à découvrir", "Proposer un projet")
 ];
 export const SOUK_ATELIERS: { id: string; c1: string; c2: string; name: string; text: string }[] = [
   { id: "e1", c1: "#C9B8FF", c2: "#9EE7E3", name: "Archivage numérique & gouvernance", text: "Vos archives papier et numériques, classées, retrouvées en un instant, protégées." },
