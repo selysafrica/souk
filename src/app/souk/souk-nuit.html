@@ -29,7 +29,7 @@
 <p class="b-rise" style="margin: 0; font-size: 13px; letter-spacing: .3em; text-transform: uppercase; color: var(--n-ink2)">Selys Africa · Le Souk</p>
 <h1 class="b-rise" style="margin: 18px 0 0; font-weight: 200; font-size: clamp(76px, 10vw, 150px); line-height: .9; letter-spacing: -.06em; animation-delay: .1s">Entrez,<br><span class="b-holo" style="font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; letter-spacing: -.02em">et flânez.</span></h1>
 </div>
-<div class="b-rise bf-avoid" style="display: flex; flex-wrap: wrap; gap: 12px; animation-delay: .25s">
+<div class="b-rise" style="display: flex; flex-wrap: wrap; gap: 12px; animation-delay: .25s">
 <a href="#promenade" class="hbtn" style="display: inline-flex; align-items: center; gap: 10px; min-height: 56px; padding: 0 28px; border-radius: 999px; background: var(--n-ink); color: var(--n-bg); text-decoration: none; font-weight: 500; font-size: 16px">Commencer la promenade
 <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12l7 7 7-7"></path></svg></a>
 </div>
@@ -101,7 +101,7 @@
 }
 
 <!-- Walk controls + path -->
-<div class="bf-avoid" style="position: absolute; left: 0; right: 0; bottom: 28px; max-width: 1100px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; gap: 18px">
+<div style="position: absolute; left: 0; right: 0; bottom: 28px; max-width: 1100px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; gap: 18px">
 <button type="button" class="gbtn" (click)="back()" aria-label="Reculer d’un pas" style="flex: none; width: 56px; height: 56px; border-radius: 50%; border: 1px solid rgba(var(--n-glass-rgb),.25); background: rgba(var(--n-glass-rgb),.08); color: var(--n-ink); cursor: pointer; display: flex; align-items: center; justify-content: center">
 <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M15 6l-6 6 6 6"></path></svg></button>
 <div role="group" aria-label="Le chemin du souk" style="flex: 1; min-width: 0; position: relative; height: 56px; display: flex; align-items: center; justify-content: space-between; padding: 0 6px">
@@ -184,8 +184,8 @@
 <span>© 2026 Selys Africa</span>
 </footer>
 
-<!-- BeaForm « Restons en contact » : bouton flottant, mis en forme et ouvert par le widget (chargé dans le composant). -->
-<button type="button" data-beaform="restons-en-contact-ahp56b" data-beaform-mode="popup" data-beaform-title="Restons en contact" data-beaform-color="#047A7F" data-beaform-floating>Répondre au formulaire</button>
+<!-- BeaForm « Restons en contact » : onglet à mi-hauteur du bord droit, ouvert par le widget (chargé dans le composant). -->
+<button type="button" data-beaform="restons-en-contact-ahp56b" data-beaform-mode="popup" data-beaform-title="Restons en contact" data-beaform-color="#047A7F" data-beaform-floating>Restons en contact</button>
 
 <!-- DÉGUSTATION -->
 @if (tasting) {
