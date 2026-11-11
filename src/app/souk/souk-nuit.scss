@@ -127,3 +127,11 @@ body { background: var(--n-bg); transition: background-color .5s; }
   box-shadow: 0 10px 30px -12px rgba(4, 122, 127, .6) !important;
 }
 .beaform-floating svg { transform: rotate(90deg); }
+/* Le survol du widget remplace transform (translateY(-1px)) : l'onglet sautait et se retournait.
+   On garde sa position et on le fait juste sortir un peu du bord. */
+.beaform-floating:hover, .beaform-floating:focus-visible {
+  transform: translateY(-50%) translateX(-4px) rotate(180deg) !important;
+}
+.beaform-floating:active { transform: translateY(-50%) rotate(180deg) !important; }
+.beaform-floating { transition: transform .2s ease, filter .2s ease, box-shadow .2s ease !important; }
+@media (prefers-reduced-motion: reduce) { .beaform-floating { transition: none !important; } }
