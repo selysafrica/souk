@@ -7,3 +7,5 @@ dist
 data
 .env
 *.log
+public/musique/*
+!public/musique/LISEZMOI.txt

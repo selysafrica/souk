@@ -44,6 +44,22 @@ app.use('/admin', (_req, res, next) => {
 });
 
 /**
+ * Music files live outside git and outside the image, in their own volume (SOUK_MUSIC, see
+ * docker-compose.yml): /musique/* is looked up there first, then in the build.
+ */
+const musicFolder = process.env['SOUK_MUSIC'];
+if (musicFolder) {
+  app.use(
+    '/musique',
+    express.static(musicFolder, {
+      index: false,
+      redirect: false,
+      setHeaders: (res) => res.setHeader('Cache-Control', 'public, max-age=86400'),
+    }),
+  );
+}
+
+/**
  * Serve static files from /browser. Hashed build files are cached for a year;
  * logos and screenshots keep their names when replaced, so they get one hour.
  */

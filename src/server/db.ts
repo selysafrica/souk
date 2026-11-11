@@ -332,8 +332,6 @@ function cleanTrack(input: TrackInput): TrackInput {
     throw new ValidationError(
       'Le lien doit pointer vers un fichier audio (mp3, m4a, ogg, opus, wav…) commençant par / ou https://.',
     );
-  if (!out.rights)
-    throw new ValidationError('Indiquez les droits de diffusion (licence, contrat ou accord de l’artiste).');
   return out;
 }
 

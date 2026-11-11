@@ -199,8 +199,8 @@
                   <input id="t-artist" name="artist" [ngModel]="d.artist" (ngModelChange)="patchTrack({ artist: $event })" /></div>
                 <div class="field wide"><label for="t-url">Fichier audio (lien)</label>
                   <input id="t-url" name="url" spellcheck="false" inputmode="url" [ngModel]="d.url" (ngModelChange)="patchTrack({ url: $event })" aria-describedby="h-url" />
-                  <p class="help" id="h-url">Déposez le fichier dans <code>public/musique/</code> (MP3 ou M4A), puis saisissez <code>/musique/nom-du-fichier.mp3</code>.</p></div>
-                <div class="field wide"><label for="t-rights">Droits de diffusion</label>
+                  <p class="help" id="h-url">Déposez le fichier sur le serveur, dans le volume musique (voir <code>public/musique/LISEZMOI.txt</code>), puis saisissez <code>/musique/nom-du-fichier.mp3</code>.</p></div>
+                <div class="field wide"><label for="t-rights">Droits de diffusion <span class="muted">(facultatif)</span></label>
                   <input id="t-rights" name="rights" [ngModel]="d.rights" (ngModelChange)="patchTrack({ rights: $event })" aria-describedby="h-rights" />
                   <p class="help" id="h-rights">Ex. « Licence commerciale achetée le 12/11/2026 » ou « Accord écrit de l’artiste ».</p></div>
                 <label class="check wide"><input type="checkbox" name="published" [ngModel]="d.published" (ngModelChange)="patchTrack({ published: $event })" /> Proposer dans la playlist</label>
@@ -227,7 +227,7 @@
               <ul class="tracks">
                 @for (t of tracks(); track t.id) {
                   <li [class.is-hidden]="!t.published">
-                    <div><strong>{{ t.title }}</strong><span class="muted">{{ t.artist || 'Artiste non précisé' }} · {{ t.rights }}</span></div>
+                    <div><strong>{{ t.title }}</strong><span class="muted">{{ t.artist || 'Artiste non précisé' }}@if (t.rights) { · {{ t.rights }} }</span></div>
                     <audio [src]="t.url" controls preload="none"></audio>
                     <div class="row-actions">
                       <button type="button" class="state" [class.on]="t.published" (click)="toggleTrack(t)">{{ t.published ? 'Proposé' : 'Retiré' }}</button>

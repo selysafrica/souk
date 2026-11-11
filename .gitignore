@@ -59,3 +59,7 @@ design/Souk*.html
 
 # Captures brutes reçues (converties en public/captures/*.webp)
 design/captures-sources/
+
+# Morceaux de la playlist : servis depuis le volume musique, jamais versionnés
+public/musique/*
+!public/musique/LISEZMOI.txt

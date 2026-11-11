@@ -12,14 +12,15 @@ RUN npx ng build --configuration production
 
 FROM node:24-alpine AS runtime
 # SQLite natif de Node (node:sqlite) : aucune dépendance à compiler.
-ENV NODE_ENV=production PORT=4000 SOUK_DB=/app/data/souk.db
+ENV NODE_ENV=production PORT=4000 SOUK_DB=/app/data/souk.db SOUK_MUSIC=/app/musique
 WORKDIR /app
 RUN addgroup -S selys && adduser -S selys -G selys \
-  && mkdir -p /app/data && chown selys:selys /app/data
+  && mkdir -p /app/data /app/musique && chown selys:selys /app/data /app/musique
 COPY --from=build --chown=selys:selys /app/dist/souk ./dist
 USER selys
 # La base vit dans un volume : elle survit aux reconstructions de l'image.
-VOLUME ["/app/data"]
+# Les morceaux de la playlist aussi : ils ne passent ni par git ni par l'image.
+VOLUME ["/app/data", "/app/musique"]
 EXPOSE 4000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
   CMD wget -qO- http://127.0.0.1:4000/api/catalog >/dev/null || exit 1

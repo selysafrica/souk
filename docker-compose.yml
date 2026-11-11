@@ -28,8 +28,11 @@ services:
     volumes:
       # Base SQLite (produits, réglages, demandes de démo, sessions admin).
       - souk_data:/app/data
+      # Morceaux de la playlist (public/musique/LISEZMOI.txt) : hors git, hors image.
+      - souk_musique:/app/musique
     ports:
       - '127.0.0.1:${APP_PORT:-4310}:4000'
 
 volumes:
   souk_data:
+  souk_musique:

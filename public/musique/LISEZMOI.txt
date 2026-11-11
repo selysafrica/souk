@@ -1,2 +1,8 @@
-Déposez ici les fichiers audio dont Selys Africa détient les droits de diffusion,
-puis déclarez-les dans /admin, onglet « Musique » (lien : /musique/nom-du-fichier.mp3).
+Les morceaux de la playlist ne sont ni versionnés (git) ni intégrés à l'image Docker :
+ils vivent dans le volume « souk_musique », monté sur /app/musique et servi sous /musique/.
+
+Ajouter un morceau sur le serveur (depuis le dossier du projet) :
+  docker compose cp ./song.mp3 app:/app/musique/song.mp3
+puis le déclarer dans /admin, onglet « Musique », lien : /musique/song.mp3
+
+En local, déposez simplement le fichier dans ce dossier (public/musique/).
