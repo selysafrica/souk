@@ -1,0 +1,266 @@
+<div style="position: relative; font-family: 'Geist Variable', Geist, system-ui, sans-serif; color: #F4F0FF; background: #0B0A1A; min-height: 100vh; overflow-x: hidden">
+
+<!-- ENTRÉE : LE FILM -->
+<section id="entree" style="position: relative; min-height: 860px; overflow: hidden; display: flex; align-items: flex-end">
+<video #vid src="/film/souk-film-b.mp4" poster="/film/souk-film-poster-b.jpg" autoplay loop playsinline [muted]="muted" aria-label="Film du Souk" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover"></video>
+<div aria-hidden="true" style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(11,10,26,.55) 0%, rgba(11,10,26,0) 30%, rgba(11,10,26,0) 55%, rgba(11,10,26,.92) 100%)"></div>
+
+<header style="position: absolute; left: 0; right: 0; top: 0; z-index: 3; max-width: 1360px; margin: 0 auto; padding: 28px 40px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px">
+<a href="#entree" style="display: flex; align-items: center; gap: 12px; color: #F4F0FF; text-decoration: none">
+<span aria-hidden="true" style="width: 28px; height: 28px; border-radius: 50%; background: radial-gradient(circle at 32% 28%, #FFFFFF 0%, rgba(255,255,255,0) 40%), conic-gradient(from 210deg, #C9B8FF, #9EE7E3, #FFD3B8, #FFB8DE, #C9B8FF)"></span>
+<span style="font-size: 18px; font-weight: 500; letter-spacing: -.02em">Selys <span style="font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; font-size: 21px">Souk</span></span></a>
+<nav aria-label="Navigation principale" style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 15px">
+<a href="#promenade" style="padding: 12px 14px; color: #D9D3F0; text-decoration: none">La promenade</a>
+<a href="#panier" style="padding: 12px 14px; color: #D9D3F0; text-decoration: none">Mon panier · {{basketCount}}</a>
+<app-souk-sound class="on-dark" />
+<a href="#rdv" class="hbtn" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 22px; border-radius: 999px; background: #F4F0FF; color: #0B0A1A; text-decoration: none; font-weight: 500">Prendre rendez-vous</a>
+</nav>
+</header>
+
+<div style="position: relative; z-index: 2; width: 100%; max-width: 1360px; margin: 0 auto; padding: 0 40px 72px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 32px">
+<div>
+<p class="b-rise" style="margin: 0; font-size: 13px; letter-spacing: .3em; text-transform: uppercase; color: #D9D3F0">Selys Africa · Proposition B</p>
+<h1 class="b-rise" style="margin: 18px 0 0; font-weight: 200; font-size: clamp(76px, 10vw, 150px); line-height: .9; letter-spacing: -.06em; animation-delay: .1s">Entrez,<br><span class="b-holo" style="font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; letter-spacing: -.02em">et flânez.</span></h1>
+</div>
+<div class="b-rise" style="display: flex; flex-wrap: wrap; gap: 12px; animation-delay: .25s">
+<button type="button" class="gbtn" (click)="watch()" style="display: inline-flex; align-items: center; gap: 12px; min-height: 56px; padding: 0 24px 0 8px; border-radius: 999px; border: 1px solid rgba(255,255,255,.25); background: rgba(255,255,255,.08); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); color: #F4F0FF; font: inherit; font-size: 16px; cursor: pointer">
+<span aria-hidden="true" style="width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #F4F0FF"><svg width="14" height="14" viewBox="0 0 24 24" fill="#0B0A1A"><path d="M7 4l13 8-13 8z"></path></svg></span>Regarder le film avec le son</button>
+<a href="#promenade" class="hbtn" style="display: inline-flex; align-items: center; gap: 10px; min-height: 56px; padding: 0 28px; border-radius: 999px; background: #F4F0FF; color: #0B0A1A; text-decoration: none; font-weight: 500; font-size: 16px">Commencer la promenade
+<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12l7 7 7-7"></path></svg></a>
+</div>
+</div>
+</section>
+
+<!-- LA PROMENADE -->
+<section id="promenade" style="position: relative; padding: 110px 0 0">
+<div style="max-width: 1360px; margin: 0 auto; padding: 0 40px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 28px">
+<div>
+<p style="margin: 0 0 16px; font-size: 13px; letter-spacing: .26em; text-transform: uppercase; color: #B9B2D6">La promenade</p>
+<h2 style="margin: 0; font-weight: 200; font-size: clamp(50px, 6vw, 92px); line-height: .95; letter-spacing: -.045em">Avancez d’étal<br><span style="font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; letter-spacing: -.02em">en étal.</span></h2>
+</div>
+<p style="margin: 0; max-width: 380px; font-size: 17px; line-height: 1.6; color: #B9B2D6">Marchez avec les flèches ou touchez une bulle au loin pour la rejoindre. Goûtez ce qui vous plaît, gardez-le dans votre panier.</p>
+</div>
+
+<div class="stage" style="position: relative; margin-top: 48px; height: 880px; overflow: hidden; perspective: 1100px; perspective-origin: 50% 38%">
+<div aria-hidden="true" style="position: absolute; left: -10%; top: -10%; width: 60%; height: 80%; border-radius: 50%; background: {{glowA}}; filter: blur(140px); opacity: .45; transition: background 1.2s"></div>
+<div aria-hidden="true" style="position: absolute; right: -10%; top: 10%; width: 55%; height: 75%; border-radius: 50%; background: {{glowB}}; filter: blur(140px); opacity: .4; transition: background 1.2s"></div>
+@for (st of stars; track $index) {<span class="star" aria-hidden="true" style="position: absolute; left: {{st.x}}; top: {{st.y}}; width: {{st.s}}; height: {{st.s}}; border-radius: 50%; background: #FFFFFF; animation-delay: {{st.d}}"></span>}
+<div class="floor" aria-hidden="true" style="pointer-events: none; position: absolute; left: -50%; right: -50%; bottom: -10%; height: 70%; transform: rotateX(78deg); transform-origin: 50% 100%; background-image: linear-gradient(rgba(201,184,255,.35) 1px, transparent 1px), linear-gradient(90deg, rgba(158,231,227,.25) 1px, transparent 1px); background-size: 120px 120px; background-position: 0 {{floorY}}; -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 60%); mask-image: linear-gradient(180deg, transparent 0%, #000 60%)"></div>
+
+<div style="position: absolute; inset: 0; transform-style: preserve-3d; pointer-events: none">
+@for (o of stalls(); track $index) {
+<button type="button" class="stall" (click)="o.go()" [attr.aria-label]="o.aria" [attr.tabindex]="o.tab" style="position: absolute; left: 50%; top: 40%; width: {{o.size}}; height: {{o.size}}; margin-left: {{o.half}}; margin-top: {{o.half}}; padding: 0; border: 0; background: none; border-radius: 50%; cursor: pointer; font: inherit; color: #17151F; transform: translate3d({{o.x}}, {{o.y}}, {{o.z}}); opacity: {{o.op}}; filter: {{o.blur}}; pointer-events: {{o.pe}}">
+<span class="b-float" style="position: relative; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; border-radius: 50%; overflow: hidden; animation-delay: {{o.delay}}; background: radial-gradient(circle at 32% 26%, rgba(255,255,255,.96) 0%, rgba(255,255,255,0) 34%), radial-gradient(circle at 74% 80%, {{o.c2}} 0%, rgba(255,255,255,0) 58%), radial-gradient(circle at 50% 50%, {{o.c3}} 0%, {{o.c1}} 100%); box-shadow: inset 0 0 0 1px rgba(255,255,255,.9), inset 0 -26px 60px rgba(255,255,255,.5), 0 0 120px -10px {{o.c1}}">
+<span class="b-spin" aria-hidden="true" style="position: absolute; inset: -25%; background: conic-gradient(from {{o.rot}}, rgba(255,255,255,0) 0deg, rgba(255,255,255,.75) 40deg, rgba(255,255,255,0) 90deg, {{o.c2}} 160deg, rgba(255,255,255,0) 220deg, rgba(255,255,255,.55) 280deg, rgba(255,255,255,0) 330deg); mix-blend-mode: soft-light"></span>
+<span aria-hidden="true" style="position: absolute; left: 17%; top: 11%; width: 36%; height: 20%; border-radius: 50%; background: rgba(255,255,255,.85); filter: blur(12px); transform: rotate(-26deg)"></span>
+<span style="position: relative; padding: 0 14%; font-size: {{o.fs}}; font-weight: 400; letter-spacing: -.03em; line-height: 1.05; text-align: center">{{o.name}}</span>
+</span>
+</button>
+}
+</div>
+
+<!-- HUD -->
+<div style="position: absolute; left: 0; right: 0; top: 24px; max-width: 1360px; margin: 0 auto; padding: 0 40px; display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; pointer-events: none">
+<div style="padding: 14px 20px; border-radius: 20px; background: rgba(11,10,26,.5); border: 1px solid rgba(255,255,255,.14); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px)">
+<div style="font-size: 12px; letter-spacing: .22em; text-transform: uppercase; color: #B9B2D6">Allée</div>
+<div style="margin-top: 4px; font-family: 'Instrument Serif', serif; font-style: italic; font-size: 30px">{{alleeNow}}</div>
+</div>
+<div style="padding: 14px 20px; border-radius: 20px; background: rgba(11,10,26,.5); border: 1px solid rgba(255,255,255,.14); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); text-align: right">
+<div style="font-size: 12px; letter-spacing: .22em; text-transform: uppercase; color: #B9B2D6">Pas</div>
+<div style="margin-top: 4px; font-size: 30px; font-weight: 200; letter-spacing: -.03em">{{stepLabel}}</div>
+</div>
+</div>
+
+<!-- Focused stall card -->
+@if (atStall) {
+<div class="b-rise hud-side" style="position: absolute; left: max(40px, calc(50% - 640px)); top: 50%; transform: translateY(-50%); width: 300px; display: flex; flex-direction: column; gap: 12px">
+<span style="font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: #B9B2D6">Étal {{cur.no}} · {{cur.alleeLabel}}</span>
+<span style="font-size: 18px; line-height: 1.5; color: #E4DEF7">{{cur.line1}}</span>
+@if (cur.badge) {<span style="align-self: flex-start; padding: 6px 12px; border-radius: 999px; border: 1px solid rgba(255,255,255,.25); font-size: 12px; letter-spacing: .06em">{{cur.badge}}</span>}
+</div>
+<div class="b-rise" style="position: absolute; left: 0; right: 0; bottom: 150px; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; padding: 0 24px">
+<button type="button" class="hbtn pulse" (click)="tasteCur()" style="min-height: 54px; padding: 0 28px; border-radius: 999px; border: 0; background: #F4F0FF; color: #0B0A1A; font: inherit; font-weight: 500; font-size: 16px; cursor: pointer">Goûter {{cur.name}}</button>
+<button type="button" class="gbtn" (click)="toggleCur()" [attr.aria-pressed]="curInBasketStr" style="min-height: 54px; padding: 0 24px; border-radius: 999px; border: 1px solid rgba(255,255,255,.25); background: rgba(255,255,255,.08); color: #F4F0FF; font: inherit; font-size: 16px; cursor: pointer">{{curBasketLabel}}</button>
+</div>
+}
+
+@if (atEnd) {
+<div class="b-rise" style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; text-align: center; padding: 0 24px">
+<p style="margin: 0; font-size: 13px; letter-spacing: .26em; text-transform: uppercase; color: #B9B2D6">Bout de l’allée</p>
+<p style="margin: 0; font-weight: 200; font-size: clamp(48px, 6vw, 88px); line-height: 1; letter-spacing: -.045em">Vous avez tout vu.<br><span class="b-holo" style="font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400">Passons au thé ?</span></p>
+<div style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: center">
+<a href="#panier" class="hbtn" style="display: inline-flex; align-items: center; min-height: 54px; padding: 0 28px; border-radius: 999px; background: #F4F0FF; color: #0B0A1A; text-decoration: none; font-weight: 500">Voir mon panier · {{basketCount}}</a>
+<button type="button" class="gbtn" (click)="restart()" style="min-height: 54px; padding: 0 24px; border-radius: 999px; border: 1px solid rgba(255,255,255,.25); background: rgba(255,255,255,.08); color: #F4F0FF; font: inherit; font-size: 16px; cursor: pointer">Refaire un tour</button>
+</div>
+</div>
+}
+
+<!-- Walk controls + path -->
+<div style="position: absolute; left: 0; right: 0; bottom: 28px; max-width: 1100px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; gap: 18px">
+<button type="button" class="gbtn" (click)="back()" aria-label="Reculer d’un pas" style="flex: none; width: 56px; height: 56px; border-radius: 50%; border: 1px solid rgba(255,255,255,.25); background: rgba(255,255,255,.08); color: #F4F0FF; cursor: pointer; display: flex; align-items: center; justify-content: center">
+<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M15 6l-6 6 6 6"></path></svg></button>
+<div role="group" aria-label="Le chemin du souk" style="flex: 1; min-width: 0; position: relative; height: 56px; display: flex; align-items: center; justify-content: space-between; padding: 0 6px">
+<span aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: rgba(255,255,255,.2)"></span>
+<span aria-hidden="true" style="position: absolute; left: 0; top: 50%; height: 2px; margin-top: -1px; width: {{pathW}}; background: linear-gradient(90deg, #C9B8FF, #9EE7E3, #FFB8DE); transition: width 1s cubic-bezier(.22,.8,.16,1)"></span>
+@for (d of dots(); track $index) {
+<button type="button" class="dot" (click)="d.go()" [attr.aria-label]="d.label" style="position: relative; width: 24px; height: 44px; padding: 0; border: 0; background: none; cursor: pointer; display: flex; align-items: center; justify-content: center">
+<span style="display: block; width: {{d.s}}; height: {{d.s}}; border-radius: 50%; background: {{d.c}}; box-shadow: 0 0 0 {{d.ring}} rgba(244,240,255,.35)"></span></button>
+}
+</div>
+<button type="button" class="gbtn" (click)="fwd()" aria-label="Avancer d’un pas" style="flex: none; width: 56px; height: 56px; border-radius: 50%; border: 0; background: #F4F0FF; color: #0B0A1A; cursor: pointer; display: flex; align-items: center; justify-content: center">
+<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 6l6 6-6 6"></path></svg></button>
+</div>
+</div>
+</section>
+
+<!-- LE PANIER -->
+<section id="panier" style="max-width: 1360px; margin: 0 auto; padding: 140px 40px 60px">
+<p style="margin: 0 0 16px; font-size: 13px; letter-spacing: .26em; text-transform: uppercase; color: #B9B2D6">Mon panier de dégustation</p>
+<h2 style="margin: 0; font-weight: 200; font-size: clamp(50px, 6vw, 92px); line-height: .95; letter-spacing: -.045em">Ce que vous<br><span style="font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; letter-spacing: -.02em">avez aimé.</span></h2>
+<div style="margin-top: 56px; display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-start">
+<div style="flex: 1 1 520px; min-width: 0; padding: 32px; border-radius: 32px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.12)">
+@if (basketEmpty) {
+<p style="margin: 0; padding: 40px 0; text-align: center; font-size: 18px; line-height: 1.6; color: #B9B2D6">Votre panier est encore vide.<br>Goûtez une solution pendant la promenade, puis ajoutez-la ici.</p>
+}
+<ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px">
+@for (k of basketItems; track $index) {
+<li style="display: flex; align-items: center; gap: 16px; padding: 14px 14px 14px 16px; border-radius: 20px; background: rgba(255,255,255,.06)">
+<span aria-hidden="true" style="flex: none; width: 44px; height: 44px; border-radius: 50%; background: radial-gradient(circle at 32% 26%, #FFFFFF 0%, rgba(255,255,255,0) 40%), radial-gradient(circle at 50% 50%, {{k.c3}} 0%, {{k.c1}} 100%)"></span>
+<span style="flex: 1; min-width: 0"><span style="display: block; font-size: 18px">{{k.name}}</span><span style="display: block; margin-top: 2px; font-size: 14px; color: #B9B2D6">{{k.alleeLabel}}</span></span>
+<button type="button" class="gbtn" (click)="k.remove()" [attr.aria-label]="'Retirer ' + k.name + ' du panier'" style="width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(255,255,255,.2); background: transparent; color: #F4F0FF; cursor: pointer; display: flex; align-items: center; justify-content: center">
+<svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+</li>
+}
+</ul>
+</div>
+<form (submit)="send($event)" novalidate style="flex: 1 1 400px; min-width: 0; padding: 32px; border-radius: 32px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.12)">
+@if (sent) {
+<div role="status" style="padding: 40px 0; text-align: center"><div class="b-holo" style="font-family: 'Instrument Serif', serif; font-style: italic; font-size: 56px">Merci.</div><p style="margin: 12px 0 0; color: #D9D3F0">Vos démos sont demandées. On revient vers vous très vite.</p></div>
+}
+@if (notSent) {
+<div style="display: flex; flex-direction: column; gap: 18px">
+<p style="margin: 0; font-size: 20px; font-weight: 300">Demander les démos de mon panier</p>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="b-nom" style="font-size: 13px; color: #B9B2D6">Votre nom</label><input id="b-nom" name="name" type="text" autocomplete="name" required placeholder="Prénom et nom" [value]="formName()" (input)="formName.set(value($event))" style="min-height: 52px; padding: 0 18px; border-radius: 16px; border: 1px solid rgba(255,255,255,.18); background: rgba(255,255,255,.04); color: #F4F0FF; font: inherit; font-size: 16px"></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="b-org" style="font-size: 13px; color: #B9B2D6">Votre organisation</label><input id="b-org" name="organisation" type="text" autocomplete="organization" placeholder="Entreprise, institution…" [value]="formOrg()" (input)="formOrg.set(value($event))" style="min-height: 52px; padding: 0 18px; border-radius: 16px; border: 1px solid rgba(255,255,255,.18); background: rgba(255,255,255,.04); color: #F4F0FF; font: inherit; font-size: 16px"></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="b-mail" style="font-size: 13px; color: #B9B2D6">E-mail ou téléphone</label><input id="b-mail" name="contact" type="text" autocomplete="email" required placeholder="Pour vous recontacter" [value]="formContact()" (input)="formContact.set(value($event))" style="min-height: 52px; padding: 0 18px; border-radius: 16px; border: 1px solid rgba(255,255,255,.18); background: rgba(255,255,255,.04); color: #F4F0FF; font: inherit; font-size: 16px"></div>
+@if (formError()) {
+<p role="alert" style="margin: 0; padding: 12px 16px; border-radius: 16px; background: rgba(255,120,150,.14); color: #FFC9D6; font-size: 15px">{{ formError() }}</p>
+}
+<button type="submit" class="hbtn" [disabled]="sending()" style="min-height: 56px; border-radius: 999px; border: 0; background: #F4F0FF; color: #0B0A1A; font: inherit; font-weight: 500; font-size: 16px; cursor: pointer">{{ sending() ? 'Envoi…' : 'Demander ' + demoLabel }}</button>
+</div>
+}
+</form>
+</div>
+</section>
+
+<!-- RENDEZ-VOUS & CONTACTS -->
+<section id="rdv" style="max-width: 1360px; margin: 0 auto; padding: 100px 40px 120px">
+<div style="position: relative; overflow: hidden; border-radius: 48px; padding: clamp(36px, 6vw, 88px); border: 1px solid rgba(255,255,255,.14); background: rgba(255,255,255,.04)">
+<div aria-hidden="true" style="position: absolute; right: -10%; top: -40%; width: 700px; height: 700px; border-radius: 50%; background: #5B3FD0; filter: blur(140px); opacity: .55"></div>
+<div aria-hidden="true" style="position: absolute; left: -10%; bottom: -50%; width: 600px; height: 600px; border-radius: 50%; background: #1F8C88; filter: blur(140px); opacity: .5"></div>
+<div style="position: relative; display: flex; flex-wrap: wrap; gap: 56px; align-items: flex-end; justify-content: space-between">
+<div style="flex: 1 1 560px; min-width: 0">
+<p style="margin: 0 0 16px; font-size: 13px; letter-spacing: .26em; text-transform: uppercase; color: #D9D3F0">Le thé avec la marchande</p>
+<h2 style="margin: 0; font-weight: 200; font-size: clamp(54px, 7.4vw, 116px); line-height: .92; letter-spacing: -.05em">Prenons<br><span class="b-holo" style="font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; letter-spacing: -.02em">rendez-vous.</span></h2>
+<p style="margin: 32px 0 0; max-width: 520px; font-size: 18px; line-height: 1.6; color: #D9D3F0">Choisissez un créneau et échangeons directement sur votre projet avec Apastes Aïcheou, fondatrice et directrice de Selys Africa Group.</p>
+<a href="#rdv" class="hbtn" style="margin-top: 36px; display: inline-flex; align-items: center; gap: 12px; min-height: 60px; padding: 0 32px; border-radius: 999px; background: #F4F0FF; color: #0B0A1A; text-decoration: none; font-weight: 500; font-size: 17px">Réserver mon créneau
+<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+<p style="margin: 12px 0 0; font-size: 13px; color: #B9B2D6">[LIEN DE PRISE DE RENDEZ-VOUS À AJOUTER]</p>
+</div>
+<div style="flex: 0 1 360px; display: flex; flex-direction: column; gap: 10px">
+<a href="tel:+2252722237969" class="gbtn" style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 18px 22px; border-radius: 20px; border: 1px solid rgba(255,255,255,.18); background: rgba(255,255,255,.06); color: #F4F0FF; text-decoration: none"><span style="font-size: 13px; color: #B9B2D6">Téléphone</span><span>+225 27 22 23 79 69</span></a>
+<a href="mailto:hi@selys-africa.com" class="gbtn" style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 18px 22px; border-radius: 20px; border: 1px solid rgba(255,255,255,.18); background: rgba(255,255,255,.06); color: #F4F0FF; text-decoration: none"><span style="font-size: 13px; color: #B9B2D6">E-mail</span><span>hi@selys-africa.com</span></a>
+<a href="https://www.selys-africa.com" class="gbtn" style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 18px 22px; border-radius: 20px; border: 1px solid rgba(255,255,255,.18); background: rgba(255,255,255,.06); color: #F4F0FF; text-decoration: none"><span style="font-size: 13px; color: #B9B2D6">Site</span><span>selys-africa.com</span></a>
+</div>
+</div>
+</div>
+</section>
+
+<footer style="max-width: 1360px; margin: 0 auto; padding: 0 40px 48px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; font-size: 14px; color: #B9B2D6">
+<span><span style="color: #F4F0FF; font-weight: 500">Selys <span style="font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; font-size: 17px">Souk</span></span> — Nos innovations vous distinguent.</span>
+<span>© 2026 Selys Africa</span>
+</footer>
+
+<!-- DÉGUSTATION -->
+@if (tasting) {
+<div style="position: fixed; inset: 0; z-index: 60; display: flex; align-items: center; justify-content: center; padding: 24px">
+<button type="button" aria-label="Fermer la dégustation" (click)="closeTaste()" style="position: absolute; inset: 0; width: 100%; border: 0; background: rgba(5,4,14,.75); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); cursor: pointer"></button>
+<div class="b-rise" role="dialog" aria-modal="true" [attr.aria-label]="'Dégustation de ' + t.name" style="position: relative; width: min(980px, 100%); max-height: calc(100vh - 48px); overflow-y: auto; border-radius: 36px; background: #13112A; border: 1px solid rgba(255,255,255,.14); box-shadow: 0 60px 140px -40px {{t.c1}}">
+<div aria-hidden="true" style="position: absolute; right: -120px; top: -160px; width: 460px; height: 460px; border-radius: 50%; background: {{t.c1}}; filter: blur(110px); opacity: .45"></div>
+<div style="position: relative; padding: 36px 36px 32px">
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px">
+<div>
+<p style="margin: 0; font-size: 12px; letter-spacing: .22em; text-transform: uppercase; color: #B9B2D6">Dégustation · {{t.alleeLabel}}</p>
+<h3 style="margin: 10px 0 0; font-weight: 200; font-size: clamp(44px, 5vw, 72px); line-height: .95; letter-spacing: -.05em">{{t.name}}</h3>
+</div>
+<button type="button" (click)="closeTaste()" aria-label="Fermer" class="gbtn" style="flex: none; width: 48px; height: 48px; border-radius: 50%; border: 1px solid rgba(255,255,255,.25); background: rgba(255,255,255,.06); color: #F4F0FF; cursor: pointer; display: flex; align-items: center; justify-content: center">
+<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+</div>
+<div role="tablist" aria-label="Les trois bouchées" style="margin-top: 26px; display: flex; flex-wrap: wrap; gap: 8px">
+@for (sp of spoons; track $index) {
+<button type="button" role="tab" [attr.aria-selected]="sp.sel" [class]="sp.cls" (click)="sp.pick()" style="min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid rgba(255,255,255,.22); background: transparent; color: #F4F0FF; font: inherit; font-size: 15px; cursor: pointer">{{sp.label}}</button>
+}
+</div>
+
+<div role="tabpanel" style="margin-top: 26px; min-height: 340px">
+@if (sp0) {
+<div class="b-rise" style="display: flex; flex-wrap: wrap; gap: 32px; align-items: center">
+<p style="flex: 1 1 400px; margin: 0; font-family: 'Instrument Serif', serif; font-style: italic; font-size: clamp(30px, 3.2vw, 44px); line-height: 1.2">{{t.line1}}</p>
+<div aria-hidden="true" class="b-float" style="flex: none; width: 220px; height: 220px; border-radius: 50%; overflow: hidden; position: relative; background: radial-gradient(circle at 32% 26%, rgba(255,255,255,.96) 0%, rgba(255,255,255,0) 34%), radial-gradient(circle at 74% 80%, {{t.c2}} 0%, rgba(255,255,255,0) 58%), radial-gradient(circle at 50% 50%, {{t.c3}} 0%, {{t.c1}} 100%); box-shadow: 0 0 100px -10px {{t.c1}}">
+<span class="b-spin" style="position: absolute; inset: -25%; background: conic-gradient(from 0deg, rgba(255,255,255,0) 0deg, rgba(255,255,255,.75) 40deg, rgba(255,255,255,0) 90deg, {{t.c2}} 160deg, rgba(255,255,255,0) 220deg); mix-blend-mode: soft-light"></span></div>
+</div>
+}
+
+@if (sp1) {
+<div class="b-rise" aria-hidden="true" style="padding: 10px; border-radius: 26px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.14)">
+<div style="border-radius: 18px; overflow: hidden; background: #F8F6FC; color: #17151F">
+<div style="display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid #ECE8F2"><span style="width: 9px; height: 9px; border-radius: 50%; background: #E2DEEA"></span><span style="width: 9px; height: 9px; border-radius: 50%; background: #E2DEEA"></span><span style="width: 9px; height: 9px; border-radius: 50%; background: #E2DEEA"></span><span style="margin-left: 12px; font-size: 13px; color: #5E5A6B">{{t.name}} · {{t.screenTitle}}</span></div>
+@if (t.imageUrl) {
+<img [src]="t.imageUrl" [alt]="'Écran de ' + t.name" style="display: block; width: 100%; height: auto">
+} @else {
+<div style="padding: 22px; min-height: 280px">
+@if (v.chat) {<div style="display: flex; flex-direction: column; gap: 10px">
+<span style="align-self: flex-start; max-width: 62%; padding: 12px 16px; border-radius: 18px 18px 18px 6px; background: #EEEAF4; font-size: 15px">Bonjour, j’ai une question sur mon dossier.</span>
+<span style="align-self: flex-end; max-width: 62%; padding: 12px 16px; border-radius: 18px 18px 6px 18px; background: {{t.c1}}; font-size: 15px">Bonjour, je m’en occupe tout de suite.</span>
+<span style="align-self: flex-start; max-width: 62%; padding: 12px 16px; border-radius: 18px 18px 18px 6px; background: #EEEAF4; font-size: 15px">Merci, c’est rapide !</span>
+<span style="margin-top: 14px; padding: 12px 18px; border-radius: 999px; border: 1px solid #E2DEEA; color: #8A8597; font-size: 14px">Écrire un message…</span></div>}
+@if (v.dash) {<div style="display: flex; flex-direction: column; gap: 12px">
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px"><span style="height: 70px; border-radius: 14px; background: #EEEAF4"></span><span style="height: 70px; border-radius: 14px; background: {{t.c1}}"></span><span style="height: 70px; border-radius: 14px; background: #EEEAF4"></span></div>
+<div style="height: 170px; padding: 16px; border-radius: 14px; background: #EEEAF4; display: flex; align-items: flex-end; gap: 8px">@for (b of bars; track $index) {<span style="flex: 1; height: {{b.h}}; border-radius: 6px 6px 3px 3px; background: {{b.c}}"></span>}</div></div>}
+@if (v.files) {<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px">@for (f of tiles; track $index) {<div style="padding: 14px; border-radius: 14px; background: #EEEAF4; display: flex; flex-direction: column; gap: 8px"><span style="width: 34px; height: 26px; border-radius: 5px 9px 7px 7px; background: {{f.c}}"></span><span style="height: 7px; width: 80%; border-radius: 4px; background: #D6D0E0"></span><span style="height: 7px; width: 50%; border-radius: 4px; background: #E2DEEA"></span></div>}</div>}
+@if (v.card) {<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: center; justify-content: center">
+<div style="width: 300px; aspect-ratio: 1.6; border-radius: 20px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; background: radial-gradient(circle at 25% 20%, rgba(255,255,255,.9) 0%, rgba(255,255,255,0) 40%), conic-gradient(from 200deg, {{t.c1}}, {{t.c2}}, {{t.c3}}, {{t.c1}})"><span style="width: 36px; height: 36px; border-radius: 50%; background: rgba(23,21,31,.15)"></span><span style="height: 10px; width: 60%; border-radius: 5px; background: rgba(23,21,31,.5)"></span></div>
+<div style="width: 180px; height: 260px; border-radius: 30px; border: 7px solid #17151F; background: #FFFFFF; padding: 18px 14px; display: flex; flex-direction: column; gap: 10px; align-items: center"><span style="width: 54px; height: 54px; border-radius: 50%; background: {{t.c1}}"></span><span style="height: 9px; width: 70%; border-radius: 5px; background: #CFC9D9"></span><span style="height: 34px; width: 100%; border-radius: 10px; background: {{t.c1}}"></span><span style="height: 34px; width: 100%; border-radius: 10px; background: #F1EEF6"></span></div>
+</div>}
+</div>
+}
+</div>
+</div>
+<p style="margin: 10px 0 0; font-size: 13px; color: #B9B2D6">{{ t.imageUrl ? 'Capture réalisée avec des données de démonstration.' : 'Aperçu illustratif, à remplacer par une vraie capture.' }}</p>
+}
+
+@if (sp2) {
+<div class="b-rise" style="display: flex; flex-wrap: wrap; gap: 28px">
+<div style="flex: 1 1 300px">
+<p style="margin: 0; font-size: 12px; letter-spacing: .22em; text-transform: uppercase; color: #B9B2D6">Pour qui</p>
+<p style="margin: 12px 0 0; font-size: 20px; line-height: 1.5">{{t.who}}</p>
+</div>
+<ul style="flex: 1 1 380px; margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px">
+@for (f of t.features; track $index) {
+<li style="display: flex; gap: 14px; align-items: flex-start; padding: 16px 18px; border-radius: 18px; background: rgba(255,255,255,.06); font-size: 16px; line-height: 1.5"><span aria-hidden="true" style="flex: none; margin-top: 4px; width: 14px; height: 14px; border-radius: 50%; background: conic-gradient({{t.c1}}, {{t.c2}}, {{t.c3}}, {{t.c1}})"></span>{{f}}</li>
+}
+</ul>
+</div>
+}
+</div>
+
+<div style="margin-top: 28px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,.12); display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center">
+<button type="button" class="hbtn" (click)="toggleTaste()" [attr.aria-pressed]="tInBasketStr" style="min-height: 54px; padding: 0 26px; border-radius: 999px; border: 0; background: #F4F0FF; color: #0B0A1A; font: inherit; font-weight: 500; font-size: 16px; cursor: pointer">{{tBasketLabel}}</button>
+<button type="button" class="gbtn" (click)="nextSpoon()" style="min-height: 54px; padding: 0 24px; border-radius: 999px; border: 1px solid rgba(255,255,255,.25); background: rgba(255,255,255,.06); color: #F4F0FF; font: inherit; font-size: 16px; cursor: pointer">{{nextSpoonLabel}}</button>
+</div>
+</div>
+</div>
+</div>
+}
+
+</div>
