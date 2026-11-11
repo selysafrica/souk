@@ -115,3 +115,14 @@ body { background: var(--n-bg); transition: background-color .5s; }
 @media (max-width: 820px) and (orientation: portrait) {
   .entree-veil { background: linear-gradient(180deg, rgba(var(--n-bg-rgb), .55) 0%, rgba(var(--n-bg-rgb), 0) 12%, rgba(var(--n-bg-rgb), 0) 44%, rgba(var(--n-bg-rgb), .85) 60%, var(--n-bg) 74%) !important; }
 }
+
+/* ─── Bouton flottant BeaForm « Restons en contact » (stylé par le widget) ─── */
+/* Sous la dégustation (z-index 60) plutôt qu'au-dessus de tout. */
+.beaform-floating { z-index: 55 !important; transition: opacity .25s ease, transform .25s ease, visibility .25s; }
+/* S'efface tant que les commandes du bas de la page sont à l'écran (classe posée par le composant). */
+html.bf-tuck .beaform-floating { opacity: 0; visibility: hidden; transform: translateY(16px); pointer-events: none; }
+@media (max-width: 600px) {
+  /* Pastille compacte en bas à droite au lieu d'une barre pleine largeur. */
+  .beaform-floating { left: auto !important; right: 16px !important; bottom: calc(16px + env(safe-area-inset-bottom)) !important; }
+}
+@media (prefers-reduced-motion: reduce) { .beaform-floating { transition: none; } }

@@ -94,6 +94,18 @@ export class SoukNuit implements OnInit {
   /** Phone-width promenade: smaller, closer bubbles so the walk fits the screen. */
   private readonly compact = signal(false);
 
+  /** BeaForm widget (« Restons en contact »): loaded once, after hydration, then it styles the button. */
+  private loadBeaForm(win: Window) {
+    const w = win as Window & { BeaForm?: { mount(): void } };
+    if (w.BeaForm) return w.BeaForm.mount();
+    if (this.doc.querySelector('script[data-beaform-embed]')) return;
+    const s = this.doc.createElement('script');
+    s.src = 'https://bea-form-display.selys.app/embed.js';
+    s.async = true;
+    s.dataset['beaformEmbed'] = '';
+    this.doc.body.appendChild(s);
+  }
+
   toggleTheme() {
     const day = !this.day();
     this.day.set(day);
@@ -117,6 +129,19 @@ export class SoukNuit implements OnInit {
       }
       this.day.set(this.doc.documentElement.classList.contains('theme-jour'));
       const win = this.doc.defaultView!;
+      this.loadBeaForm(win);
+      // The floating « Restons en contact » button steps aside while the page's own bottom
+      // controls (entrance call to action, walk arrows) are on screen.
+      const seen = new Set<Element>();
+      const io = new win.IntersectionObserver((entries) => {
+        for (const e of entries) e.isIntersecting ? seen.add(e.target) : seen.delete(e.target);
+        this.doc.documentElement.classList.toggle('bf-tuck', seen.size > 0);
+      });
+      this.host.nativeElement.querySelectorAll('.bf-avoid').forEach((el) => io.observe(el));
+      destroy.onDestroy(() => {
+        io.disconnect();
+        this.doc.documentElement.classList.remove('bf-tuck');
+      });
       const mq = win.matchMedia('(max-width: 600px)');
       const onMq = () => this.compact.set(mq.matches);
       onMq();
