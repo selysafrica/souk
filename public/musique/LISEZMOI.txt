@@ -1,8 +1,6 @@
-Les morceaux de la playlist ne sont ni versionnés (git) ni intégrés à l'image Docker :
-ils vivent dans le volume « souk_musique », monté sur /app/musique et servi sous /musique/.
+Les morceaux de la playlist s'ajoutent depuis /admin, onglet « Musique » :
+choisir le fichier audio, lui donner un nom, « Ajouter ».
 
-Ajouter un morceau sur le serveur (depuis le dossier du projet) :
-  docker compose cp ./song.mp3 app:/app/musique/song.mp3
-puis le déclarer dans /admin, onglet « Musique », lien : /musique/song.mp3
-
-En local, déposez simplement le fichier dans ce dossier (public/musique/).
+Les fichiers ne sont ni versionnés (git) ni intégrés à l'image Docker : ils sont enregistrés
+dans le volume « souk_musique » (/app/musique en production, data/musique en local)
+et servis sous /musique/.

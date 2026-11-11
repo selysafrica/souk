@@ -17,6 +17,7 @@ import {
   updateUnivers,
   ValidationError,
 } from './db';
+import { AudioError, deleteAudio, MAX_AUDIO_BYTES, saveAudio } from './music';
 
 const COOKIE = 'souk_admin';
 const SESSION_TTL = 1000 * 60 * 60 * 12;
@@ -158,6 +159,36 @@ export function createApi(): Router {
     }),
   );
 
+  // Upload from the admin: the file is the raw body, its name (title) and original file name in the query.
+  api.post(
+    '/admin/tracks/upload',
+    requireAdmin,
+    express.raw({ type: () => true, limit: MAX_AUDIO_BYTES }),
+    handle((req, res) => {
+      const title = String(req.query['title'] ?? '').trim().slice(0, 120);
+      if (!title) throw new ValidationError('Donnez un nom au morceau.');
+      const data = Buffer.isBuffer(req.body) ? req.body : Buffer.alloc(0);
+      let url: string;
+      try {
+        url = saveAudio(title, req.get('content-type') ?? '', String(req.query['file'] ?? ''), data);
+      } catch (e) {
+        if (e instanceof AudioError) throw new ValidationError(e.message);
+        throw e;
+      }
+      try {
+        res.status(201).json(insertTrack({ title, artist: '', url, rights: '', position: 0, published: true }));
+      } catch (e) {
+        deleteAudio(url);
+        throw e;
+      }
+    }),
+    (err: { type?: string }, _req: Request, res: Response, next: NextFunction) => {
+      if (err?.type === 'entity.too.large')
+        res.status(413).json({ error: `Fichier trop lourd : ${MAX_AUDIO_BYTES / 1024 / 1024} Mo au maximum.` });
+      else next(err);
+    },
+  );
+
   api.put(
     '/admin/tracks/:id',
     requireAdmin,
@@ -170,7 +201,8 @@ export function createApi(): Router {
     '/admin/tracks/:id/remove',
     requireAdmin,
     handle((req, res) => {
-      removeTrack(Number(req.params['id']));
+      const url = removeTrack(Number(req.params['id']));
+      if (url) deleteAudio(url);
       res.json({ ok: true });
     }),
   );

@@ -53,7 +53,8 @@ export class Admin implements OnInit {
   protected readonly confirmDelete = signal<number | null>(null);
   protected readonly builtinTracks = BUILTIN_TRACKS;
   protected readonly tracks = signal<Track[] | null>(null);
-  protected readonly trackDraft = signal<(TrackInput & { id: number | null }) | null>(null);
+  /** New track (id null: name + file) or renaming of an existing one. */
+  protected readonly trackDraft = signal<{ id: number | null; title: string; file: File | null } | null>(null);
   protected readonly confirmTrack = signal<number | null>(null);
   protected readonly published = computed(() => this.products().filter((p) => p.published).length);
   protected password = '';
@@ -251,27 +252,40 @@ export class Admin implements OnInit {
 
 
   protected newTrack() {
-    this.trackDraft.set({ id: null, title: '', artist: '', url: '/musique/', rights: '', position: 0, published: true });
+    this.trackDraft.set({ id: null, title: '', file: null });
   }
 
   protected editTrack(t: Track) {
-    this.trackDraft.set({ ...t });
+    this.trackDraft.set({ id: t.id, title: t.title, file: null });
   }
 
-  protected patchTrack(change: Partial<TrackInput>) {
+  protected pickTrackFile(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0] ?? null;
     const d = this.trackDraft();
-    if (d) this.trackDraft.set({ ...d, ...change });
+    if (!d) return;
+    // The file name is a sensible default name, left untouched once the admin has typed one.
+    const title = d.title || (file ? file.name.replace(/\.[^.]+$/, '').replace(/[_-]+/g, ' ').trim() : '');
+    this.trackDraft.set({ ...d, file, title });
   }
 
   protected async saveTrack() {
     const d = this.trackDraft();
     if (!d) return;
-    const { id, ...input } = d;
+    const title = d.title.trim();
+    this.notice.set('');
+    if (!title) return this.error.set('Donnez un nom au morceau.');
+    if (d.id === null && !d.file) return this.error.set('Choisissez le fichier audio.');
     const ok = await this.run(async () => {
-      if (id === null) await adminApi.createTrack(input);
-      else await adminApi.updateTrack(id, input);
+      if (d.id === null) await adminApi.uploadTrack(title, d.file!);
+      else {
+        const t = this.tracks()?.find((x) => x.id === d.id);
+        if (t) {
+          const { id, ...rest } = t;
+          await adminApi.updateTrack(id, { ...rest, title });
+        }
+      }
       this.tracks.set(await adminApi.tracks());
-    }, `« ${d.title} » est dans la playlist.`);
+    }, `« ${title} » est dans la playlist.`);
     if (ok) this.trackDraft.set(null);
   }
 

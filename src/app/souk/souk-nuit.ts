@@ -80,7 +80,6 @@ export class SoukNuit implements OnInit {
   private readonly basket = signal<string[]>([]);
   private readonly taste = signal<string | null>(null);
   private readonly spoon = signal(0);
-  private readonly sound_ = signal(false);
   private readonly sent_ = signal(false);
 
   readonly formName = signal('');
@@ -255,9 +254,6 @@ export class SoukNuit implements OnInit {
     ];
   });
 
-  get muted() {
-    return !this.sound_();
-  }
   readonly stars = B_STARS;
   get pathW() {
     return (this.N ? (this.pos() / this.N) * 100 : 0) + '%';
@@ -363,15 +359,6 @@ export class SoukNuit implements OnInit {
 
   // ─── Actions ───────────────────────────────────────────────────────────
 
-  watch() {
-    const v = this.vid()?.nativeElement;
-    this.sound_.set(true);
-    if (v) {
-      v.muted = false;
-      v.currentTime = 0;
-      void v.play()?.catch(() => undefined);
-    }
-  }
   back() {
     this.go(this.pos() - 1);
   }

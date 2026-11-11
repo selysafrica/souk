@@ -2,7 +2,7 @@
 
 <!-- ENTRÉE : LE FILM -->
 <section id="entree" class="entree" style="position: relative; min-height: 860px; overflow: hidden; display: flex; align-items: flex-end">
-<video #vid src="/film/souk-film-b.mp4" poster="/film/souk-film-poster-b.jpg" autoplay loop playsinline [muted]="muted" aria-label="Film du Souk" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover"></video>
+<video #vid src="/film/souk-film-b.mp4" poster="/film/souk-film-poster-b.jpg" autoplay loop playsinline muted aria-label="Film du Souk" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover"></video>
 <div class="entree-veil" aria-hidden="true" style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(var(--n-bg-rgb),.55) 0%, rgba(var(--n-bg-rgb),0) 30%, rgba(var(--n-bg-rgb),0) 55%, rgba(var(--n-bg-rgb),.92) 100%)"></div>
 
 <header style="position: absolute; left: 0; right: 0; top: 0; z-index: 3; max-width: 1360px; margin: 0 auto; padding: 28px 40px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px">
@@ -26,8 +26,6 @@
 <h1 class="b-rise" style="margin: 18px 0 0; font-weight: 200; font-size: clamp(76px, 10vw, 150px); line-height: .9; letter-spacing: -.06em; animation-delay: .1s">Entrez,<br><span class="b-holo" style="font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; letter-spacing: -.02em">et flânez.</span></h1>
 </div>
 <div class="b-rise" style="display: flex; flex-wrap: wrap; gap: 12px; animation-delay: .25s">
-<button type="button" class="gbtn" (click)="watch()" style="display: inline-flex; align-items: center; gap: 12px; min-height: 56px; padding: 0 24px 0 8px; border-radius: 999px; border: 1px solid rgba(var(--n-glass-rgb),.25); background: rgba(var(--n-glass-rgb),.08); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); color: var(--n-ink); font: inherit; font-size: 16px; cursor: pointer">
-<span aria-hidden="true" style="width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--n-ink)"><svg width="14" height="14" viewBox="0 0 24 24" style="fill: var(--n-bg)"><path d="M7 4l13 8-13 8z"></path></svg></span>Regarder le film avec le son</button>
 <a href="#promenade" class="hbtn" style="display: inline-flex; align-items: center; gap: 10px; min-height: 56px; padding: 0 28px; border-radius: 999px; background: var(--n-ink); color: var(--n-bg); text-decoration: none; font-weight: 500; font-size: 16px">Commencer la promenade
 <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12l7 7 7-7"></path></svg></a>
 </div>

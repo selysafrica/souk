@@ -34,7 +34,23 @@ export const adminApi = {
   reorder: (ids: number[]) => call<{ ok: true }>('PUT', '/api/admin/order', { ids }),
   leads: () => call<Lead[]>('GET', '/api/admin/leads'),
   tracks: () => call<Track[]>('GET', '/api/admin/tracks'),
-  createTrack: (t: TrackInput) => call<Track>('POST', '/api/admin/tracks', t),
+  uploadTrack: async (title: string, file: File): Promise<Track> => {
+    const q = new URLSearchParams({ title, file: file.name });
+    let res: Response;
+    try {
+      res = await fetch(`/api/admin/tracks/upload?${q}`, {
+        method: 'POST',
+        headers: { 'Content-Type': file.type || 'application/octet-stream' },
+        body: file,
+        credentials: 'same-origin',
+      });
+    } catch {
+      throw new ApiError('Le serveur ne répond pas. Vérifiez votre connexion puis réessayez.', 0);
+    }
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new ApiError(data.error ?? `Erreur ${res.status}`, res.status);
+    return data as Track;
+  },
   updateTrack: (id: number, t: TrackInput) => call<Track>('PUT', `/api/admin/tracks/${id}`, t),
   removeTrack: (id: number) => call<{ ok: true }>('POST', `/api/admin/tracks/${id}/remove`),
 };

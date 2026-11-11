@@ -353,6 +353,9 @@ export function updateTrack(id: number, input: TrackInput): Track {
   return toTrack(open().prepare('SELECT * FROM tracks WHERE id = ?').get(id) as Row);
 }
 
-export function removeTrack(id: number): void {
+/** Removes a track and returns its file URL (null if it did not exist). */
+export function removeTrack(id: number): string | null {
+  const row = open().prepare('SELECT url FROM tracks WHERE id = ?').get(id) as { url: string } | undefined;
   open().prepare('DELETE FROM tracks WHERE id = ?').run(id);
+  return row?.url ?? null;
 }
