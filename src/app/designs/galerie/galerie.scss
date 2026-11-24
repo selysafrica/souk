@@ -263,31 +263,6 @@
   }
 }
 
-.replay {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 44px;
-  padding: 0 18px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  background: rgba(2, 41, 43, 0.45);
-  backdrop-filter: blur(10px);
-  color: #fff;
-  font: inherit;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background-color 0.25s var(--ease-out);
-
-  &:hover {
-    background: rgba(2, 41, 43, 0.8);
-  }
-
-  app-icon {
-    --icon: 18px;
-    color: var(--sun);
-  }
-}
 
 .is-landed .walk-hint {
   opacity: 1;
@@ -821,9 +796,15 @@
   .entrance-copy {
     gap: 18px;
 
+    /* On a phone, « Entrez, et flânez. » holds on one line, sized to the screen's width. */
     h1 {
       margin-top: 10px;
-      font-size: min(17vw, 9.5svh);
+      font-size: 14.4vw;
+      white-space: nowrap;
+    }
+
+    h1 br {
+      display: none;
     }
   }
 
@@ -870,7 +851,12 @@
 
     h1 {
       margin-top: 0;
-      font-size: 15svh;
+      font-size: min(15svh, 6.4vw);
+      white-space: nowrap;
+    }
+
+    h1 br {
+      display: none;
     }
   }
 
