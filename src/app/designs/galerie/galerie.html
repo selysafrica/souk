@@ -11,11 +11,11 @@
     <canvas #burst class="burst" aria-hidden="true"></canvas>
 
     <section class="entrance" aria-labelledby="entrance-title">
-      <!-- The entrance film, muted and looping; a phone held upright gets the vertical cut. -->
+      <!-- The entrance film, in the Selys colours (baked into the files), muted; a phone held upright gets the vertical cut. -->
       <div class="film" aria-hidden="true">
-        <video #film autoplay muted playsinline preload="auto" (ended)="filmEnded()" poster="/film/souk-film-poster-b.jpg">
-          <source src="/film/souk-film-b-vertical.mp4" type="video/mp4" media="(max-width: 820px) and (orientation: portrait)" />
-          <source src="/film/souk-film-b.mp4" type="video/mp4" />
+        <video #film autoplay muted playsinline preload="auto" (ended)="filmEnded()" poster="/film/souk-film-selys-poster.jpg">
+          <source src="/film/souk-film-selys-vertical.mp4" type="video/mp4" media="(max-width: 820px) and (orientation: portrait)" />
+          <source src="/film/souk-film-selys.mp4" type="video/mp4" />
         </video>
         <div class="film-veil"></div>
       </div>

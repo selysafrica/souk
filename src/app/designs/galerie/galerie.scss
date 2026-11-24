@@ -172,24 +172,9 @@
   inset: 0;
   z-index: 0;
   overflow: hidden;
-  background: var(--teal-night) url('/film/souk-film-poster-b.jpg') center / cover no-repeat;
+  background: var(--teal-night) url('/film/souk-film-selys-poster.jpg') center / cover no-repeat;
   transition: opacity 0.9s var(--ease-out);
 
-  /*
-   * The film's universe, recoloured in the Selys palette: the hues of the night sky become teal and turquoise,
-   * with a touch of sun; light and motion stay the film's own.
-   */
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    mix-blend-mode: color;
-    background:
-      radial-gradient(ellipse 45% 40% at 82% 18%, rgba(242, 169, 0, 0.75), rgba(242, 169, 0, 0) 70%),
-      radial-gradient(ellipse 70% 60% at 25% 35%, #43e0d0, rgba(67, 224, 208, 0) 75%),
-      linear-gradient(160deg, #047a7f 0%, #035c60 55%, #02292b 100%);
-    pointer-events: none;
-  }
 
   video {
     width: 100%;
@@ -200,6 +185,13 @@
 }
 
 /* Darker at the top for the header, and at the bottom for the title. */
+/* While the film loads, a phone held upright shows its first image in the vertical cut. */
+@media (max-width: 820px) and (orientation: portrait) {
+  .film {
+    background-image: url('/film/souk-film-selys-poster-vertical.jpg');
+  }
+}
+
 .film-veil {
   position: absolute;
   inset: 0;
@@ -815,6 +807,92 @@
 
   .entrance-actions .btn {
     width: 100%;
+  }
+}
+
+/* ------------------------------------------------------------ the entrance on phones */
+
+/* Phone held upright: the film's words sit in the top half, the title keeps to the bottom over a deeper veil. */
+@media (max-width: 760px) and (orientation: portrait) {
+  .entrance {
+    padding-bottom: max(28px, env(safe-area-inset-bottom));
+  }
+
+  .entrance-copy {
+    gap: 18px;
+
+    h1 {
+      margin-top: 10px;
+      font-size: min(17vw, 9.5svh);
+    }
+  }
+
+  .kicker {
+    font-size: 0.6875rem;
+    letter-spacing: 0.24em;
+  }
+
+  .entrance-side {
+    width: 100%;
+    max-width: none;
+    gap: 12px;
+  }
+
+  .film-veil {
+    background: linear-gradient(
+      180deg,
+      rgba(2, 41, 43, 0.5) 0%,
+      rgba(2, 41, 43, 0) 20%,
+      rgba(2, 41, 43, 0) 42%,
+      rgba(2, 41, 43, 0.82) 62%,
+      rgba(2, 41, 43, 0.96) 100%
+    );
+  }
+}
+
+/* A short phone (an SE, a small Android): the sentence gives way to the title and the button. */
+@media (max-width: 760px) and (max-height: 740px) and (orientation: portrait) {
+  .entrance .lead {
+    display: none;
+  }
+}
+
+/* Phone on its side: the entrance fits the low screen, title and button on one line at the bottom. */
+@media (orientation: landscape) and (max-height: 500px) {
+  .entrance {
+    min-height: 0;
+    padding: 0 var(--gutter) max(14px, env(safe-area-inset-bottom));
+  }
+
+  .entrance-copy {
+    flex-wrap: nowrap;
+    gap: 16px;
+
+    h1 {
+      margin-top: 0;
+      font-size: 15svh;
+    }
+  }
+
+  .kicker,
+  .entrance .lead {
+    display: none;
+  }
+
+  .entrance-side {
+    max-width: none;
+  }
+
+  .entrance-actions .btn {
+    width: auto;
+  }
+
+  .film-veil {
+    background: linear-gradient(180deg, rgba(2, 41, 43, 0.5) 0%, rgba(2, 41, 43, 0) 25%, rgba(2, 41, 43, 0) 50%, rgba(2, 41, 43, 0.95) 100%);
+  }
+
+  .walk-hint {
+    bottom: 12px;
   }
 }
 
