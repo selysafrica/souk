@@ -30,7 +30,6 @@ type View = 'desktop' | 'mobile';
             <img [src]="src(p).url" [alt]="'Écran de ' + p.name + ' sur ordinateur'" />
           }
         </div>
-        <p class="note">Capture réalisée avec des données de démonstration.</p>
       }
     </dialog>
   `,
@@ -59,7 +58,7 @@ type View = 'desktop' | 'mobile';
     /* Native pinch-zoom and panning on phones. */
     .body {
       flex: 1; min-height: 0; overflow: auto; touch-action: pan-x pan-y pinch-zoom;
-      display: flex; justify-content: center; align-items: flex-start; padding: 8px clamp(16px, 3vw, 40px) 8px;
+      display: flex; justify-content: center; align-items: flex-start; padding: 8px clamp(16px, 3vw, 40px) 24px;
     }
     .body img {
       display: block; width: min(100%, 1500px); height: auto; border-radius: 12px;
@@ -74,7 +73,6 @@ type View = 'desktop' | 'mobile';
     }
     .phone img { width: 100%; height: 100%; object-fit: contain; border-radius: 24px; box-shadow: none; }
     @media (min-width: 761px) { .body:not(.is-mobile) { align-items: center; } .body:not(.is-mobile) img { max-height: calc(100dvh - 130px); width: auto; max-width: 100%; } }
-    .note { margin: 0; padding: 6px 16px 14px; text-align: center; font-size: .8125rem; color: #9fc4c1; }
     @keyframes appear { from { opacity: 0; transform: scale(.985); } }
   `,
 })

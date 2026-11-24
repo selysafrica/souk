@@ -117,7 +117,7 @@ components:
 
 **Creative North Star : « Le marché couvert Selys »**
 
-Un seul système de marque, trois présentations. Le catalogue est un lieu où l'on circule d'un produit à l'autre : l'allée des étals (défaut), le rayon de coffrets, la vitrine d'appareils. Chaque présentation est une variante du même système : mêmes jetons de marque, même typographie Montserrat, mêmes boutons, mêmes composants partagés (en-tête, index du catalogue, formulaire de démo, pied de page) ; seules les variables de rôle (`--ground`, `--ground-2`, `--fg`, `--fg-2`, `--line`, `--action`, `--action-fg`, `--focus`) sont redéfinies sur l'hôte de chaque présentation.
+Un seul système de marque, quatre présentations. Le catalogue est un lieu où l'on circule d'un produit à l'autre : l'allée des étals (défaut), le rayon de coffrets, la vitrine d'appareils, et le souk (couloir circulaire d’exposition, défaut). Chaque présentation est une variante du même système : mêmes jetons de marque, même typographie Montserrat, mêmes boutons, mêmes composants partagés (en-tête, index du catalogue, formulaire de démo, pied de page) ; seules les variables de rôle (`--ground`, `--ground-2`, `--fg`, `--fg-2`, `--line`, `--action`, `--action-fg`, `--focus`) sont redéfinies sur l'hôte de chaque présentation.
 
 Le teal Selys est engagé, pas décoratif : il peint le sol et les murs de l'expérience par défaut et en couvre plus de la moitié. Le turquoise est l'état actif, l'écho de la barre surélevée du logo. La personnalité de chaque produit vient de sa couleur d'accent, stockée en base (`--p`) : elle teinte la toile de l'auvent, la face du coffret, la barre de titre de l'écran, la petite barre verticale près du nom. La marque est une maison ; les accents sont ses métiers.
 
@@ -233,6 +233,9 @@ En-tête absolu sans fond : logo blanc ou couleur selon la tonalité du sol, lie
 
 ### Marqueurs de monde (signature)
 Dans l'index partagé, chaque ligne porte un marqueur de 120px dans la matière de sa présentation : auvent rayé accent et blanc avec enseigne peinte (Étals), coffret 3D CSS (Coffrets), écran miniature à barre de titre accent (Appareils). La ligne active est mise en avant ; le lien « Voir son étal / le coffret / sur l'écran » ramène la scène au produit.
+
+### Le souk (présentation par défaut)
+Un couloir circulaire aux murs teal Selys, parquet de chêne, plafond sombre et rail de spots ; un filet turquoise court au pied du mur (la barre surélevée du logo). Un tableau par produit, peint à partir de son accent (`--p`) et de son type d’écran, sous un spot qui le suit. Le défilement fait avancer le visiteur ; il s’arrête devant chaque tableau, dont le **cartel** (plaque claire, ombre d’objet, action teal, état « Dans mon panier » en turquoise) se lit à gauche, ou en bas sur téléphone (fiche repliable). Le plan circulaire et le panier flottent en haut, en barres floutées. Le couloir mène au **salon** : comptoir teal, mur de marque, deux hôtesses ; le panier y est posé sur le comptoir et le formulaire de démo prend la forme d’une conversation.
 
 ### Scène 3D (signature)
 Rendu Three.js activé après hydratation, en fondu d'opacité (1–1.2s). Les changements de produit sont des tweens à ease-out exponentiel (`1 − 2^(−10t)`) de 700 à 2200ms selon la distance ; aucun tween sous mouvement réduit. Les écrans produits sont générés et signalés provisoires dans le pied de page.

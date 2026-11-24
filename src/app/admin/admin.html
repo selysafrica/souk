@@ -24,7 +24,6 @@
         <span class="title">Catalogue Souk</span>
         <nav class="tabs" aria-label="Sections de l’administration">
           <button type="button" [attr.aria-current]="tab() === 'produits' ? 'page' : null" (click)="showTab('produits')">Produits</button>
-          <button type="button" [attr.aria-current]="tab() === 'presentation' ? 'page' : null" (click)="showTab('presentation')">Présentation</button>
           <button type="button" [attr.aria-current]="tab() === 'musique' ? 'page' : null" (click)="showTab('musique')">Musique</button>
           <button type="button" [attr.aria-current]="tab() === 'demandes' ? 'page' : null" (click)="showTab('demandes')">Demandes de démo</button>
         </nav>
@@ -60,7 +59,7 @@
                 </div>
                 <table>
                   <thead>
-                    <tr><th scope="col">Ordre</th><th scope="col">Produit</th><th scope="col">Vitrine</th><th scope="col"><span class="visually-hidden">Actions</span></th></tr>
+                    <tr><th scope="col">Ordre</th><th scope="col">Produits</th><th scope="col">Vitrine</th><th scope="col"><span class="visually-hidden">Actions</span></th></tr>
                   </thead>
                   <tbody cdkDropList [cdkDropListData]="products()" [cdkDropListDisabled]="busy()" (cdkDropListDropped)="dropped($event)" cdkDropListLockAxis="y">
                     @for (p of products(); track p.id; let i = $index) {
@@ -150,6 +149,10 @@
                   <div class="field"><label for="f-image-m">Capture mobile (lien)</label>
                     <input id="f-image-m" name="mobileImageUrl" inputmode="url" placeholder="/captures/beaform-mobile.png" [ngModel]="d.mobileImageUrl ?? ''" (ngModelChange)="patch({ mobileImageUrl: $event || null })" aria-describedby="h-image-m" />
                     <p class="help" id="h-image-m">Portrait (390 × 810). Affichée sur l’écran du téléphone.</p></div>
+                  <div class="field"><label for="f-logo">Logo (lien)</label>
+                    <input id="f-logo" name="logoUrl" inputmode="url" placeholder="/logos/beaform.svg" [ngModel]="d.logoUrl ?? ''" (ngModelChange)="patch({ logoUrl: $event || null })" aria-describedby="h-logo" />
+                    <p class="help" id="h-logo">Carré, SVG ou PNG. Fichier dans <code>public/logos/</code>. Peint dans le tableau du souk ; sans logo, le nom du produit le remplace.</p>
+                    @if (d.logoUrl) { <img class="logo-preview" [src]="d.logoUrl" alt="Aperçu du logo de {{ d.name }}" width="72" height="72" /> }</div>
                   @if (d.imageUrl || d.mobileImageUrl) {
                     <div class="shots wide" aria-label="Aperçu des captures">
                       @if (d.imageUrl) { <img class="shot-web" [src]="d.imageUrl" alt="Capture web de {{ d.name }}" /> }
@@ -167,24 +170,6 @@
                 </form>
               </section>
             }
-          </main>
-        }
-        @case ('presentation') {
-          <main class="workspace single">
-            <h1>Présentation de la page d’accueil</h1>
-            <p class="sub">Les trois présentations restent consultables à leur adresse. Celle choisie ici s’affiche à l’accueil.</p>
-            <fieldset class="designs">
-              <legend class="visually-hidden">Présentation par défaut</legend>
-              @for (id of designs; track id) {
-                <label class="design" [class.is-on]="design() === id">
-                  <input type="radio" name="design" [value]="id" [checked]="design() === id" (change)="design.set(id)" />
-                  <span class="design-name">{{ designLabels[id] }}</span>
-                  <a [routerLink]="'/' + id" target="_blank" rel="noopener">Ouvrir /{{ id }}</a>
-                  @if (savedDesign() === id) { <span class="badge">Actuellement à l’accueil</span> }
-                </label>
-              }
-            </fieldset>
-            <button type="button" class="btn btn--primary" [disabled]="busy() || design() === savedDesign()" (click)="saveDesign()">Enregistrer</button>
           </main>
         }
         @case ('musique') {

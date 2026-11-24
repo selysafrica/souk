@@ -1,7 +1,8 @@
-export const DESIGN_IDS = ['etals', 'coffrets', 'appareils'] as const;
+export const DESIGN_IDS = ['galerie', 'etals', 'coffrets', 'appareils'] as const;
 export type DesignId = (typeof DESIGN_IDS)[number];
 
 export const DESIGN_LABELS: Record<DesignId, string> = {
+  galerie: 'Le souk',
   etals: 'Les étals du souk',
   coffrets: 'Coffrets logiciels',
   appareils: 'Vitrine d’appareils',
@@ -35,6 +36,8 @@ export interface Product {
   imageUrl: string | null;
   /** Phone-format screenshot (portrait), used on phone screens. */
   mobileImageUrl: string | null;
+  /** Product logo (square works best), painted into its canvas in Le souk. */
+  logoUrl: string | null;
   demoUrl: string | null;
   position: number;
   published: boolean;
@@ -72,6 +75,7 @@ export interface Lead {
   id: number;
   name: string;
   contact: string;
+  /** One product slug, or several separated by commas (a visitor's basket). */
   productSlug: string | null;
   message: string;
   createdAt: string;

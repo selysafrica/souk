@@ -40,6 +40,7 @@ function open(): DatabaseSyncType {
       layout TEXT NOT NULL DEFAULT 'dashboard',
       image_url TEXT,
       mobile_image_url TEXT,
+      logo_url TEXT,
       demo_url TEXT,
       position INTEGER NOT NULL DEFAULT 0,
       published INTEGER NOT NULL DEFAULT 1,
@@ -69,8 +70,9 @@ function open(): DatabaseSyncType {
   // Migration: databases created before the mobile screenshot field.
   const cols = (db.prepare('PRAGMA table_info(products)').all() as { name: string }[]).map((c) => c.name);
   if (!cols.includes('mobile_image_url')) db.exec('ALTER TABLE products ADD COLUMN mobile_image_url TEXT');
+  if (!cols.includes('logo_url')) db.exec('ALTER TABLE products ADD COLUMN logo_url TEXT');
   db.prepare(
-    `INSERT OR IGNORE INTO settings (key, value) VALUES ('default_design', 'etals')`,
+    `INSERT OR IGNORE INTO settings (key, value) VALUES ('default_design', 'galerie')`,
   ).run();
   const count = db.prepare('SELECT COUNT(*) AS n FROM products').get() as { n: number };
   if (count.n === 0) {
@@ -85,6 +87,13 @@ function open(): DatabaseSyncType {
     );
     for (const p of SEED_PRODUCTS) if (p.imageUrl || p.mobileImageUrl) fill.run(p.imageUrl, p.mobileImageUrl, p.slug);
     db.prepare(`INSERT INTO settings (key, value) VALUES ('captures_v1', datetime('now'))`).run();
+  }
+  // Same for the product logos shipped in public/logos.
+  const logosDone = db.prepare(`SELECT 1 FROM settings WHERE key = 'logos_v1'`).get();
+  if (!logosDone) {
+    const fill = db.prepare('UPDATE products SET logo_url = COALESCE(logo_url, ?) WHERE slug = ?');
+    for (const p of SEED_PRODUCTS) if (p.logoUrl) fill.run(p.logoUrl, p.slug);
+    db.prepare(`INSERT INTO settings (key, value) VALUES ('logos_v1', datetime('now'))`).run();
   }
   return db;
 }
@@ -112,6 +121,7 @@ function toProduct(r: Row): Product {
     layout: String(r['layout']) as ScreenLayout,
     imageUrl: (r['image_url'] as string | null) || null,
     mobileImageUrl: (r['mobile_image_url'] as string | null) || null,
+    logoUrl: (r['logo_url'] as string | null) || null,
     demoUrl: (r['demo_url'] as string | null) || null,
     position: Number(r['position']),
     published: Number(r['published']) === 1,
@@ -132,7 +142,7 @@ export function getDefaultDesign(): DesignId {
   const row = open().prepare(`SELECT value FROM settings WHERE key = 'default_design'`).get() as
     { value: string } | undefined;
   const v = row?.value as DesignId | undefined;
-  return v && DESIGN_IDS.includes(v) ? v : 'etals';
+  return v && DESIGN_IDS.includes(v) ? v : 'galerie';
 }
 
 export function setDefaultDesign(design: DesignId): void {
@@ -169,6 +179,7 @@ function clean(input: ProductInput): ProductInput {
     layout: (SCREEN_LAYOUTS.includes(input.layout) ? input.layout : 'dashboard') as ScreenLayout,
     imageUrl: s(input.imageUrl, 500) || null,
     mobileImageUrl: s(input.mobileImageUrl, 500) || null,
+    logoUrl: s(input.logoUrl, 500) || null,
     demoUrl: s(input.demoUrl, 500) || null,
     position: Number.isFinite(Number(input.position)) ? Math.trunc(Number(input.position)) : 0,
     published: Boolean(input.published),
@@ -181,7 +192,7 @@ function clean(input: ProductInput): ProductInput {
       'L’identifiant (slug) ne peut contenir que des minuscules, des chiffres et des tirets.',
     );
   if (!HEX.test(out.accent)) throw new ValidationError('La couleur doit être au format #RRGGBB.');
-  for (const url of [out.imageUrl, out.mobileImageUrl, out.demoUrl]) {
+  for (const url of [out.imageUrl, out.mobileImageUrl, out.logoUrl, out.demoUrl]) {
     if (url && !/^(https?:\/\/|\/)/.test(url))
       throw new ValidationError('Les liens doivent commencer par https://, http:// ou /.');
   }
@@ -201,6 +212,7 @@ function params(p: ProductInput) {
     p.layout,
     p.imageUrl,
     p.mobileImageUrl,
+    p.logoUrl,
     p.demoUrl,
     p.position,
     p.published ? 1 : 0,
@@ -212,8 +224,8 @@ export function insertProduct(input: ProductInput): Product {
   try {
     const res = open()
       .prepare(
-        `INSERT INTO products (slug, name, metier, tagline, description, features, price, accent, layout, image_url, mobile_image_url, demo_url, position, published)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        `INSERT INTO products (slug, name, metier, tagline, description, features, price, accent, layout, image_url, mobile_image_url, logo_url, demo_url, position, published)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       )
       .run(...params(p));
     return getProduct(Number(res.lastInsertRowid))!;
@@ -230,7 +242,7 @@ export function updateProduct(id: number, input: ProductInput): Product {
     const res = open()
       .prepare(
         `UPDATE products SET slug = ?, name = ?, metier = ?, tagline = ?, description = ?, features = ?, price = ?, accent = ?,
-         layout = ?, image_url = ?, mobile_image_url = ?, demo_url = ?, position = ?, published = ?, updated_at = datetime('now') WHERE id = ?`,
+         layout = ?, image_url = ?, mobile_image_url = ?, logo_url = ?, demo_url = ?, position = ?, published = ?, updated_at = datetime('now') WHERE id = ?`,
       )
       .run(...params(p), id);
     if (res.changes === 0) throw new ValidationError('Produit introuvable.');
@@ -264,7 +276,7 @@ export function reorderProducts(ids: number[]): void {
   }
 }
 
-export function insertLead(input: Partial<Lead>): void {
+export function insertLead(input: Partial<Lead> & { productSlugs?: unknown }): void {
   const s = (v: unknown, max: number) =>
     String(v ?? '')
       .trim()
@@ -282,9 +294,14 @@ export function insertLead(input: Partial<Lead>): void {
     throw new ValidationError(
       'Ce contact ne ressemble ni à un e-mail ni à un numéro de téléphone.',
     );
+  // A basket sends several products; they are stored together, separated by commas.
+  const slugs = Array.isArray(input.productSlugs)
+    ? input.productSlugs.map((v) => s(v, 60)).filter((v) => /^[a-z0-9-]+$/.test(v)).slice(0, 30)
+    : [];
+  const product = slugs.length ? [...new Set(slugs)].join(',') : s(input.productSlug, 60);
   open()
     .prepare('INSERT INTO leads (name, contact, product_slug, message) VALUES (?, ?, ?, ?)')
-    .run(name, contact, s(input.productSlug, 60) || null, s(input.message, 2000));
+    .run(name, contact, product || null, s(input.message, 2000));
 }
 
 export function listLeads(): Lead[] {

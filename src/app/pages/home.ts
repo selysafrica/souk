@@ -1,21 +1,13 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import type { CatalogData } from '../core/catalog.model';
-import { Appareils } from '../designs/appareils/appareils';
-import { Coffrets } from '../designs/coffrets/coffrets';
-import { Etals } from '../designs/etals/etals';
+import { Galerie } from '../designs/galerie/galerie';
 
-/** The public home shows whichever presentation the admin chose. */
+/** The public home is the souk: the corridor of paintings that ends in the salon. */
 @Component({
   selector: 'app-home',
-  imports: [Etals, Coffrets, Appareils],
+  imports: [Galerie],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    @switch (catalog().defaultDesign) {
-      @case ('coffrets') { <app-coffrets [catalog]="catalog()" /> }
-      @case ('appareils') { <app-appareils [catalog]="catalog()" /> }
-      @default { <app-etals [catalog]="catalog()" /> }
-    }
-  `,
+  template: `<app-galerie [catalog]="catalog()" />`,
 })
 export class Home {
   readonly catalog = input.required<CatalogData>();

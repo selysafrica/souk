@@ -3,9 +3,6 @@ import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDragPlaceholder, CdkDropList, m
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import {
-  DESIGN_IDS,
-  DESIGN_LABELS,
-  type DesignId,
   type Lead,
   type Product,
   type Track,
@@ -19,7 +16,7 @@ import { Icon } from '../shared/icon';
 import { adminApi, ApiError } from './admin-api';
 import { Seo } from '../core/seo';
 
-type Tab = 'produits' | 'presentation' | 'musique' | 'demandes';
+type Tab = 'produits' | 'musique' | 'demandes';
 
 interface Draft extends ProductInput {
   id: number | null;
@@ -43,16 +40,12 @@ const slugify = (s: string) =>
   styleUrl: './admin.scss',
 })
 export class Admin implements OnInit {
-  protected readonly designs = DESIGN_IDS;
-  protected readonly designLabels = DESIGN_LABELS;
   protected readonly layouts = SCREEN_LAYOUTS;
   protected readonly layoutLabels = SCREEN_LAYOUT_LABELS;
 
   protected readonly state = signal<'checking' | 'login' | 'ready'>('checking');
   protected readonly tab = signal<Tab>('produits');
   protected readonly products = signal<Product[]>([]);
-  protected readonly design = signal<DesignId>('etals');
-  protected readonly savedDesign = signal<DesignId>('etals');
   protected readonly leads = signal<Lead[] | null>(null);
   protected readonly draft = signal<Draft | null>(null);
   protected readonly busy = signal(false);
@@ -112,8 +105,6 @@ export class Admin implements OnInit {
   private async reload() {
     const data = await adminApi.catalog();
     this.products.set(data.products);
-    this.design.set(data.defaultDesign);
-    this.savedDesign.set(data.defaultDesign);
   }
 
   private async run(action: () => Promise<unknown>, success: string) {
@@ -159,6 +150,7 @@ export class Admin implements OnInit {
       layout: 'dashboard',
       imageUrl: null,
       mobileImageUrl: null,
+      logoUrl: null,
       demoUrl: null,
       position: this.products().length + 1,
       published: false,
@@ -257,14 +249,6 @@ export class Admin implements OnInit {
     }, `« ${p.name} » est supprimé.`);
   }
 
-  protected async saveDesign() {
-    const d = this.design();
-    await this.run(async () => {
-      await adminApi.setDesign(d);
-      this.savedDesign.set(d);
-    }, `La page d’accueil affiche maintenant « ${DESIGN_LABELS[d]} ».`);
-  }
-
   protected newTrack() {
     this.trackDraft.set({ id: null, title: '', artist: '', url: '/musique/', rights: '', position: 0, published: true });
   }
@@ -312,6 +296,9 @@ export class Admin implements OnInit {
 
   protected productName(slug: string | null) {
     if (!slug) return 'Non précisé';
-    return this.products().find((p) => p.slug === slug)?.name ?? slug;
+    return slug
+      .split(',')
+      .map((s) => this.products().find((p) => p.slug === s)?.name ?? s)
+      .join(', ');
   }
 }

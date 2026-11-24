@@ -1,16 +1,21 @@
 # Souk · catalogue 3D des logiciels Selys Africa
 
-Vitrine Angular SSR, base SQLite et scènes Three.js. Trois présentations au choix :
+Vitrine Angular SSR, base SQLite et scènes Three.js. L’accueil présente **Le souk** : un couloir circulaire d’exposition, un tableau par logiciel, qui mène au salon des hôtesses.
 
-| Route | Présentation |
+| Route | Page |
 |---|---|
-| `/` | celle choisie dans l’admin (par défaut : Les étals du souk) |
-| `/etals` | **Les étals du souk** : une allée de marché, un étal par logiciel |
-| `/coffrets` | **Coffrets logiciels** : un coffret 3D sur présentoir tournant, qui s’ouvre |
-| `/appareils` | **Vitrine d’appareils** : ordinateur et téléphone 3D qui montrent le logiciel |
+| `/` | Le souk : film d’entrée aux couleurs Selys, ouverture gala (« boom ») à la fin du film ou au premier défilement, puis le couloir des tableaux ; « Revoir l’animation » relance le film |
 | `/admin` | administration du catalogue |
 
-Lien direct vers un produit : `/etals?produit=tablee`.
+Lien direct vers un produit : `/?produit=tablee` ouvre le souk devant son tableau. Les anciennes adresses `/galerie`, `/etals`, `/coffrets` et `/appareils` redirigent vers l’accueil.
+
+### Le souk
+
+- On avance dans le couloir en faisant défiler la page ; la caméra marque l’arrêt devant chaque tableau, le temps de lire sa fiche (cartel).
+- Chaque tableau est peint par le navigateur à partir du produit : son motif suit le type d’écran (formulaire, agenda, plan de salle…), sa palette suit la couleur d’accent saisie dans l’admin. Rien à fournir.
+- « Ajouter à mon panier » met la solution de côté (mémorisé dans le navigateur du visiteur). Au bout du couloir, le salon montre le panier et les hôtesses recueillent la demande, question par question.
+- La demande arrive dans l’admin (onglet Demandes) avec tous les produits du panier.
+- Sans WebGL, les fiches se lisent l’une après l’autre et le salon reste utilisable.
 
 ## Démarrer
 
@@ -39,13 +44,14 @@ Node 22.13 ou plus récent (SQLite natif `node:sqlite`, aucune dépendance à co
 - ajouter, modifier, supprimer un produit ;
 - l’afficher ou le masquer sur la vitrine ;
 - changer l’ordre de présentation ;
-- choisir la présentation de la page d’accueil ;
+- choisir la présentation de la page d’accueil (une base existante garde son choix : sélectionner « Le souk » pour l’afficher à l’accueil) ;
 - consulter les demandes de démo envoyées par les visiteurs.
 
 La base est créée et remplie au premier lancement à partir de `src/server/seed.ts`. PeopleOS et Selys Rating sont créés **masqués** : à compléter avant publication.
 
 ## À fournir par l’équipe Selys
 
+- **Logos** : déposer le fichier dans `public/logos/` (carré, SVG ou PNG), puis saisir `/logos/nom.svg` dans le champ « Logo » du produit. Il est peint au centre de son tableau dans le souk ; sans logo, le nom du produit le remplace. BeaForm, BeaMS Couture, BeaEvent et BeaGec ont le leur ; SAE et Tablée n’en ont pas encore.
 - **Captures d’écran** : déposer les fichiers dans `public/captures/` (format paysage 16:10), puis saisir `/captures/nom.png` dans le champ « Capture d’écran » du produit. Elles remplacent les écrans générés, marqués « Visuel provisoire ».
 - **Prix** : à saisir dans l’admin ; vide = « Tarif sur demande ».
 - **Textes** : les descriptions ont été rédigées à partir des dossiers projets et sont à relire.
@@ -56,7 +62,7 @@ La base est créée et remplie au premier lancement à partir de `src/server/see
 src/server.ts            serveur Express : API + rendu SSR
 src/server/db.ts         SQLite (produits, réglages, demandes, sessions)
 src/server/api.ts        API publique et admin
-src/app/designs/*        les trois présentations
+src/app/designs/galerie  le souk (les autres présentations ne sont plus routées)
 src/app/three/*          scènes Three.js et écrans générés
 src/app/shared/*         en-tête, liste des produits, formulaire de démo
 src/app/admin/*          administration

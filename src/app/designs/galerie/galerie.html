@@ -1,0 +1,130 @@
+<app-site-header tone="dark" />
+<main class="galerie" [class.is-ready]="ready()" [class.is-flat]="failed()" [class.is-boom]="intro() === 'boom'" [class.is-burst]="burstOut()" [class.is-landed]="intro() === 'landed'" [attr.data-zone]="zone()">
+  <div class="track">
+    <!-- The 3D corridor stays on screen while the visitor scrolls through the stops. -->
+    <div class="viewport">
+      <canvas #canvas class="scene-canvas" aria-hidden="true"></canvas>
+      <div class="veil" aria-hidden="true"></div>
+    </div>
+
+    <!-- The gala opening: drawn over everything while it plays. -->
+    <canvas #burst class="burst" aria-hidden="true"></canvas>
+
+    <section class="entrance" aria-labelledby="entrance-title">
+      <!-- The entrance film, muted and looping; a phone held upright gets the vertical cut. -->
+      <div class="film" aria-hidden="true">
+        <video #film autoplay muted playsinline preload="auto" (ended)="filmEnded()" poster="/film/souk-film-poster-b.jpg">
+          <source src="/film/souk-film-b-vertical.mp4" type="video/mp4" media="(max-width: 820px) and (orientation: portrait)" />
+          <source src="/film/souk-film-b.mp4" type="video/mp4" />
+        </video>
+        <div class="film-veil"></div>
+      </div>
+      <!-- As on the night promenade: the title low on the left, the way in on the right, clear of the film's own words. -->
+      <div class="entrance-copy">
+        <div class="entrance-title">
+          <p class="kicker">Selys Africa · Le souk</p>
+          <h1 id="entrance-title">Entrez,<br /><span class="holo">et flânez.</span></h1>
+        </div>
+        <div class="entrance-side">
+          <p class="lead">Un tableau par solution, un salon pour en parler. Faites défiler pour ouvrir le souk.</p>
+          <div class="entrance-actions">
+            <button type="button" class="btn btn--primary" (click)="enter()">Commencer la promenade <app-icon name="down" /></button>
+          </div>
+        </div>
+      </div>
+      <!-- After the opening, the visitor stands at the corridor's mouth. -->
+      <div class="walk-hint">
+        <p><app-icon name="scroll" /> Faites défiler pour avancer</p>
+        <button type="button" class="replay" (click)="replay()"><app-icon name="rotate" /> Revoir l’animation</button>
+      </div>
+    </section>
+
+    <ol class="stops" id="produits" aria-label="Les tableaux du souk">
+      @for (p of showcase.products(); track p.id; let i = $index) {
+        <li class="stop" #stop [id]="'produit-' + p.slug" (focusin)="focused(i)">
+          <div class="stop-frame">
+            <article #cartel class="cartel" [style.--p]="p.accent" [class.is-open]="open() === i" [attr.aria-labelledby]="'cartel-' + p.slug">
+              <p class="no">Tableau {{ i + 1 }} sur {{ showcase.products().length }}</p>
+              <h2 class="name" [id]="'cartel-' + p.slug"><span class="swatch" aria-hidden="true"></span>{{ p.name }}</h2>
+              <p class="metier">{{ p.metier }}</p>
+              <p class="tagline">{{ p.tagline }}</p>
+
+              <div class="more" [id]="'fiche-' + p.slug">
+                <p class="desc">{{ p.description }}</p>
+                @if (p.features.length) {
+                  <ul class="features">
+                    @for (f of p.features; track f) {
+                      <li><app-icon name="check" />{{ f }}</li>
+                    }
+                  </ul>
+                }
+                @if (p.imageUrl || p.mobileImageUrl) {
+                  <button type="button" class="shot" (click)="zoom(p)" aria-haspopup="dialog">
+                    <img [src]="p.imageUrl ?? p.mobileImageUrl" alt="" loading="lazy" width="160" height="100" />
+                    <span><app-icon name="zoom" /> Voir les écrans</span>
+                  </button>
+                }
+              </div>
+              <button type="button" class="toggle" (click)="toggleOpen(i)" [attr.aria-expanded]="open() === i" [attr.aria-controls]="'fiche-' + p.slug">
+                {{ open() === i ? 'Refermer la fiche' : 'Lire la fiche détaillée' }}
+              </button>
+
+              <div class="foot">
+                <p class="price">{{ p.price ?? 'Tarif sur demande' }}</p>
+                <button type="button" class="btn btn--basket" [attr.aria-pressed]="basket.has(p.slug)" (click)="toggleBasket(p)">
+                  @if (basket.has(p.slug)) {
+                    <app-icon name="check" /> Dans mon panier
+                  } @else {
+                    <app-icon name="basket" /> Ajouter à mon panier
+                  }
+                </button>
+              </div>
+            </article>
+          </div>
+        </li>
+      } @empty {
+        <li class="stop stop--empty">
+          <div class="stop-frame">
+            <div class="cartel">
+              <h2 class="name">Le souk se prépare</h2>
+              <p class="tagline">Aucune solution n’est exposée pour le moment. Les hôtesses du salon vous renseignent.</p>
+            </div>
+          </div>
+        </li>
+      }
+    </ol>
+
+    <app-salon [items]="basketItems()" (talk)="hostessTalk($event)" (back)="replay()" />
+  </div>
+
+  <!-- Visit controls: the plan of the ring, and the basket. -->
+  <div class="hud" [class.is-on]="zone() === 'couloir'" [attr.inert]="zone() === 'couloir' ? null : ''">
+    <div class="plan">
+      <svg viewBox="0 0 100 100" aria-hidden="true">
+        <circle class="ring" cx="50" cy="50" r="38" />
+        <circle class="salon-dot" cx="50" cy="50" r="13" />
+        @for (p of showcase.products(); track p.id; let i = $index) {
+          <circle class="spot" [class.is-here]="i === showcase.index()" cx="50" cy="12" r="4.2" [attr.transform]="rot(i)" [style.--p]="p.accent" />
+        }
+        <rect class="door" x="46" y="21" width="8" height="7" rx="1.5" [attr.transform]="rot(showcase.products().length - 0.15)" />
+        <g #marker><circle class="me" cx="50" cy="12" r="5.2" /></g>
+      </svg>
+      <div class="plan-nav">
+        <button type="button" class="mini" (click)="step(-1)" aria-label="Tableau précédent"><app-icon name="arrow-left" /></button>
+        <p class="where" aria-live="polite">
+          <span class="visually-hidden">Vous êtes devant le tableau</span>
+          {{ showcase.index() + 1 }}<span class="of"> / {{ showcase.products().length }}</span>
+        </p>
+        <button type="button" class="mini" (click)="step(1)" aria-label="Tableau suivant"><app-icon name="arrow-right" /></button>
+      </div>
+    </div>
+    <button type="button" class="basket-pill" (click)="toSalon()" [attr.aria-label]="'Mon panier : ' + basket.count() + (basket.count() > 1 ? ' solutions' : ' solution') + '. Aller au salon.'">
+      <app-icon name="basket" />
+      <span class="label">Mon panier</span>
+      <span class="count" aria-hidden="true">{{ basket.count() }}</span>
+    </button>
+  </div>
+  <p class="flash" role="status" [class.is-on]="flash()">{{ flash() }}</p>
+</main>
+<app-site-footer />
+<app-screen-viewer #viewer />

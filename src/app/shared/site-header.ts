@@ -2,7 +2,6 @@ import { afterNextRender, ChangeDetectionStrategy, Component, DestroyRef, Elemen
 import { RouterLink } from '@angular/router';
 import { Sound } from '../core/sound';
 import { Icon } from './icon';
-import type { DesignId } from '../core/catalog.model';
 
 @Component({
   selector: 'app-site-header',
@@ -10,13 +9,9 @@ import type { DesignId } from '../core/catalog.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <header class="bar">
-      <a routerLink="/" class="brand" aria-label="Selys Africa, accueil du catalogue">
+      <a routerLink="/" class="brand" aria-label="Selys Africa, accueil du catalogue" (click)="home($event)">
         <img [src]="tone() === 'dark' ? '/brand/selys-logo-white.png' : '/brand/selys-logo.png'" alt="Selys Africa" width="1835" height="414" />
       </a>
-      <nav class="links" aria-label="Sections">
-        <a href="#produits">Produits</a>
-        <a href="#demo">Contact</a>
-      </nav>
       <div class="sound-wrap">
         <button type="button" class="sound" (click)="openPanel()" [attr.aria-expanded]="panel()" aria-controls="sound-panel"
           [class.is-on]="sound.enabled()" [attr.aria-label]="'Son et musique : ' + (sound.enabled() ? 'activé' : 'coupé')">
@@ -48,11 +43,6 @@ import type { DesignId } from '../core/catalog.model';
           </div>
         }
       </div>
-      <nav class="switch" aria-label="Présentations proposées">
-        <a routerLink="/etals" [attr.aria-current]="current() === 'etals' ? 'page' : null">Étals</a>
-        <a routerLink="/coffrets" [attr.aria-current]="current() === 'coffrets' ? 'page' : null">Coffrets</a>
-        <a routerLink="/appareils" [attr.aria-current]="current() === 'appareils' ? 'page' : null">Appareils</a>
-      </nav>
     </header>
   `,
   styles: `
@@ -63,9 +53,6 @@ import type { DesignId } from '../core/catalog.model';
     }
     .bar > * { pointer-events: auto; }
     .brand img { height: clamp(26px, 3.2vw, 36px); width: auto; }
-    .links { display: flex; gap: 28px; margin-left: auto; font-weight: 600; }
-    .links a { text-decoration: none; padding: 10px 0; }
-    .links a:hover { text-decoration: underline; }
     .sound {
       width: 44px; height: 44px; flex: none; display: grid; place-items: center; border-radius: 50%;
       border: 1px solid var(--line); background: color-mix(in srgb, var(--ground) 82%, transparent);
@@ -74,7 +61,7 @@ import type { DesignId } from '../core/catalog.model';
     }
     .sound:hover { color: var(--fg); }
     .sound.is-on { background: var(--action); color: var(--action-fg); border-color: transparent; }
-    .sound-wrap { position: relative; }
+    .sound-wrap { position: relative; margin-left: auto; }
     .panel {
       position: absolute; right: 0; top: calc(100% + 10px); width: min(320px, calc(100vw - 32px)); z-index: 20;
       padding: 14px; border-radius: 18px; background: #0f2830; color: #fff;
@@ -113,25 +100,6 @@ import type { DesignId } from '../core/catalog.model';
     @keyframes eq { to { height: 100%; } }
     @media (prefers-reduced-motion: reduce) { .list .eq i { animation: none !important; height: 70%; } }
     .sound app-icon { --icon: 20px; }
-    .switch {
-      display: flex; padding: 4px; border-radius: 999px;
-      background: color-mix(in srgb, var(--ground) 82%, transparent);
-      backdrop-filter: blur(10px);
-      border: 1px solid var(--line);
-      font-size: 0.875rem; font-weight: 600;
-    }
-    .switch a {
-      padding: 8px 14px; min-height: 36px; display: grid; place-items: center;
-      border-radius: 999px; text-decoration: none; color: var(--fg-2);
-      transition: background-color .25s var(--ease-out), color .25s var(--ease-out);
-    }
-    .switch a:hover { color: var(--fg); }
-    .switch a[aria-current='page'] { background: var(--action); color: var(--action-fg); }
-    @media (max-width: 760px) {
-      .links { display: none; }
-      .switch { margin-left: auto; font-size: 0.8125rem; }
-      .switch a { padding: 6px 10px; }
-    }
   `,
 })
 export class SiteHeader {
@@ -151,10 +119,17 @@ export class SiteHeader {
   }
   private readonly destroy = inject(DestroyRef);
 
+  /** Already on the home page: the logo brings the visitor back to the opening film. */
+  protected home(e: MouseEvent) {
+    if (location.pathname !== '/' || e.metaKey || e.ctrlKey || e.shiftKey) return;
+    e.preventDefault();
+    // The souk answers by showing its opening film again.
+    dispatchEvent(new CustomEvent('souk:home'));
+  }
+
   protected openPanel() {
     this.panel.update((v) => !v);
     if (this.panel()) void this.sound.loadPlaylist();
   }
   readonly tone = input<'dark' | 'light'>('dark');
-  readonly current = input<DesignId | null>(null);
 }
