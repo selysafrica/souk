@@ -79,6 +79,8 @@ export class Galerie {
   private progress = -1;
   private flashTimer = 0;
   private gala: GalaRun | null = null;
+  /** The visitor walked into the corridor since the film last showed. */
+  private wentIn = false;
 
   constructor() {
     effect(() => untracked(() => this.showcase.init(this.catalog().products)));
@@ -260,6 +262,12 @@ export class Galerie {
     this.sound.play('tap');
     this.lockScroll(false);
     scrollTo({ top: 0, behavior: 'auto' });
+    this.showFilm();
+  }
+
+  /** The film starts over; the next scroll down opens the souk again. */
+  private showFilm() {
+    this.wentIn = false;
     this.burstOut.set(false);
     this.intro.set('film');
     const v = this.film()?.nativeElement;
@@ -279,6 +287,9 @@ export class Galerie {
     this.zone.set(s < -0.5 ? 'entree' : s > n - 0.55 ? 'salon' : 'couloir');
     // Walking in without the opening (less motion, or the corridor was not ready): the film stays behind.
     if (this.intro() === 'film' && s > -0.3) this.intro.set('landed');
+    // The top of the page is the opening film: scrolling all the way back up from the corridor brings it back.
+    if (s > -0.3) this.wentIn = true;
+    else if (this.wentIn && s < -0.95 && this.intro() === 'landed') this.showFilm();
 
     const nearest = Math.round(s);
     if (nearest >= 0 && nearest < n && Math.abs(s - nearest) < 0.4 && nearest !== this.showcase.index()) this.showcase.select(nearest);
